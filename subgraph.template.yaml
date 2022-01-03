@@ -1,0 +1,27 @@
+specVersion: 0.0.1
+description: Graph for Staking contract of the Yield Farming and DAO
+repository: https://github.com/fiatdao/subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: PRBProxyFactory
+    network: {{network}}
+    source:
+      address: '{{PRBProxyFactory}}'
+      abi: PRBProxyFactory
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - UserProxy
+        - Proxy
+      abis:
+        - name: PRBProxyFactory
+          file: ./abis/PRBProxyFactory.json
+      eventHandlers:
+        - event: DeployProxy(indexed address,indexed address,indexed address,bytes32,bytes32,address)
+          handler: handleDeployProxy
+      file: ./src/mappings.ts

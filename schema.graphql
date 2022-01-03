@@ -1,0 +1,11 @@
+
+type Proxy @entity {
+  id: ID!
+  proxyAddress: Bytes!
+}
+
+type UserProxy @entity {
+  id: ID!
+  proxyAddress: Bytes!
+  userAddress: Bytes!
+}

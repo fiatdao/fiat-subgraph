@@ -1,0 +1,6 @@
+{
+  "network": "goerli",
+  "description": "FIAT LUX Graph (goerli)",
+  "startBlock": 9526780,
+  "PRBProxyFactory": "0x4873EdD9246595b52AF0DE6349327ec13775dbD1"
+}

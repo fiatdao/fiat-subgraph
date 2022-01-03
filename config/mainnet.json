@@ -1,0 +1,6 @@
+{
+  "network": "mainnet",
+  "description": "FIAT LUX Graph",
+  "startBlock": 13542270,
+  "PRBProxyFactory": ""
+}
