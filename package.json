@@ -2,14 +2,14 @@
   "name": "fiat-lux-subgraph",
   "version": "0.1.0",
   "scripts": {
-    "build": "CONFIG=$npm_config_config GRAPH=local NO_DEPLOY=true ./deploy.sh",
-    "deploy:local": "CONFIG=$npm_config_config GRAPH=local ./deploy.sh",
-    "deploy:goerli": "CONFIG=$npm_config_config GRAPH=goerli ./deploy.sh",
-    "deploy:mainnet": "CONFIG=$npm_config_config GRAPH=mainnet ./deploy.sh",
-    "deploy:goerli-remote": "CONFIG=$npm_config_config GRAPH=goerli-remote ./deploy.sh",
-    "deploy:mainnet-remote": "CONFIG=$npm_config_config GRAPH=mainnet-remote ./deploy.sh",
-    "deploy:goerli-hosted": "CONFIG=$npm_config_config GRAPH=goerli-hosted ./deploy.sh",
-    "deploy:mainnet-hosted": "CONFIG=$npm_config_config GRAPH=mainnet-hosted ./deploy.sh"
+    "build": "NO_DEPLOY=true ./deploy.sh",
+    "deploy:local": "GRAPH=local ./deploy.sh",
+    "deploy:goerli": "GRAPH=goerli ./deploy.sh",
+    "deploy:mainnet": "GRAPH=mainnet ./deploy.sh",
+    "deploy:goerli-remote": "GRAPH=goerli-remote ./deploy.sh",
+    "deploy:mainnet-remote": "GRAPH=mainnet-remote ./deploy.sh",
+    "deploy:goerli-hosted": "GRAPH=goerli-hosted ./deploy.sh",
+    "deploy:mainnet-hosted": "GRAPH=mainnet-hosted ./deploy.sh"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.21.1",
