@@ -1,6 +1,6 @@
 specVersion: 0.0.1
 description: Graph for Staking contract of the Yield Farming and DAO
-repository: https://github.com/fiatdao/subgraph
+repository: https://github.com/fiatdao/fiat-lux-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
