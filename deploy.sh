@@ -3,65 +3,63 @@
 # Exit script as soon as a command fails.
 set -o errexit
 
-mustache config/$CONFIG subgraph.template.yaml > subgraph.yaml
+set -a
+source .env
+set +a
 
-# Run codegen and build
+mustache config/$NETWORK_CONFIG subgraph.template.yaml > subgraph.yaml
+
+# # Run codegen and build
 graph codegen
 graph build
 
-if [[ "$NO_DEPLOY" = true ]]; then
+if [[ "$NO_DEPLOY" = true ]]
+then
   rm subgraph.yaml
   exit 0
 fi
 
-# Select IPFS and The Graph nodes
+# Use Studio The Graph Node (Only Mainnet and Rinkeby available)
+if [[ "$GRAPH" == *"remote"* ]]
+then
+  graph auth --studio $ACCESS_TOKEN
+  graph deploy --studio $SUBGRAPH_NAME
+  # Remove manifest
+  rm subgraph.yaml
+  exit 0
+fi
+
+# Use Hosted The Graph Node
+if [[ $GRAPH == *"hosted"* ]]
+then
+  graph auth --product hosted-service $ACCESS_TOKEN
+  graph deploy --product hosted-service $SUBGRAPH_NAME
+  # Remove manifest
+  rm subgraph.yaml
+  exit 0
+fi
+
+# Use Local The Graph Node
 if [ "$GRAPH" == "local" ]
 then
+  # Select IPFS and The Graph nodes
   IPFS_NODE="http://localhost:5001"
   GRAPH_NODE="http://127.0.0.1:8020"
-elif [ "$GRAPH" == "goerli" ]
+fi
+
+if [ "$GRAPH" == "goerli" ] || [ "$GRAPH" = "mainnet" ]
 then
-  IPFS_NODE="http://:5001"
-  GRAPH_NODE="http://:8020"
-elif [ "$GRAPH" = "mainnet" ]
-then
-  IPFS_NODE="http://:5001"
-  GRAPH_NODE="http://:8020"
-elif [ "$GRAPH" = "goerli-remote" ]
-then
-  graph deploy --studio fiatlux
-  # Remove manifest
-  rm subgraph.yaml
-  exit 0
-elif [ "$GRAPH" = "mainnet-remote" ]
-then
-  graph deploy --studio fiatlux-subgraph
-  # Remove manifest
-  rm subgraph.yaml
-  exit 0
-elif [ "$GRAPH" = "goerli-hosted" ]
-then
-  graph deploy --product hosted-service fiatlux/subgraph-goerli
-  # Remove manifest
-  rm subgraph.yaml
-  exit 0
-elif [ "$GRAPH" = "mainnet-hosted" ]
-then
-  graph deploy --product hosted-service fiatlux/subgraph
-  # Remove manifest
-  rm subgraph.yaml
-  exit 0
+  # Select IPFS and The Graph nodes
+  IPFS_NODE="http://ipfs:5001"
+  GRAPH_NODE="http://graph-node:8020"
 fi
 
 # Create subgraph if missing
 {
-  graph create fiatlux/subgraph --node ${GRAPH_NODE}
+  graph create ${SUBGRAPH_NAME} --node ${GRAPH_NODE}
 } || {
   echo 'Subgraph was already created'
 }
 
 # Deploy subgraph
-graph deploy fiatlux/subgraph --ipfs ${IPFS_NODE} --node ${GRAPH_NODE}
-
-# Remove manifest
-#rm subgraph.yaml
+graph deploy ${SUBGRAPH_NAME} --ipfs ${IPFS_NODE} --node ${GRAPH_NODE}
