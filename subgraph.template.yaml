@@ -17,11 +17,35 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - UserProxy
-        - Proxy
       abis:
         - name: PRBProxyFactory
           file: ./abis/PRBProxyFactory.json
       eventHandlers:
         - event: DeployProxy(indexed address,indexed address,indexed address,bytes32,bytes32,address)
           handler: handleDeployProxy
+      file: ./src/mappings.ts
+  - kind: ethereum/contract
+    name: Codex
+    network: {{network}}
+    source:
+      address: '{{Codex}}'
+      abi: Codex
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Position
+        - PositionTransaction
+      abis:
+        - name: Codex
+          file: ./abis/Codex.json
+      eventHandlers:
+        - event: ModifyCollateralAndDebt(indexed address,indexed uint256,indexed address,address,address,int256,int256)
+          handler: handleModifyCollateralAndDebt
+        - event: TransferCollateralAndDebt(indexed address,indexed uint256,indexed address,address,int256,int256)
+          handler: handleTransferCollateralAndDebt
+        - event: ConfiscateCollateralAndDebt(indexed address,indexed uint256,indexed address,address,address,int256,int256)
+          handler: handleConfiscateCollateralAndDebt
       file: ./src/mappings.ts

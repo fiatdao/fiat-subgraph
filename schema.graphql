@@ -3,3 +3,26 @@ type UserProxy @entity {
   proxyAddress: Bytes!
   userAddress: Bytes!
 }
+
+enum PositionTransactionType {
+  MINT
+  TRANSFER
+  CONFISCATE
+}
+
+type PositionTransaction @entity {
+  id: ID!
+  type: String!
+  position: Position!
+}
+
+type Position @entity {
+  id: ID!
+  vault: Bytes!
+  tokenId: BigInt!
+  user: Bytes!
+  collateral: BigInt!
+  maxCollateral: BigInt
+  normalDebt: BigInt!
+  maxNormalDebt: BigInt
+}
