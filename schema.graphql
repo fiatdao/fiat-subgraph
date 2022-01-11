@@ -13,6 +13,8 @@ enum PositionTransactionType {
 type PositionTransaction @entity {
   id: ID!
   type: String!
+  collateral: BigInt!
+  normalDebt: BigInt!
   position: Position!
 }
 
