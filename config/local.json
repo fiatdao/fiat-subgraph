@@ -3,5 +3,23 @@
   "description": "FIAT LUX Graph (goerli)",
   "startBlock": 6061940,
   "PRBProxyFactory": "0x4873EdD9246595b52AF0DE6349327ec13775dbD1",
-  "Codex": "0x55023022cF8E17697bFf186F607AbB7E0e3D7973"
+  "Codex": "0x55023022cF8E17697bFf186F607AbB7E0e3D7973",
+  "Vaults": [
+    {
+      "idx": 1,
+      "address": "0xecdb7dc331a8b5117ecf548fa4730b0dae76077d",
+      "name": "Element",
+      "underlyingAsset": "USDC",
+      "originator": "Compound",
+      "type": "Principal Token"
+    },
+    {
+      "idx": 2,
+      "address": "",
+      "name": "BarnBridge",
+      "underlyingAsset": "USDC",
+      "originator": "Compound",
+      "type": "Senior Bond"
+    }
+  ]
 }
