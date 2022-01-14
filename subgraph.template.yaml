@@ -48,4 +48,6 @@ dataSources:
           handler: handleTransferCollateralAndDebt
         - event: ConfiscateCollateralAndDebt(indexed address,indexed uint256,indexed address,address,address,int256,int256)
           handler: handleConfiscateCollateralAndDebt
+        - event: Init(indexed address)
+          handler: handleVaultInit
       file: ./src/mappings.ts

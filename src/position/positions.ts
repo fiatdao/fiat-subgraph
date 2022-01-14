@@ -40,7 +40,7 @@ export function createPositionIfNonExistent(
   let position = Position.load(id);
   if (position == null) {
     position = new Position(id);
-    position.vault = vault;
+    position.vault = vault.toHexString();
     position.tokenId = tokenId;
     position.user = user;
   }

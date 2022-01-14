@@ -1,0 +1,16 @@
+
+import { TypedMap } from "@graphprotocol/graph-ts";
+let vaultsData = new TypedMap<string, TypedMap<string, string>>();
+{{#Vaults}}
+let val{{idx}} = new TypedMap<string, string>();
+val{{idx}}.set('address', "{{address}}");
+val{{idx}}.set('name', "{{name}}");
+val{{idx}}.set('underlyingAsset', "{{underlyingAsset}}");
+val{{idx}}.set('originator', "{{originator}}");
+val{{idx}}.set('type', "{{type}}");
+vaultsData.set("{{address}}", val{{idx}});
+
+{{/Vaults}}
+export {
+  vaultsData
+};
