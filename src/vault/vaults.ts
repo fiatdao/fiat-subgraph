@@ -15,16 +15,16 @@ export function createVaultIfNonExistent(vaultAddress: Bytes): Vault {
   let vault = Vault.load(address);
   if (vault == null) {
     vault = new Vault(address);
-  }
-  vault.address = vaultAddress;
+    vault.address = vaultAddress;
 
-  let config = vaultsData.get(address);
-  if (config) {
-    // let name = vault.get('name').toString();
-    // vault.underlyingAsset = vault.get('underlyingAsset').toString();
-    // vault.originator = vault.get('originator').toString();
-    // vault.type = vault.get('type').toString();
+    let config = vaultsData.get(address);
+    if (config) {
+      vault.name = ( config.get('name')) as string;
+      vault.underlyingAsset = ( config.get('underlyingAsset')) as string;
+      vault.originator = (config.get('originator'))  as string;
+      vault.type = (config.get('type'))  as string;
+    }
+    vault.save();
   }
-  vault.save();
   return vault as Vault;
 }

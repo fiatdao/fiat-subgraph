@@ -37,4 +37,5 @@ type Vault @entity {
   underlyingAsset: String
   originator: String
   type: String
+  positions: [Position!] @derivedFrom(field: "vault")
 }
