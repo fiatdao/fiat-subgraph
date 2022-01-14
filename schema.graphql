@@ -27,4 +27,5 @@ type Position @entity {
   maxCollateral: BigInt
   normalDebt: BigInt!
   maxNormalDebt: BigInt
+  positionTransactions: [PositionTransaction!] @derivedFrom(field: "position")
 }
