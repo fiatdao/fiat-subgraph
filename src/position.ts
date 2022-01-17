@@ -1,7 +1,7 @@
 import { Bytes, BigInt, Address } from "@graphprotocol/graph-ts";
-import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt, Codex } from "../../generated/Codex/Codex";
-import { Position, PositionTransaction } from "../../generated/schema";
-import { max } from "../utils";
+import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt, Codex } from "../generated/Codex/Codex";
+import { Position, PositionTransaction } from "../generated/schema";
+import { max } from "./utils";
 
 export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): void {
   let codexContract = Codex.bind(event.address);

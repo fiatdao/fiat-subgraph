@@ -1,8 +1,8 @@
-import { handleDeployProxy } from "./userProxy/userProxies"
+import { handleDeployProxy } from "./userProxy"
 import {
   handleModifyCollateralAndDebt,
   handleTransferCollateralAndDebt,
-  handleConfiscateCollateralAndDebt } from "./position/positions"
+  handleConfiscateCollateralAndDebt } from "./position"
 import { handleVaultInit } from "./vault/vaults"
 
 export {
