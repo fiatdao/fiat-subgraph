@@ -14,7 +14,9 @@ type PositionTransaction @entity {
   id: ID!
   type: String!
   collateral: BigInt!
+  deltaCollateral: BigInt!
   normalDebt: BigInt!
+  deltaNormalDebt: BigInt!
   position: Position!
 }
 

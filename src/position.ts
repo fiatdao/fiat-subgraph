@@ -52,13 +52,22 @@ export function createPositionIfNonExistent(
   return position as Position;
 }
 
-export function createPositionTransaction(transactionHash: Bytes, type: string, position: Position, collateral: BigInt, normalDebt: BigInt): PositionTransaction {
-  let id = transactionHash.toHexString() + "-" + position.id;
+export function createPositionTransaction(
+  transactionHash: Bytes,
+  type: string,
+  position: Position,
+  deltaCollateral: BigInt,
+  deltaNormalDebt: BigInt,
+  ): PositionTransaction {
+  let id = transactionHash.toHexString();
   let positionTransaction = new PositionTransaction(id);
+
   positionTransaction.type = type;
   positionTransaction.position = position.id;
-  positionTransaction.collateral = collateral;
-  positionTransaction.normalDebt = normalDebt;
+  positionTransaction.collateral = position.collateral;
+  positionTransaction.deltaCollateral = deltaCollateral;
+  positionTransaction.normalDebt = position.normalDebt;
+  positionTransaction.deltaNormalDebt = deltaNormalDebt;
   positionTransaction.save();
   return positionTransaction as PositionTransaction;
 }
