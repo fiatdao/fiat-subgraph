@@ -1,6 +1,6 @@
 specVersion: 0.0.1
 description: Graph for Staking contract of the Yield Farming and DAO
-repository: https://github.com/fiatdao/fiat-lux-subgraph
+repository: https://github.com/fiatdao/fiat-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
@@ -38,6 +38,7 @@ dataSources:
       entities:
         - Position
         - PositionTransaction
+        - Collateral
       abis:
         - name: Codex
           file: ./abis/Codex.json
@@ -50,4 +51,27 @@ dataSources:
           handler: handleConfiscateCollateralAndDebt
         - event: Init(indexed address)
           handler: handleVaultInit
+      file: ./src/mappings.ts
+  - kind: ethereum/contract
+    name: Notional
+    network: {{network}}
+    source:
+      address: '{{Notional}}'
+      abi: Notional
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.1
+      language: wasm/assemblyscript
+      entities:
+        - Vault
+        - Collateral
+      abis:
+        - name: Notional
+          file: ./abis/Notional.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: MarketsInitialized(uint16)
+          handler: handleMarketsInitialized
       file: ./src/mappings.ts
