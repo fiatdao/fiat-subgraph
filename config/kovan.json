@@ -1,7 +1,7 @@
 {
-  "network": "goerli",
-  "description": "FIAT LUX Graph (goerli)",
-  "startBlock": 6061940,
+  "network": "kovan",
+  "description": "FIAT LUX Graph (kovan)",
+  "startBlock": 27189640,
   "PRBProxyFactory": "0x4873EdD9246595b52AF0DE6349327ec13775dbD1",
   "Codex": "0x55023022cF8E17697bFf186F607AbB7E0e3D7973",
   "Vaults": [
@@ -9,7 +9,6 @@
       "idx": 1,
       "address": "0xecdb7dc331a8b5117ecf548fa4730b0dae76077d",
       "name": "Element",
-      "vaultType": "ELEMENT",
       "underlierName": "USDC",
       "underlierAddress": "0x78dEca24CBa286C0f8d56370f5406B48cFCE2f86",
       "originator": "Compound",
@@ -20,7 +19,6 @@
       "idx": 2,
       "address": "",
       "name": "BarnBridge",
-      "vaultType": "BARNBRIDGE",
       "underlierName": "USDC",
       "underlierAddress": "",
       "originator": "Compound",
@@ -31,7 +29,6 @@
       "idx": 3,
       "address": "",
       "name": "Notional",
-      "vaultType": "NOTIONAL",
       "underlierName": "",
       "underlierAddress": "",
       "originator": "",
@@ -40,5 +37,5 @@
     }
   ],
   "VaultNotional": "0x8456841bEd14F9B566B72837AdE1C844DD6B7f73",
-  "Notional": ""
+  "Notional": "0x0eae7badef8f95de91fddb74a89a786cf891eb0e"
 }

@@ -9,17 +9,33 @@
       "idx": 1,
       "address": "0xecdb7dc331a8b5117ecf548fa4730b0dae76077d",
       "name": "Element",
-      "underlyingAsset": "USDC",
+      "underlierName": "USDC",
+      "underlierAddress": "0x78dEca24CBa286C0f8d56370f5406B48cFCE2f86",
       "originator": "Compound",
-      "type": "Principal Token"
+      "type": "Principal Token",
+      "maturity": "1660165080000"
     },
     {
       "idx": 2,
       "address": "",
       "name": "BarnBridge",
-      "underlyingAsset": "USDC",
+      "underlierName": "USDC",
+      "underlierAddress": "0x78dEca24CBa286C0f8d56370f5406B48cFCE2f86",
       "originator": "Compound",
-      "type": "Senior Bond"
+      "type": "Senior Bond",
+      "maturity": ""
+    },
+    {
+      "idx": 3,
+      "address": "",
+      "name": "Notional",
+      "underlierName": "",
+      "underlierAddress": "",
+      "originator": "",
+      "type": "",
+      "maturity": ""
     }
-  ]
+  ],
+  "VaultNotional": "0x8456841bEd14F9B566B72837AdE1C844DD6B7f73",
+  "Notional": ""
 }
