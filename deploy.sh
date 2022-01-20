@@ -7,6 +7,8 @@ set -a
 source .env
 set +a
 
+mustache config/$NETWORK_CONFIG ./src/constants.txt > ./src/constants.ts
+
 mustache config/$NETWORK_CONFIG ./src/vault/vaultsData.template.txt > ./src/vault/vaultsData.ts
 
 mustache config/$NETWORK_CONFIG subgraph.template.yaml > subgraph.yaml
@@ -46,10 +48,10 @@ if [ "$GRAPH" == "local" ]
 then
   # Select IPFS and The Graph nodes
   IPFS_NODE="http://localhost:5001"
-  GRAPH_NODE="http://127.0.0.1:8020"
+  GRAPH_NODE="http://localhost:8020"
 fi
 
-if [ "$GRAPH" == "goerli" ] || [ "$GRAPH" = "mainnet" ]
+if [ "$GRAPH" == "goerli" ] || [ "$GRAPH" = "kovan" ] || [ "$GRAPH" = "mainnet" ]
 then
   # Select IPFS and The Graph nodes
   IPFS_NODE="http://ipfs:5001"
