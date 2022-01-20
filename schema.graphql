@@ -32,12 +32,28 @@ type Position @entity {
   positionTransactions: [PositionTransaction!] @derivedFrom(field: "position")
 }
 
+enum VaultType {
+  Element,
+  BarnBridge,
+  Notional
+}
+
 type Vault @entity {
   id: ID!
   address: Bytes
+  name: VaultType
+  positions: [Position!] @derivedFrom(field: "vault")
+  collaterals: [Collateral!] @derivedFrom(field: "vault")
+}
+
+type Collateral @entity {
+  id: ID!
+  address: Bytes
   name: String
-  underlyingAsset: String
   originator: String
   type: String
-  positions: [Position!] @derivedFrom(field: "vault")
+  maturity: BigInt
+  underlierName: String
+  underlierAddress: Bytes
+  vault: Vault
 }
