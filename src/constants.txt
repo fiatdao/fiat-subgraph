@@ -1,0 +1,2 @@
+// @TODO: HARDCODED address
+export const VAULT_NOTIONAL_ADDRESS = "{{VaultNotional}}"

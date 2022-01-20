@@ -4,6 +4,7 @@ import {
   handleTransferCollateralAndDebt,
   handleConfiscateCollateralAndDebt } from "./position"
 import { handleVaultInit } from "./vault/vaults"
+import { handleMarketsInitialized } from "./notional"
 
 export {
   handleDeployProxy,
@@ -11,4 +12,5 @@ export {
   handleTransferCollateralAndDebt,
   handleConfiscateCollateralAndDebt,
   handleVaultInit,
+  handleMarketsInitialized,
 }
