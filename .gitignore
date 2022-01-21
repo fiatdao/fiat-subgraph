@@ -63,3 +63,7 @@ typings/
 /generated/
 /build/
 /data
+
+# Generated Files
+subgraph.yaml
+src/vault/vaultsData.ts

@@ -28,4 +28,6 @@ There are `npm scripts` for all the stages of subgraph development.
 
 ## Supported APIs
 
-- [x] PRB Proxies for Users
+- [x] PRB Proxies for UserProxies
+- [x] Codex for Positions and PositionTransactions
+- [x] Codex for supported Vaults

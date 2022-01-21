@@ -20,11 +20,22 @@ type PositionTransaction @entity {
 
 type Position @entity {
   id: ID!
-  vault: Bytes!
+  vault: Vault!
   tokenId: BigInt!
   user: Bytes!
   collateral: BigInt!
   maxCollateral: BigInt
   normalDebt: BigInt!
   maxNormalDebt: BigInt
+  positionTransactions: [PositionTransaction!] @derivedFrom(field: "position")
+}
+
+type Vault @entity {
+  id: ID!
+  address: Bytes
+  name: String
+  underlyingAsset: String
+  originator: String
+  type: String
+  positions: [Position!] @derivedFrom(field: "vault")
 }

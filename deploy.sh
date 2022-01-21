@@ -7,6 +7,8 @@ set -a
 source .env
 set +a
 
+mustache config/$NETWORK_CONFIG ./src/vault/vaultsData.template.txt > ./src/vault/vaultsData.ts
+
 mustache config/$NETWORK_CONFIG subgraph.template.yaml > subgraph.yaml
 
 # # Run codegen and build
