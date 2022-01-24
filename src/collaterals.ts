@@ -5,7 +5,8 @@ import { Collateral, Vault } from "../generated/schema";
 import { createVaultIfNonExistent } from "./vault/vaults";
 import { VAULT_NOTIONAL_ADDRESS } from "./constants";
 
-const ELEMENT = "Element";
+const ELEMENT = "ELEMENT";
+const NOTIONAL_COLLATERAL_TYPE = "fCash"
 
 export function createCollateralIfNecessary(vault: Vault, config: TypedMap<string, string>): void {
   if (vault.name === ELEMENT) {
@@ -15,9 +16,8 @@ export function createCollateralIfNecessary(vault: Vault, config: TypedMap<strin
     if (!collateral) {
       collateral = new Collateral(underlierToken!);
       collateral.name = (config.get('name')) as string;
-      collateral.originator = (config.get('originator')) as string;
-      collateral.type = (config.get('type')) as string;
-      let maturity = config.get('maturity') as string;
+      collateral.type = (config.get('collateralType')) as string;
+      let maturity = config.get('collateralMaturity') as string;
       if (maturity !== "") {
         collateral.maturity = BigInt.fromString(maturity);
       }
@@ -38,7 +38,7 @@ export function createNotionalCollateralIfNonExistent(notional: Notional, curren
     let tokenAddress = currency.value0.tokenAddress;
     let underlierAddress = currency.value1.tokenAddress;
     let tokenAsset = ERC20.bind(tokenAddress);
-    let tokenName = tokenAsset.name();
+    let tokenName = tokenAsset.symbol();
     let collateralName = tokenName + "-" + maturity.toString();
 
     collateral.address = tokenAddress;
@@ -47,13 +47,12 @@ export function createNotionalCollateralIfNonExistent(notional: Notional, curren
     if (underlierAddress !== null) {
       collateral.underlierAddress = underlierAddress;
       let underlierAsset = ERC20.bind(underlierAddress);
-      let underlierName = underlierAsset.try_name()
+      let underlierName = underlierAsset.try_symbol()
       if (!underlierName.reverted) {
         collateral.underlierName = underlierName.value;
       }
     }
-    collateral.originator = tokenName;
-    collateral.type = tokenAsset.symbol();
+    collateral.type = NOTIONAL_COLLATERAL_TYPE;
     createVaultIfNonExistent(VAULT_NOTIONAL_ADDRESS);
     collateral.vault = VAULT_NOTIONAL_ADDRESS;
     collateral.save();
