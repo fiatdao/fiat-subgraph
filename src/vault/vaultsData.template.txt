@@ -3,13 +3,14 @@ import { TypedMap } from "@graphprotocol/graph-ts";
 let vaultsData = new TypedMap<string, TypedMap<string, string>>();
 {{#Vaults}}
 let val{{idx}} = new TypedMap<string, string>();
-val{{idx}}.set('address', "{{address}}");
-val{{idx}}.set('name', "{{name}}");
-val{{idx}}.set('originator', "{{originator}}");
-val{{idx}}.set('type', "{{type}}");
-val{{idx}}.set('underlierName', "{{underlierName}}");
-val{{idx}}.set('underlierAddress', "{{underlierAddress}}");
-val{{idx}}.set('maturity', "{{maturity}}");
+
+val{{idx}}.set("name", "{{name}}");
+val{{idx}}.set("address", "{{address}}");
+val{{idx}}.set("type", "{{type}}");
+val{{idx}}.set("collateralMaturity", "{{maturity}}");
+val{{idx}}.set("collateralType", "{{underlierType}}");
+val{{idx}}.set("underlierName", "{{underlierName}}");
+val{{idx}}.set("underlierAddress", "{{underlierAddress}}");
 vaultsData.set("{{address}}", val{{idx}});
 
 {{/Vaults}}

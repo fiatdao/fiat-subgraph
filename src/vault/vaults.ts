@@ -18,6 +18,7 @@ export function createVaultIfNonExistent(vaultAddress: string): Vault {
     let config = vaultsData.get(vaultAddress);
     if (config) {
       vault.name = (config.get('name')) as string;
+      vault.type = (config.get('type')) as string;
       createCollateralIfNecessary(vault!, config!)
     }
     vault.save();
