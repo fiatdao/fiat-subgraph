@@ -1,7 +1,10 @@
 import { Bytes, BigInt, Address } from "@graphprotocol/graph-ts";
 import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt, Codex } from "../generated/Codex/Codex";
 import { Position, PositionTransaction } from "../generated/schema";
-import { max } from "./utils";
+
+const MODIFY = "MODIFY";
+const TRANSFER = "TRANSFER";
+const CONFISCATE = "CONFISCATE";
 
 export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): void {
   let codexContract = Codex.bind(event.address);
@@ -21,7 +24,7 @@ export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): v
   );
 
   let id = event.transaction.hash;
-  let type = "MINT";
+  let type = MODIFY;
 
   createPositionTransaction(id, type, position, deltaCollateral, deltaNormalDebt);
 }
@@ -44,9 +47,7 @@ export function createPositionIfNonExistent(
     position.tokenId = tokenId;
     position.user = user;
   }
-  position.maxCollateral = max(position.maxCollateral, currentPosition.value0);
   position.collateral = currentPosition.value0;
-  position.maxNormalDebt = max(position.maxNormalDebt, currentPosition.value1);
   position.normalDebt = currentPosition.value1;
   position.save();
   return position as Position;
@@ -95,7 +96,7 @@ export function handleTransferCollateralAndDebt(event: TransferCollateralAndDebt
   );
 
   let id = event.transaction.hash;
-  let type = "TRANSFER";
+  let type = TRANSFER;
   createPositionTransaction(id, type, positionSrc, deltaCollateral, deltaNormalDebt);
   createPositionTransaction(id, type, positionDst, deltaCollateral, deltaNormalDebt);
 }
@@ -118,7 +119,7 @@ export function handleConfiscateCollateralAndDebt(event: ConfiscateCollateralAnd
   );
 
   let id = event.transaction.hash;
-  let type = "CONFISCATE";
+  let type = CONFISCATE;
 
   createPositionTransaction(id, type, position, deltaCollateral, deltaNormalDebt);
 }
