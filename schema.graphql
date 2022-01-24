@@ -5,7 +5,7 @@ type UserProxy @entity {
 }
 
 enum PositionTransactionType {
-  MINT
+  MODIFY
   TRANSFER
   CONFISCATE
 }
@@ -26,22 +26,21 @@ type Position @entity {
   tokenId: BigInt!
   user: Bytes!
   collateral: BigInt!
-  maxCollateral: BigInt
   normalDebt: BigInt!
-  maxNormalDebt: BigInt
   positionTransactions: [PositionTransaction!] @derivedFrom(field: "position")
 }
 
 enum VaultType {
-  Element,
-  BarnBridge,
-  Notional
+  ELEMENT,
+  BARNBRIDGE,
+  NOTIONAL
 }
 
 type Vault @entity {
   id: ID!
   address: Bytes
-  name: VaultType
+  name: String
+  type: VaultType
   positions: [Position!] @derivedFrom(field: "vault")
   collaterals: [Collateral!] @derivedFrom(field: "vault")
 }
@@ -50,7 +49,6 @@ type Collateral @entity {
   id: ID!
   address: Bytes
   name: String
-  originator: String
   type: String
   maturity: BigInt
   underlierName: String
