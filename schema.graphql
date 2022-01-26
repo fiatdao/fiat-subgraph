@@ -67,5 +67,5 @@ type UserPosition @entity {
   totalFIAT: BigInt
   nearestMaturity: BigInt
   lowestHealthFactor: BigInt
-  positions: [String!]
+  positions: [Position!] @derivedFrom(field: "user")
 }
