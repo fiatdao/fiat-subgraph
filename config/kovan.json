@@ -3,32 +3,11 @@
   "description": "FIAT LUX Graph (kovan)",
   "startBlock": 27189640,
   "PRBProxyFactory": "0x4873EdD9246595b52AF0DE6349327ec13775dbD1",
-  "Codex": "0x55023022cF8E17697bFf186F607AbB7E0e3D7973",
+  "Codex": "0x3a94fa8fadbc48d6c4f44149a8b9f668bd510066",
+  "Collybus": "0x5438Fd8541135676e990295C1cd62EF779b05Ebb",
   "Vaults": [
     {
       "idx": 1,
-      "name": "Element",
-      "address": "0xecdb7dc331a8b5117ecf548fa4730b0dae76077d",
-      "type": "ELEMENT",
-      "collateralMaturity": "1660165080000",
-      "collateralType": "Principal Token",
-      "underlierName": "USDC",
-      "underlierAddress": "0x78dEca24CBa286C0f8d56370f5406B48cFCE2f86",
-      "underlierToken": "0xDCf80C068B7fFDF7273d8ADAE4B076BF384F711A"
-    },
-    {
-      "idx": 2,
-      "name": "BarnBridge",
-      "address": "",
-      "type": "BARNBRIDGE",
-      "collateralMaturity": "",
-      "collateralType": "Senior Bond",
-      "underlierName": "",
-      "underlierAddress": "",
-      "underlierToken": ""
-    },
-    {
-      "idx": 3,
       "name": "Notional",
       "address": "0x8456841bEd14F9B566B72837AdE1C844DD6B7f73",
       "type": "NOTIONAL",
