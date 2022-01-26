@@ -13,7 +13,8 @@
       "collateralMaturity": "1660165080000",
       "collateralType": "Principal Token",
       "underlierName": "USDC",
-      "underlierAddress": "0x78dEca24CBa286C0f8d56370f5406B48cFCE2f86"
+      "underlierAddress": "0x78dEca24CBa286C0f8d56370f5406B48cFCE2f86",
+      "underlierToken": "0xDCf80C068B7fFDF7273d8ADAE4B076BF384F711A"
     },
     {
       "idx": 2,
@@ -23,7 +24,8 @@
       "collateralMaturity": "",
       "collateralType": "Senior Bond",
       "underlierName": "",
-      "underlierAddress": ""
+      "underlierAddress": "",
+      "underlierToken": ""
     },
     {
       "idx": 3,
@@ -33,7 +35,8 @@
       "collateralMaturity": "",
       "collateralType": "",
       "underlierName": "",
-      "underlierAddress": ""
+      "underlierAddress": "",
+      "underlierToken": ""
     }
   ],
   "VaultNotional": "0x8456841bEd14F9B566B72837AdE1C844DD6B7f73",
