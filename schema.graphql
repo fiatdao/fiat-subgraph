@@ -24,9 +24,12 @@ type Position @entity {
   id: ID!
   vault: Vault!
   tokenId: BigInt!
-  user: Bytes!
+  user: UserPosition!
   collateral: BigInt!
   normalDebt: BigInt!
+  maturity: BigInt
+  healthFactor: BigInt
+  isAtRisk: Boolean
   positionTransactions: [PositionTransaction!] @derivedFrom(field: "position")
 }
 
@@ -54,4 +57,15 @@ type Collateral @entity {
   underlierName: String
   underlierAddress: Bytes
   vault: Vault
+}
+
+type UserPosition @entity {
+  id: ID!
+  # User Proxy Address
+  userAddress: Bytes
+  totalCollateral: BigInt
+  totalFIAT: BigInt
+  nearestMaturity: BigInt
+  lowestHealthFactor: BigInt
+  positions: [String!]
 }
