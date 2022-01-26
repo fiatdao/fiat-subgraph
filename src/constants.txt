@@ -1,2 +1,3 @@
 // @TODO: HARDCODED address
 export const VAULT_NOTIONAL_ADDRESS = "{{VaultNotional}}"
+export const COLLYBUS_ADDRESS = "{{Collybus}}"

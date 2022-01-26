@@ -9,7 +9,7 @@ const ELEMENT = "ELEMENT";
 const NOTIONAL_COLLATERAL_TYPE = "fCash"
 
 export function createCollateralIfNecessary(vault: Vault, config: TypedMap<string, string>): void {
-  if (vault.name === ELEMENT) {
+  if (vault.type === ELEMENT) {
     let underlierToken = (config.get('underlierToken')) as string;
     let collateral = Collateral.load(underlierToken!);
 
