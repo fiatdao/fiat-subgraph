@@ -31,9 +31,9 @@ export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): v
   let id = event.transaction.hash;
   let type = MODIFY;
 
-  createPositionTransaction(id, type, position, deltaCollateral, deltaNormalDebt);
+  let tx = createPositionTransaction(id, type, position, deltaCollateral, deltaNormalDebt);
 
-  updateUserPosition(userPosition);
+  updateUserPosition(userPosition, position, tx);
 }
 
 export function createPositionIfNonExistent(
@@ -85,14 +85,6 @@ export function createPositionIfNonExistent(
     }
   }
 
-  let exists = user.positions.includes(position.id);
-  if (!exists) {
-    let oldPositions = user.positions;
-    oldPositions.push(position.id);
-    user.positions = oldPositions;
-    user.save();
-  }
-
   position.save();
   return position as Position;
 }
@@ -125,33 +117,24 @@ export function createUserPositionIfNonExistent(userAddress: Bytes): UserPositio
     userPosition = new UserPosition(id);
     userPosition.totalCollateral = BigInt.fromI32(0);
     userPosition.totalFIAT = BigInt.fromI32(0);
-    userPosition.positions = [];
     userPosition.save();
   }
   return userPosition as UserPosition;
 }
 
-export function updateUserPosition(userPosition: UserPosition): void {
-  userPosition.totalCollateral = BigInt.fromI32(0);
-  userPosition.totalFIAT = BigInt.fromI32(0);
-  userPosition.nearestMaturity = null;
-  userPosition.lowestHealthFactor = null;
+export function updateUserPosition(
+  userPosition: UserPosition,
+  position: Position,
+  positionTransaction: PositionTransaction): void {
+  userPosition.totalCollateral = userPosition.totalCollateral.plus(positionTransaction.deltaCollateral);
+  userPosition.totalFIAT = userPosition.totalFIAT.plus(positionTransaction.deltaNormalDebt);
+  if (position.maturity) {
+    userPosition.nearestMaturity = min(userPosition.nearestMaturity, position.maturity!);
+  }
+  if (position.healthFactor) {
+    userPosition.lowestHealthFactor = min(userPosition.lowestHealthFactor, position.healthFactor!);
+  }
 
-  userPosition.positions.forEach(function (positionId: string) {
-    let position = Position.load(positionId);
-    // if (position !== null) {
-    //   // Can not assign data in user position
-    //   log.info("===============> THIS DOES NOT WORK", [position.collateral.toString()]);
-    //   userPosition.totalCollateral = userPosition.totalCollateral.plus(position.collateral);
-    //   userPosition.totalFIAT = userPosition.totalFIAT.plus(position.normalDebt);
-    //   if (position.maturity) {
-    //     userPosition.nearestMaturity = min(userPosition.nearestMaturity, position.maturity!);
-    //   }
-    //   if (position.healthFactor) {
-    //     userPosition.lowestHealthFactor = min(userPosition.lowestHealthFactor, position.healthFactor!);
-    //   }
-    // }
-  });
   userPosition.save();
 }
 
