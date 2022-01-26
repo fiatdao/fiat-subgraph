@@ -42,6 +42,10 @@ dataSources:
       abis:
         - name: Codex
           file: ./abis/Codex.json
+        - name: Collybus
+          file: ./abis/Collybus.json
+        - name: IVault
+          file: ./abis/IVault.json
       eventHandlers:
         - event: ModifyCollateralAndDebt(indexed address,indexed uint256,indexed address,address,address,int256,int256)
           handler: handleModifyCollateralAndDebt
@@ -52,6 +56,7 @@ dataSources:
         - event: Init(indexed address)
           handler: handleVaultInit
       file: ./src/mappings.ts
+  {{#Notional}}
   - kind: ethereum/contract
     name: Notional
     network: {{network}}
@@ -61,7 +66,7 @@ dataSources:
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.1
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - Vault
@@ -75,3 +80,4 @@ dataSources:
         - event: MarketsInitialized(uint16)
           handler: handleMarketsInitialized
       file: ./src/mappings.ts
+  {{/Notional}}
