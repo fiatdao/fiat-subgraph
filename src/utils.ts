@@ -1,11 +1,16 @@
-import { Address, BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigInt, log } from "@graphprotocol/graph-ts";
 import { Codex, Codex__positionsResult } from "../generated/Codex/Codex";
 import { Collybus } from "../generated/Codex/Collybus";
 import { IVault } from "../generated/Codex/IVault";
-import { COLLYBUS_ADDRESS, CODEX_ADDRESS } from "./constants";
+import { Fiat } from "../generated/Fiat/Fiat";
+import { COLLYBUS_ADDRESS, CODEX_ADDRESS, FIAT_ADDRESS } from "./constants";
 
 let codex = Codex.bind(Address.fromString(CODEX_ADDRESS));
 let collybus = Collybus.bind(Address.fromString(COLLYBUS_ADDRESS));
+let fiat = Fiat.bind(Address.fromString(FIAT_ADDRESS));
+
+export let BIGINT_ZERO = BigInt.fromI32(0);
+export let ZERO_ADDRESS = Address.fromHexString('0x0000000000000000000000000000000000000000');
 
 export function max(a: BigInt | null, b: BigInt): BigInt {
   if (a == null) return b;
@@ -77,4 +82,12 @@ export function getCurrentValue(
     return currentValue.value;
   }
   return null;
+}
+
+export function getTotalSupply(): BigInt {
+  let totalSupply = fiat.try_totalSupply();
+  if (!totalSupply.reverted) {
+    return totalSupply.value;
+  }
+  return BIGINT_ZERO;
 }

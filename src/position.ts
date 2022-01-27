@@ -1,6 +1,7 @@
 import { Bytes, BigInt, Address } from "@graphprotocol/graph-ts";
 import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt } from "../generated/Codex/Codex";
 import { Position, PositionTransaction, UserPosition } from "../generated/schema";
+import { updateFiatData } from "./fiat";
 import { getCollaterizationRatio, getCurrentValue, getMaturity, getPosition, getUnderlierToken, min } from "./utils";
 
 const MODIFY = "MODIFY";
@@ -29,6 +30,8 @@ export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): v
   let tx = createPositionTransaction(id, type, position, deltaCollateral, deltaNormalDebt);
 
   updateUserPosition(userPosition, position, tx);
+
+  updateFiatData(tx.deltaCollateral, tx.deltaNormalDebt);
 }
 
 export function createPositionIfNonExistent(
