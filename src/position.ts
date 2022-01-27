@@ -1,8 +1,10 @@
 import { Bytes, BigInt, Address } from "@graphprotocol/graph-ts";
 import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt } from "../generated/Codex/Codex";
 import { Position, PositionTransaction, UserPosition } from "../generated/schema";
+import { createCollateralIfNonExistent, updateCollateral } from "./collaterals";
 import { updateFiatData } from "./fiat";
 import { getCollaterizationRatio, getCurrentValue, getMaturity, getPosition, getUnderlierToken, min } from "./utils";
+import { updateVault } from "./vault/vaults";
 
 const MODIFY = "MODIFY";
 const TRANSFER = "TRANSFER";
@@ -32,6 +34,9 @@ export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): v
   updateUserPosition(userPosition, position, tx);
 
   updateFiatData(tx.deltaCollateral, tx.deltaNormalDebt);
+
+  updateVault(vault.toHexString(), tx.deltaCollateral);
+  updateCollateral(vault.toHexString(), tokenId.toString(), tx.deltaCollateral);
 }
 
 export function createPositionIfNonExistent(
@@ -47,8 +52,9 @@ export function createPositionIfNonExistent(
   let position = Position.load(id);
   if (position == null) {
     position = new Position(id);
+    let collateral = createCollateralIfNonExistent(vault.toHexString(), tokenId.toString());
     position.vault = vault.toHexString();
-    position.tokenId = tokenId.toString();
+    position.tokenId = collateral.id;
     position.user = userAddress;
   }
   position.collateral = currentPosition.value0;
@@ -58,12 +64,12 @@ export function createPositionIfNonExistent(
   let underlierTokenAddress = getUnderlierToken(vault as Address);
   if (position.maturity !== null && underlierTokenAddress !== null) {
     let currentValue = getCurrentValue(vault as Address, underlierTokenAddress!, tokenId, position.maturity!);
-    if (!currentValue && !position.normalDebt.isZero()) {
+    if (currentValue !== null && !position.normalDebt.isZero()) {
       position.healthFactor = currentValue.times(position.collateral).div(position.normalDebt);
     }
 
     let collaterizationRatio = getCollaterizationRatio(vault as Address);
-    if (position.healthFactor && collaterizationRatio) {
+    if (position.healthFactor !== null && collaterizationRatio !== null) {
       position.isAtRisk = position.healthFactor.le(collaterizationRatio!);
     }
   }
