@@ -2,3 +2,4 @@
 export const VAULT_NOTIONAL_ADDRESS = "{{VaultNotional}}"
 export const COLLYBUS_ADDRESS = "{{Collybus}}"
 export const CODEX_ADDRESS = "{{Codex}}"
+export const FIAT_ADDRESS = "{{Fiat}}"
