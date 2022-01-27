@@ -72,3 +72,13 @@ type UserPosition @entity {
   lowestHealthFactor: BigInt
   positions: [Position!] @derivedFrom(field: "user")
 }
+
+type FiatData @entity {
+  id: ID!
+  address: Bytes
+  minted: BigInt
+  burned: BigInt
+  circulatingSupply: BigInt
+  depositedCollateral: BigInt
+  totalSupply: BigInt
+}
