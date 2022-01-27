@@ -22,8 +22,8 @@ type PositionTransaction @entity {
 
 type Position @entity {
   id: ID!
-  vault: Vault!
-  tokenId: Collateral!
+  vault: Vault
+  tokenId: Collateral
   user: UserPosition!
   collateral: BigInt!
   normalDebt: BigInt!
@@ -44,6 +44,7 @@ type Vault @entity {
   address: Bytes
   name: String
   type: VaultType
+  depositedCollateral: BigInt
   positions: [Position!] @derivedFrom(field: "vault")
   collaterals: [Collateral!] @derivedFrom(field: "vault")
 }
@@ -60,6 +61,7 @@ type Collateral @entity {
   faceValue: BigInt
   currentValue: BigInt
   collaterizationRatio: BigInt
+  depositedCollateral: BigInt
 }
 
 type UserPosition @entity {
