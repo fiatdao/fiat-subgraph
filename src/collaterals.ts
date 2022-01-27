@@ -4,17 +4,18 @@ import { ERC20 } from "../generated/Notional/ERC20";
 import { Collateral, Vault } from "../generated/schema";
 import { createVaultIfNonExistent } from "./vault/vaults";
 import { VAULT_NOTIONAL_ADDRESS } from "./constants";
+import { getCollaterizationRatio, getCurrentValue, getFaceValue } from "./utils";
 
 const ELEMENT = "ELEMENT";
 const NOTIONAL_COLLATERAL_TYPE = "fCash"
 
 export function createCollateralIfNecessary(vault: Vault, config: TypedMap<string, string>): void {
   if (vault.type === ELEMENT) {
-    let underlierToken = (config.get('underlierToken')) as string;
-    let collateral = Collateral.load(underlierToken!);
+    let id = (config.get('collateralTokenId')) as string;
+    let collateral = Collateral.load(id!);
 
     if (!collateral) {
-      collateral = new Collateral(underlierToken!);
+      collateral = new Collateral(id!);
       collateral.name = (config.get('name')) as string;
       collateral.type = (config.get('collateralType')) as string;
       let maturity = config.get('collateralMaturity') as string;
@@ -24,6 +25,9 @@ export function createCollateralIfNecessary(vault: Vault, config: TypedMap<strin
       collateral.underlierName = (config.get('underlierName')) as string;
       collateral.underlierAddress = Address.fromString(config.get('underlierAddress') as string);
       collateral.vault = vault.id;
+      collateral.currentValue = getCurrentValue(vault.address as Address, collateral.underlierAddress as Address, BigInt.fromString(id), BigInt.fromString(maturity));
+      collateral.faceValue = getFaceValue();
+      collateral.collaterizationRatio = getCollaterizationRatio(vault.address as Address);
       collateral.save();
     }
   }
@@ -55,6 +59,9 @@ export function createNotionalCollateralIfNonExistent(notional: Notional, curren
     collateral.type = NOTIONAL_COLLATERAL_TYPE;
     createVaultIfNonExistent(VAULT_NOTIONAL_ADDRESS);
     collateral.vault = VAULT_NOTIONAL_ADDRESS;
+    collateral.currentValue = getCurrentValue(Address.fromString(VAULT_NOTIONAL_ADDRESS), collateral.underlierAddress as Address, BigInt.fromString(id), maturity);
+    collateral.faceValue = getFaceValue();
+    collateral.collaterizationRatio = getCollaterizationRatio(Address.fromString(VAULT_NOTIONAL_ADDRESS));
     collateral.save();
   }
   return collateral as Collateral;
