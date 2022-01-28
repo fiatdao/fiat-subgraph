@@ -1,7 +1,7 @@
 {
-  "network": "goerli",
-  "description": "FIAT LUX Graph (goerli)",
-  "startBlock": 6061940,
+  "network": "kovan",
+  "description": "FIAT LUX Graph (kovan)",
+  "startBlock": 27189640,
   "PRBProxyFactory": "0x4873EdD9246595b52AF0DE6349327ec13775dbD1",
   "Codex": "0x55023022cF8E17697bFf186F607AbB7E0e3D7973",
   "Vaults": [
@@ -28,7 +28,7 @@
     {
       "idx": 3,
       "name": "Notional",
-      "address": "",
+      "address": "0x8456841bEd14F9B566B72837AdE1C844DD6B7f73",
       "type": "NOTIONAL",
       "collateralMaturity": "",
       "collateralType": "",
@@ -37,5 +37,5 @@
     }
   ],
   "VaultNotional": "0x8456841bEd14F9B566B72837AdE1C844DD6B7f73",
-  "Notional": ""
+  "Notional": "0x0eae7badef8f95de91fddb74a89a786cf891eb0e"
 }

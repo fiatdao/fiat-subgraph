@@ -3,5 +3,8 @@
   "description": "FIAT LUX Graph",
   "startBlock": 13542270,
   "PRBProxyFactory": "",
-  "Codex": ""
+  "Codex": "",
+  "Vaults": [],
+  "VaultNotional": "",
+  "Notional": ""
 }
