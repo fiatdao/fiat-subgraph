@@ -67,3 +67,4 @@ typings/
 # Generated Files
 subgraph.yaml
 src/vault/vaultsData.ts
+src/constants.ts

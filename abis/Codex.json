@@ -459,6 +459,19 @@
     },
     {
         "inputs": [],
+        "name": "ANY_CALLER",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "ANY_SIG",
         "outputs": [
             {
