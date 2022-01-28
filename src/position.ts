@@ -1,17 +1,13 @@
-import { Bytes, BigInt, Address, log } from "@graphprotocol/graph-ts";
-import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt, Codex } from "../generated/Codex/Codex";
-import { IVault } from "../generated/Codex/IVault";
-import { Collybus } from "../generated/Codex/Collybus";
+import { Bytes, BigInt, Address } from "@graphprotocol/graph-ts";
+import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt } from "../generated/Codex/Codex";
 import { Position, PositionTransaction, UserPosition } from "../generated/schema";
-import { min } from "./utils";
-import { COLLYBUS_ADDRESS } from "./constants";
+import { getCollaterizationRatio, getCurrentValue, getMaturity, getPosition, getUnderlierToken, min } from "./utils";
 
 const MODIFY = "MODIFY";
 const TRANSFER = "TRANSFER";
 const CONFISCATE = "CONFISCATE";
 
 export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): void {
-  let codexContract = Codex.bind(event.address);
   let vault = event.params.vault;
   let tokenId = event.params.tokenId;
   let user = event.params.user;
@@ -22,7 +18,6 @@ export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): v
 
   let userPosition = createUserPositionIfNonExistent(user);
   let position = createPositionIfNonExistent(
-    codexContract,
     vault,
     tokenId,
     userPosition,
@@ -37,51 +32,36 @@ export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): v
 }
 
 export function createPositionIfNonExistent(
-  codex: Codex,
   vault: Bytes,
   tokenId: BigInt,
   user: UserPosition,
   ): Position {
   let vaultAddress = vault.toHexString();
   let userAddress = user.id;
-  let currentPosition = codex.positions(vault as Address, tokenId, Address.fromString(userAddress));
+  let currentPosition = getPosition(vault as Address, tokenId, Address.fromString(userAddress));
   let id = vaultAddress + "-" + tokenId.toHexString() + "-" + userAddress;
 
   let position = Position.load(id);
   if (position == null) {
     position = new Position(id);
     position.vault = vault.toHexString();
-    position.tokenId = tokenId;
+    position.tokenId = tokenId.toString();
     position.user = userAddress;
   }
   position.collateral = currentPosition.value0;
   position.normalDebt = currentPosition.value1;
+  position.maturity = getMaturity(vault as Address, tokenId);
 
-  let iVault = IVault.bind(vault as Address);
-  let maturity = iVault.try_maturity(tokenId);
-  if (!maturity.reverted) {
-    position.maturity = maturity.value;
-    let collybus = Collybus.bind(Address.fromString(COLLYBUS_ADDRESS));
-    let underlier = iVault.try_underlierToken();
+  let underlierTokenAddress = getUnderlierToken(vault as Address);
+  if (position.maturity !== null && underlierTokenAddress !== null) {
+    let currentValue = getCurrentValue(vault as Address, underlierTokenAddress!, tokenId, position.maturity!);
+    if (!currentValue && !position.normalDebt.isZero()) {
+      position.healthFactor = currentValue.times(position.collateral).div(position.normalDebt);
+    }
 
-    if (!underlier.reverted) {
-      let underlierAddress = underlier.value;
-      let currentValue = collybus.try_read(
-        vault as Address,
-        underlierAddress,
-        tokenId,
-        position.maturity!,
-        false
-      )
-      if (!currentValue.reverted && !position.normalDebt.isZero()) {
-        position.healthFactor = currentValue.value.times(position.collateral).div(position.normalDebt);
-      }
-      if (position.healthFactor !== null) {
-        let vaultConfig = collybus.try_vaults(vault as Address);
-        if (!vaultConfig.reverted && !vaultConfig.value.value0.isZero()) {
-          position.isAtRisk = position.healthFactor.le(vaultConfig.value.value0);
-        }
-      }
+    let collaterizationRatio = getCollaterizationRatio(vault as Address);
+    if (position.healthFactor && collaterizationRatio) {
+      position.isAtRisk = position.healthFactor.le(collaterizationRatio!);
     }
   }
 
@@ -139,7 +119,6 @@ export function updateUserPosition(
 }
 
 export function handleTransferCollateralAndDebt(event: TransferCollateralAndDebt): void {
-  let codexContract = Codex.bind(event.address);
   let vault = event.params.vault;
   let tokenId = event.params.tokenId;
   let userSrc = event.params.src;
@@ -151,13 +130,11 @@ export function handleTransferCollateralAndDebt(event: TransferCollateralAndDebt
   let userPositionDst = createUserPositionIfNonExistent(userDst);
 
   let positionSrc = createPositionIfNonExistent(
-    codexContract,
     vault,
     tokenId,
     userPositionSrc,
   );
   let positionDst = createPositionIfNonExistent(
-    codexContract,
     vault,
     tokenId,
     userPositionDst,
@@ -170,7 +147,6 @@ export function handleTransferCollateralAndDebt(event: TransferCollateralAndDebt
 }
 
 export function handleConfiscateCollateralAndDebt(event: ConfiscateCollateralAndDebt): void {
-  let codexContract = Codex.bind(event.address);
   let vault = event.params.vault;
   let tokenId = event.params.tokenId;
   let user = event.params.user;
@@ -182,7 +158,6 @@ export function handleConfiscateCollateralAndDebt(event: ConfiscateCollateralAnd
   let userPosition = createUserPositionIfNonExistent(user);
 
   let position = createPositionIfNonExistent(
-    codexContract,
     vault,
     tokenId,
     userPosition,
