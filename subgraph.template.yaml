@@ -49,6 +49,10 @@ dataSources:
           file: ./abis/IVault.json
         - name: Fiat
           file: ./abis/Fiat.json
+        - name: VaultEPT
+          file: ./abis/VaultEPT.json
+        - name: ERC20
+          file: ./abis/ERC20.json
       eventHandlers:
         - event: ModifyCollateralAndDebt(indexed address,indexed uint256,indexed address,address,address,int256,int256)
           handler: handleModifyCollateralAndDebt
