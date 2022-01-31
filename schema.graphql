@@ -52,10 +52,9 @@ type Vault @entity {
 type Collateral @entity {
   id: ID!
   address: Bytes
-  name: String
-  type: String
+  symbol: String
   maturity: BigInt
-  underlierName: String
+  underlierSymbol: String
   underlierAddress: Bytes
   vault: Vault
   faceValue: BigInt

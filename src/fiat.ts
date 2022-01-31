@@ -1,4 +1,4 @@
-import { Address, BigInt, log } from "@graphprotocol/graph-ts";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { Transfer } from "../generated/Fiat/Fiat";
 import { FiatData } from "../generated/schema";
 import { FIAT_ADDRESS } from "./constants";
