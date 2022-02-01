@@ -42,6 +42,7 @@ type Vault @entity {
   address: Bytes
   name: String
   type: VaultType
+  collaterizationRatio: BigInt
   positions: [Position!] @derivedFrom(field: "vault")
   collaterals: [Collateral!] @derivedFrom(field: "vault")
 }
@@ -55,7 +56,6 @@ type Collateral @entity {
   underlierAddress: Bytes
   vault: Vault
   faceValue: BigInt
-  collaterizationRatio: BigInt
   depositedCollateral: BigInt
 }
 

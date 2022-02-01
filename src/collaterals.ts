@@ -1,9 +1,9 @@
 import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
 import { Notional } from "../generated/Notional/Notional";
-import { Collateral, Vault } from "../generated/schema";
+import { Collateral } from "../generated/schema";
 import { createVaultIfNonExistent } from "./vault/vaults";
 import { VAULT_NOTIONAL_ADDRESS } from "./constants";
-import { BIGINT_ZERO, getCollaterizationRatio, getFaceValue, getMaturity, getSymbol, getToken, getUnderlierToken, getVaultType } from "./utils";
+import { BIGINT_ZERO, getFaceValue, getMaturity, getSymbol, getToken, getUnderlierToken, getVaultType } from "./utils";
 
 const NOTIONAL_COLLATERAL_TYPE = "fCash";
 const VAULT_TYPE_ERC20 = "ERC20";
@@ -55,7 +55,6 @@ export function createCollateralIfNonExistent(vault: string, collateralId: strin
     collateral.depositedCollateral = BIGINT_ZERO;
     collateral.vault = vault;
     collateral.faceValue = getFaceValue();
-    collateral.collaterizationRatio = getCollaterizationRatio(Address.fromString(vault));
     collateral.save();
   }
   return collateral as Collateral;
