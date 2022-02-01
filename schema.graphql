@@ -23,13 +23,11 @@ type PositionTransaction @entity {
 type Position @entity {
   id: ID!
   vault: Vault
-  tokenId: Collateral
-  user: UserPosition!
-  collateral: BigInt!
-  normalDebt: BigInt!
+  collateral: Collateral
+  userPosition: UserPosition!
+  totalCollateral: BigInt!
+  totalNormalDebt: BigInt!
   maturity: BigInt
-  healthFactor: BigInt
-  isAtRisk: Boolean
   positionTransactions: [PositionTransaction!] @derivedFrom(field: "position")
 }
 
@@ -44,7 +42,6 @@ type Vault @entity {
   address: Bytes
   name: String
   type: VaultType
-  depositedCollateral: BigInt
   positions: [Position!] @derivedFrom(field: "vault")
   collaterals: [Collateral!] @derivedFrom(field: "vault")
 }
@@ -58,20 +55,17 @@ type Collateral @entity {
   underlierAddress: Bytes
   vault: Vault
   faceValue: BigInt
-  currentValue: BigInt
   collaterizationRatio: BigInt
   depositedCollateral: BigInt
 }
 
 type UserPosition @entity {
   id: ID!
-  # User Proxy Address
-  userAddress: Bytes
+  proxyAddress: Bytes
   totalCollateral: BigInt
   totalFIAT: BigInt
   nearestMaturity: BigInt
-  lowestHealthFactor: BigInt
-  positions: [Position!] @derivedFrom(field: "user")
+  positions: [Position!] @derivedFrom(field: "userPosition")
 }
 
 type FiatData @entity {
@@ -79,7 +73,5 @@ type FiatData @entity {
   address: Bytes
   minted: BigInt
   burned: BigInt
-  circulatingSupply: BigInt
-  depositedCollateral: BigInt
   totalSupply: BigInt
 }
