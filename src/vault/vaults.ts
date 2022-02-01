@@ -20,7 +20,7 @@ export function createVaultIfNonExistent(vaultAddress: string): Vault {
       vault.name = (config.get('name')) as string;
       vault.type = (config.get('type')) as string;
     }
-    createCollateralIfNecessary(vault!);
+    createCollateralIfNecessary(vaultAddress);
     vault.save();
   }
   return vault as Vault;

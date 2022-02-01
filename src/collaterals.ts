@@ -6,31 +6,32 @@ import { VAULT_NOTIONAL_ADDRESS } from "./constants";
 import { BIGINT_ZERO, getCollaterizationRatio, getFaceValue, getMaturity, getSymbol, getToken, getUnderlierToken, getVaultType } from "./utils";
 
 const NOTIONAL_COLLATERAL_TYPE = "fCash";
-const VAULT_TYPE_ELEMENT = "ERC20";
+const VAULT_TYPE_ERC20 = "ERC20";
 
-export function createCollateralIfNecessary(vault: Vault): void {
-  let typeHex = getVaultType(vault.address as Address);
+export function createCollateralIfNecessary(vault: string): Collateral | null {
+  let typeHex = getVaultType(Address.fromString(vault));
   let type = Bytes.fromHexString(typeHex).toString();
 
-  if (type.includes(VAULT_TYPE_ELEMENT)) {
-    let collateralId = "0";
-    let tokenAddress = getToken(vault.address as Address);
-    let id = tokenAddress.toHexString() + "-" + collateralId;
-    let collateral = createCollateralIfNonExistent(vault.id, id);
-    let underlierAddress = getUnderlierToken(vault.address as Address);
-
-    collateral.address = tokenAddress;
-    collateral.symbol = getSymbol(tokenAddress);
-    collateral.maturity = getMaturity(vault.address as Address, BigInt.fromString(collateralId));
-    collateral.underlierAddress = underlierAddress;
-    collateral.underlierSymbol = getSymbol(underlierAddress);
-    collateral.vault = vault.id;
-    collateral.save();
+  if (type.includes(VAULT_TYPE_ERC20)) {
+    return createElementCollateralIfNonExistent(vault, "0");
   }
+  return null;
+}
+
+export function createElementCollateralIfNonExistent(vault: string, collateralId: string): Collateral {
+  let vaultAddress = Address.fromString(vault);
+  let collateral = createCollateralIfNonExistent(vault, collateralId);
+  let tokenAddress = getToken(vaultAddress);
+  let underlierAddress = getUnderlierToken(vaultAddress);
+
+  collateral.maturity = getMaturity(vaultAddress, BigInt.fromString(collateralId));
+  setCollateralAddresses(collateral!, tokenAddress, underlierAddress);
+  collateral.save();
+  return collateral as Collateral;
 }
 
 export function createNotionalCollateralIfNonExistent(notional: Notional, currencyId: i32, maturity: BigInt): Collateral {
-  let id = currencyId.toString() + "-" + maturity.toString();
+  let id = currencyId.toString();
   let collateral = Collateral.load(id);
   if (!collateral) {
     collateral = createCollateralIfNonExistent(VAULT_NOTIONAL_ADDRESS, id);
@@ -38,18 +39,16 @@ export function createNotionalCollateralIfNonExistent(notional: Notional, curren
     let tokenAddress = currency.value0.tokenAddress;
     let underlierAddress = currency.value1.tokenAddress;
 
-    collateral.address = tokenAddress;
-    collateral.symbol = getSymbol(tokenAddress) + "-" + maturity.toString();
     collateral.maturity = maturity;
-    collateral.underlierAddress = underlierAddress;
-    collateral.underlierSymbol = getSymbol(underlierAddress);
+    setCollateralAddresses(collateral!, tokenAddress, underlierAddress);
     createVaultIfNonExistent(VAULT_NOTIONAL_ADDRESS);
     collateral.save();
   }
   return collateral as Collateral;
 }
 
-export function createCollateralIfNonExistent(vault: string, id: string): Collateral {
+export function createCollateralIfNonExistent(vault: string, collateralId: string): Collateral {
+  let id = vault + "-" + collateralId;
   let collateral = Collateral.load(id);
   if (!collateral) {
     collateral = new Collateral(id);
@@ -66,4 +65,11 @@ export function updateCollateral(vault: string, collateralId: string, deltaColla
   let collateral = createCollateralIfNonExistent(vault, collateralId);
   collateral.depositedCollateral = collateral.depositedCollateral.plus(deltaCollateral);
   collateral.save();
+}
+
+export function setCollateralAddresses(collateral: Collateral, collateralAddress: Address | null, underlierAddress: Address | null): void {
+  collateral.address = collateralAddress;
+  collateral.symbol = getSymbol(collateralAddress);
+  collateral.underlierAddress = underlierAddress;
+  collateral.underlierSymbol = getSymbol(underlierAddress);
 }
