@@ -10,14 +10,69 @@ enum PositionTransactionType {
   CONFISCATE
 }
 
-type PositionTransaction @entity {
+interface PositionTransactionAction {
   id: ID!
-  type: String!
+  type: PositionTransactionType!
   collateral: BigInt!
   deltaCollateral: BigInt!
   normalDebt: BigInt!
   deltaNormalDebt: BigInt!
+  transactionHash: Bytes!
   position: Position!
+  vault: Bytes!
+  tokenId: BigInt!
+  user: Bytes!
+}
+
+type ModifyCollateralAndDebtAction implements PositionTransactionAction @entity {
+  id: ID!
+  type: PositionTransactionType!
+  collateral: BigInt!
+  normalDebt: BigInt!
+  transactionHash: Bytes!
+  position: Position!
+  # Event Properties
+  vault: Bytes!
+  tokenId: BigInt!
+  user: Bytes!
+  collateralizer: Bytes!
+  creditor: Bytes!
+  deltaCollateral: BigInt!
+  deltaNormalDebt: BigInt!
+}
+
+type TransferCollateralAndDebtAction implements PositionTransactionAction @entity {
+  id: ID!
+  type: PositionTransactionType!
+  collateral: BigInt!
+  normalDebt: BigInt!
+  transactionHash: Bytes!
+  position: Position!
+  user: Bytes!
+  # Event Properties
+  vault: Bytes!
+  tokenId: BigInt!
+  userSrc: Bytes!
+  userDst: Bytes!
+  deltaCollateral: BigInt!
+  deltaNormalDebt: BigInt!
+}
+
+type ConfiscateCollateralAndDebtAction implements PositionTransactionAction @entity {
+  id: ID!
+  type: PositionTransactionType!
+  collateral: BigInt!
+  normalDebt: BigInt!
+  transactionHash: Bytes!
+  position: Position!
+  # Event Properties
+  vault: Bytes!
+  tokenId: BigInt!
+  user: Bytes!
+  collateralizer: Bytes!
+  debtor: Bytes!
+  deltaCollateral: BigInt!
+  deltaNormalDebt: BigInt!
 }
 
 type Position @entity {
@@ -28,7 +83,7 @@ type Position @entity {
   totalCollateral: BigInt!
   totalNormalDebt: BigInt!
   maturity: BigInt
-  positionTransactions: [PositionTransaction!] @derivedFrom(field: "position")
+  positionTransactions: [PositionTransactionAction!] @derivedFrom(field: "position")
 }
 
 enum VaultType {
@@ -49,6 +104,7 @@ type Vault @entity {
 
 type Collateral @entity {
   id: ID!
+  tokenId: BigInt
   address: Bytes
   symbol: String
   maturity: BigInt
@@ -61,10 +117,9 @@ type Collateral @entity {
 
 type UserPosition @entity {
   id: ID!
-  proxyAddress: Bytes
+  userAddress: Bytes
   totalCollateral: BigInt
   totalFIAT: BigInt
-  nearestMaturity: BigInt
   positions: [Position!] @derivedFrom(field: "userPosition")
 }
 
