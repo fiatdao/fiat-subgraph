@@ -133,3 +133,26 @@ dataSources:
         - event: SetParam(indexed address,indexed bytes32,uint256)
           handler: handleSetParam
       file: ./src/mappings.ts
+  - kind: ethereum/contract
+    name: CollateralAuction
+    network: {{network}}
+    source:
+      address: '{{CollateralAuction}}'
+      abi: CollateralAuction
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - CollateralAuction
+        - Vault
+        - Collateral
+        - UserProxy
+      abis:
+        - name: CollateralAuction
+          file: ./abis/CollateralAuction.json
+      eventHandlers:
+        - event: StartAuction(indexed uint256,uint256,uint256,uint256,address,uint256,address,indexed address,uint256)
+          handler: handleStartAuction
+      file: ./src/mappings.ts

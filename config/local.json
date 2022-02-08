@@ -27,5 +27,6 @@
     }
   ],
   "VaultNotional": "",
-  "Notional": ""
+  "Notional": "0x0eae7badef8f95de91fddb74a89a786cf891eb0e",
+  "CollateralAuction": "0x5e17C31f106955E1b6F74eC6716bb62E1f5c2C54"
 }
