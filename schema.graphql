@@ -13,6 +13,7 @@ interface PositionTransactionAction {
   transactionHash: Bytes!
   position: Position!
   vault: Bytes!
+  vaultName: String
   tokenId: BigInt!
   user: Bytes!
 }
@@ -23,6 +24,7 @@ type ModifyCollateralAndDebtAction implements PositionTransactionAction @entity 
   normalDebt: BigInt!
   transactionHash: Bytes!
   position: Position!
+  vaultName: String
   # Event Properties
   vault: Bytes!
   tokenId: BigInt!
@@ -40,6 +42,7 @@ type TransferCollateralAndDebtAction implements PositionTransactionAction @entit
   transactionHash: Bytes!
   position: Position!
   user: Bytes!
+  vaultName: String
   # Event Properties
   vault: Bytes!
   tokenId: BigInt!
@@ -55,6 +58,7 @@ type ConfiscateCollateralAndDebtAction implements PositionTransactionAction @ent
   normalDebt: BigInt!
   transactionHash: Bytes!
   position: Position!
+  vaultName: String
   # Event Properties
   vault: Bytes!
   tokenId: BigInt!
@@ -68,6 +72,7 @@ type ConfiscateCollateralAndDebtAction implements PositionTransactionAction @ent
 type Position @entity {
   id: ID!
   vault: Vault
+  vaultName: String
   collateral: Collateral
   userPosition: UserPosition!
   totalCollateral: BigInt!
@@ -87,7 +92,18 @@ type Vault @entity {
   address: Bytes
   name: String
   type: VaultType
-  collaterizationRatio: BigInt
+  collateralizationRatio: BigInt
+
+  # Auction related data
+  # Multiplicative factor to increase start price [wad]
+  multiplier: BigInt
+  # Time elapsed before auction reset [seconds]
+  maxAuctionDuration: BigInt
+  # Percentage drop before auction reset [percentage in wad]
+  maxDiscount: BigInt
+  # Cache (v.debtFloor * v.liquidationPenalty) to prevent excessive SLOADs [wad]
+  auctionDebtFloor: BigInt
+
   positions: [Position!] @derivedFrom(field: "vault")
   collaterals: [Collateral!] @derivedFrom(field: "vault")
 }
@@ -101,6 +117,7 @@ type Collateral @entity {
   underlierSymbol: String
   underlierAddress: Bytes
   vault: Vault
+  vaultName: String
   faceValue: BigInt
   depositedCollateral: BigInt
 }
@@ -119,4 +136,29 @@ type FiatData @entity {
   minted: BigInt
   burned: BigInt
   totalSupply: BigInt
+}
+
+type UserAuction @entity {
+  id: ID!
+  # Contract Generated Id
+  auctionId: BigInt
+  # Debt to sell == Credit to raise [wad]
+  debt: BigInt
+  # collateral to sell [wad]
+  collateralToSell: BigInt
+  # Vault of the liquidated Positions collateral
+  vault: Vault
+  # TokenId of the liquidated Positions collateral
+  tokenId: BigInt
+  collateral: Collateral
+  # Owner of the liquidated Position
+  user: Bytes
+  # Auction start time
+  startsAt: BigInt
+  # Starting price [wad]
+  startPrice: BigInt
+  # Keeper
+  keeper: Bytes
+  # Tip
+  tip: BigInt
 }
