@@ -51,7 +51,7 @@ export function getUnderlierToken(vault: Address): Address | null {
 }
 
 // Max LTV or getLiquidationRatio or Collaterization Ratio
-export function getCollaterizationRatio(vault: Address): BigInt | null {
+export function getCollateralizationRatio(vault: Address): BigInt | null {
   let vaultConfig = collybus.try_vaults(vault);
   if (!vaultConfig.reverted) {
     return vaultConfig.value.value0;
