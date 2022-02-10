@@ -13,12 +13,13 @@ export function createCollateralIfNecessary(vault: string): Collateral | null {
   let type = Bytes.fromHexString(typeHex).toString();
 
   if (type.includes(VAULT_TYPE_ERC20)) {
-    return createERC20CollateralIfNonExistent(vault, "0");
+    return createERC20CollateralIfNonExistent(vault);
   }
   return null;
 }
 
-export function createERC20CollateralIfNonExistent(vault: string, tokenId: string): Collateral {
+export function createERC20CollateralIfNonExistent(vault: string): Collateral {
+  let tokenId = "0";
   let vaultAddress = Address.fromString(vault);
   let collateral = createCollateralIfNonExistent(vault, tokenId);
   let tokenAddress = getToken(vaultAddress);
@@ -30,11 +31,10 @@ export function createERC20CollateralIfNonExistent(vault: string, tokenId: strin
   return collateral as Collateral;
 }
 
-export function createNotionalCollateralIfNonExistent(notional: Notional, tokenId: i32, maturity: BigInt): Collateral {
-  let id = tokenId.toString();
-  let collateral = createCollateralIfNonExistent(VAULT_NOTIONAL_ADDRESS, id);
+export function createNotionalCollateralIfNonExistent(notional: Notional, tokenId: BigInt, currencyId: i32, maturity: BigInt): Collateral {
+  let collateral = createCollateralIfNonExistent(VAULT_NOTIONAL_ADDRESS, tokenId.toString());
   if (!collateral.address) {
-    let currency = notional.getCurrency(tokenId);
+    let currency = notional.getCurrency(currencyId);
     let tokenAddress = currency.value0.tokenAddress;
     let underlierAddress = currency.value1.tokenAddress;
 
