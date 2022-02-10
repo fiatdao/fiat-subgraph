@@ -83,6 +83,10 @@ dataSources:
           file: ./abis/Notional.json
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: Collybus
+          file: ./abis/Collybus.json
+        - name: IVault
+          file: ./abis/IVault.json
       eventHandlers:
         - event: MarketsInitialized(uint16)
           handler: handleMarketsInitialized
