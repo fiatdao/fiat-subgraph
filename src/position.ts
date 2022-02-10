@@ -46,6 +46,7 @@ export function createPositionIfNonExistent(
     position.vaultName = vault.name;
     position.collateral = collateral.id;
     position.userPosition = userPositionAddress;
+    position.userAddress = Address.fromString(userPositionAddress);
   }
   position.totalCollateral = currentPosition.value0;
   position.totalNormalDebt = currentPosition.value1;

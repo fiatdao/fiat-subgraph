@@ -75,6 +75,7 @@ type Position @entity {
   vaultName: String
   collateral: Collateral
   userPosition: UserPosition!
+  userAddress: Bytes!
   totalCollateral: BigInt!
   totalNormalDebt: BigInt!
   maturity: BigInt
