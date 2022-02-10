@@ -1,7 +1,8 @@
-import { StartAuction, StartAuction__Params } from "../generated/CollateralAuction/CollateralAuction";
+import { StartAuction, StartAuction__Params, StopAuction, TakeCollateral } from "../generated/CollateralAuction/CollateralAuction";
 import { Collateral, UserAuction, Vault } from "../generated/schema";
 import { createCollateralIfNonExistent } from "./collaterals";
 import { createVaultIfNonExistent } from "./vault/vaults";
+import { isActiveAuction } from "./utils";
 
 export function handleStartAuction(event: StartAuction): void {
   let vault = createVaultIfNonExistent(event.params.vault.toHexString());
@@ -19,12 +20,32 @@ export function createUserAuctionIfNonExistent(vault: Vault, collateral: Collate
     userAuction.debt = params.debt;
     userAuction.collateralToSell = params.collateralToSell;
     userAuction.vault = vault.id;
+    userAuction.vaultName = vault.name;
     userAuction.tokenId = params.tokenId;
     userAuction.collateral = collateral.id
     userAuction.user = params.user;
     userAuction.keeper = params.keeper;
     userAuction.tip = params.tip;
+    userAuction.isActive = true;
     userAuction.save();
   }
   return userAuction as UserAuction;
+}
+
+export function handleTakeCollateral(event: TakeCollateral): void {
+  let auctionId = event.params.auctionId;
+  let userAuction = UserAuction.load(auctionId.toString());
+  if (userAuction) {
+    userAuction.isActive = isActiveAuction(auctionId);
+    userAuction.save();
+  }
+}
+
+export function handleStopAuction(event: StopAuction): void {
+  let auctionId = event.params.auctionId;
+  let userAuction = UserAuction.load(auctionId.toString());
+  if (userAuction) {
+    userAuction.isActive = isActiveAuction(auctionId);
+    userAuction.save();
+  }
 }

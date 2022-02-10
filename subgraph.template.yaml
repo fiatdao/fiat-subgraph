@@ -155,4 +155,8 @@ dataSources:
       eventHandlers:
         - event: StartAuction(indexed uint256,uint256,uint256,uint256,address,uint256,address,indexed address,uint256)
           handler: handleStartAuction
+        - event: TakeCollateral(indexed uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,indexed address)
+          handler: handleTakeCollateral
+        - event: StopAuction(uint256)
+          handler: handleStopAuction
       file: ./src/mappings.ts
