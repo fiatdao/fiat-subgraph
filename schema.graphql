@@ -4,15 +4,8 @@ type UserProxy @entity {
   userAddress: Bytes!
 }
 
-enum PositionTransactionType {
-  MODIFY
-  TRANSFER
-  CONFISCATE
-}
-
 interface PositionTransactionAction {
   id: ID!
-  type: PositionTransactionType!
   collateral: BigInt!
   deltaCollateral: BigInt!
   normalDebt: BigInt!
@@ -26,7 +19,6 @@ interface PositionTransactionAction {
 
 type ModifyCollateralAndDebtAction implements PositionTransactionAction @entity {
   id: ID!
-  type: PositionTransactionType!
   collateral: BigInt!
   normalDebt: BigInt!
   transactionHash: Bytes!
@@ -43,7 +35,6 @@ type ModifyCollateralAndDebtAction implements PositionTransactionAction @entity 
 
 type TransferCollateralAndDebtAction implements PositionTransactionAction @entity {
   id: ID!
-  type: PositionTransactionType!
   collateral: BigInt!
   normalDebt: BigInt!
   transactionHash: Bytes!
@@ -60,7 +51,6 @@ type TransferCollateralAndDebtAction implements PositionTransactionAction @entit
 
 type ConfiscateCollateralAndDebtAction implements PositionTransactionAction @entity {
   id: ID!
-  type: PositionTransactionType!
   collateral: BigInt!
   normalDebt: BigInt!
   transactionHash: Bytes!

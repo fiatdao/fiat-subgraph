@@ -1,12 +1,8 @@
-import { Bytes, BigInt, Address, ethereum } from "@graphprotocol/graph-ts";
+import { Bytes, BigInt, Address } from "@graphprotocol/graph-ts";
 import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt } from "../generated/Codex/Codex";
 import { ConfiscateCollateralAndDebtAction, ModifyCollateralAndDebtAction, Position, TransferCollateralAndDebtAction, UserPosition } from "../generated/schema";
 import { createCollateralIfNonExistent, updateCollateral } from "./collaterals";
-import { getMaturity, getPosition, min } from "./utils";
-
-const MODIFY = "MODIFY";
-const TRANSFER = "TRANSFER";
-const CONFISCATE = "CONFISCATE";
+import { getMaturity, getPosition } from "./utils";
 
 export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): void {
   let vault = event.params.vault;
@@ -59,7 +55,6 @@ export function createPositionIfNonExistent(
 export function createModifyAction(position: Position, event: ModifyCollateralAndDebt): void {
   let id = event.transaction.hash.toHexString();
   let modifyAction = new ModifyCollateralAndDebtAction(id);
-  modifyAction.type = MODIFY;
   modifyAction.vault = event.params.vault;
   modifyAction.tokenId = event.params.tokenId;
   modifyAction.user = event.params.user;
@@ -78,7 +73,6 @@ export function createModifyAction(position: Position, event: ModifyCollateralAn
 export function createTransferEvent(position: Position, event: TransferCollateralAndDebt): void {
   let id = event.transaction.hash.toHexString();
   let transferAction = new TransferCollateralAndDebtAction(id);
-  transferAction.type = TRANSFER;
   transferAction.vault = event.params.vault;
   transferAction.tokenId = event.params.tokenId;
   transferAction.user = event.params.src;
@@ -97,7 +91,6 @@ export function createTransferEvent(position: Position, event: TransferCollatera
 export function createConfiscateEvent(position: Position, event: ConfiscateCollateralAndDebt): void {
   let id = event.transaction.hash.toHexString();
   let transferAction = new ConfiscateCollateralAndDebtAction(id);
-  transferAction.type = CONFISCATE;
   transferAction.vault = event.params.vault;
   transferAction.tokenId = event.params.tokenId;
   transferAction.user = event.params.user;
