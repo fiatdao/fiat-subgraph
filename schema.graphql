@@ -149,6 +149,7 @@ type UserAuction @entity {
   collateralToSell: BigInt
   # Vault of the liquidated Positions collateral
   vault: Vault
+  vaultName: String
   # TokenId of the liquidated Positions collateral
   tokenId: BigInt
   collateral: Collateral
@@ -162,4 +163,5 @@ type UserAuction @entity {
   keeper: Bytes
   # Tip
   tip: BigInt
+  isActive: Boolean
 }
