@@ -44,18 +44,11 @@ then
 fi
 
 # Use Local The Graph Node
-if [ "$GRAPH" == "local" ]
+if [ "$GRAPH" == "local" ] || [ "$GRAPH" == "goerli" ] || [ "$GRAPH" = "kovan" ] || [ "$GRAPH" = "mainnet" ]
 then
   # Select IPFS and The Graph nodes
   IPFS_NODE="http://localhost:5001"
   GRAPH_NODE="http://localhost:8020"
-fi
-
-if [ "$GRAPH" == "goerli" ] || [ "$GRAPH" = "kovan" ] || [ "$GRAPH" = "mainnet" ]
-then
-  # Select IPFS and The Graph nodes
-  IPFS_NODE="http://ipfs:5001"
-  GRAPH_NODE="http://graph-node:8020"
 fi
 
 # Create subgraph if missing
@@ -67,3 +60,4 @@ fi
 
 # Deploy subgraph
 graph deploy ${SUBGRAPH_NAME} --ipfs ${IPFS_NODE} --node ${GRAPH_NODE}
+rm subgraph.yaml

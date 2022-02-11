@@ -1,7 +1,6 @@
-import { Address, BigInt, log } from "@graphprotocol/graph-ts";
+import { Address } from "@graphprotocol/graph-ts";
 import { Transfer } from "../generated/Fiat/Fiat";
 import { FiatData } from "../generated/schema";
-import { FIAT_ADDRESS } from "./constants";
 import { BIGINT_ZERO, getTotalSupply, ZERO_ADDRESS } from "./utils";
 
 export function handleFiatTransfer(event: Transfer): void {
@@ -15,6 +14,7 @@ export function handleFiatTransfer(event: Transfer): void {
   } else {
     fiatData.burned = fiatData.burned.plus(amount);
   }
+  fiatData.totalSupply = getTotalSupply();
   fiatData.save();
 }
 
@@ -27,8 +27,6 @@ export function createFiatDataIfNonExistent(address: Address): FiatData {
     fiatData.address = address;
     fiatData.burned = BIGINT_ZERO;
     fiatData.minted = BIGINT_ZERO;
-    fiatData.circulatingSupply = BIGINT_ZERO;
-    fiatData.depositedCollateral = BIGINT_ZERO;
     fiatData.totalSupply = getTotalSupply();
     fiatData.save();
   }
@@ -37,11 +35,4 @@ export function createFiatDataIfNonExistent(address: Address): FiatData {
 
 export function isMintOperation(from: Address, to: Address): boolean {
   return from.equals(ZERO_ADDRESS) && !to.equals(ZERO_ADDRESS);
-}
-
-export function updateFiatData(deltaCollateral: BigInt, deltaNormalDebt: BigInt): void {
-  let fiatData = createFiatDataIfNonExistent(Address.fromString(FIAT_ADDRESS));
-  fiatData.depositedCollateral = fiatData.depositedCollateral.plus(deltaCollateral);
-  fiatData.circulatingSupply = fiatData.depositedCollateral.plus(deltaNormalDebt);
-  fiatData.save();
 }

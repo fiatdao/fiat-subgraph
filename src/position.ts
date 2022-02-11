@@ -1,14 +1,8 @@
 import { Bytes, BigInt, Address } from "@graphprotocol/graph-ts";
 import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt } from "../generated/Codex/Codex";
-import { Position, PositionTransaction, UserPosition } from "../generated/schema";
+import { ConfiscateCollateralAndDebtAction, ModifyCollateralAndDebtAction, Position, TransferCollateralAndDebtAction, UserPosition } from "../generated/schema";
 import { createCollateralIfNonExistent, updateCollateral } from "./collaterals";
-import { updateFiatData } from "./fiat";
-import { getCollaterizationRatio, getCurrentValue, getMaturity, getPosition, getUnderlierToken, min } from "./utils";
-import { updateVault } from "./vault/vaults";
-
-const MODIFY = "MODIFY";
-const TRANSFER = "TRANSFER";
-const CONFISCATE = "CONFISCATE";
+import { getMaturity, getPosition } from "./utils";
 
 export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): void {
   let vault = event.params.vault;
@@ -26,76 +20,90 @@ export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): v
     userPosition,
   );
 
-  let id = event.transaction.hash;
-  let type = MODIFY;
+  createModifyAction(position, event!);
 
-  let tx = createPositionTransaction(id, type, position, deltaCollateral, deltaNormalDebt);
+  updateUserPosition(userPosition, deltaNormalDebt);
 
-  updateUserPosition(userPosition, position, tx);
-
-  updateFiatData(tx.deltaCollateral, tx.deltaNormalDebt);
-
-  updateVault(vault.toHexString(), tx.deltaCollateral);
-  updateCollateral(vault.toHexString(), tokenId.toString(), tx.deltaCollateral);
+  updateCollateral(vault.toHexString(), tokenId.toString(), deltaCollateral);
 }
 
 export function createPositionIfNonExistent(
   vault: Bytes,
   tokenId: BigInt,
-  user: UserPosition,
+  userPosition: UserPosition,
   ): Position {
   let vaultAddress = vault.toHexString();
-  let userAddress = user.id;
-  let currentPosition = getPosition(vault as Address, tokenId, Address.fromString(userAddress));
-  let id = vaultAddress + "-" + tokenId.toHexString() + "-" + userAddress;
+  let userPositionAddress = userPosition.id;
+  let currentPosition = getPosition(vault as Address, tokenId, Address.fromString(userPositionAddress));
+  let id = vaultAddress + "-" + tokenId.toHexString() + "-" + userPositionAddress;
 
   let position = Position.load(id);
   if (position == null) {
     position = new Position(id);
     let collateral = createCollateralIfNonExistent(vault.toHexString(), tokenId.toString());
     position.vault = vault.toHexString();
-    position.tokenId = collateral.id;
-    position.user = userAddress;
+    position.collateral = collateral.id;
+    position.userPosition = userPositionAddress;
   }
-  position.collateral = currentPosition.value0;
-  position.normalDebt = currentPosition.value1;
+  position.totalCollateral = currentPosition.value0;
+  position.totalNormalDebt = currentPosition.value1;
   position.maturity = getMaturity(vault as Address, tokenId);
-
-  let underlierTokenAddress = getUnderlierToken(vault as Address);
-  if (position.maturity !== null && underlierTokenAddress !== null) {
-    let currentValue = getCurrentValue(vault as Address, underlierTokenAddress!, tokenId, position.maturity!);
-    if (currentValue !== null && !position.normalDebt.isZero()) {
-      position.healthFactor = currentValue.times(position.collateral).div(position.normalDebt);
-    }
-
-    let collaterizationRatio = getCollaterizationRatio(vault as Address);
-    if (position.healthFactor !== null && collaterizationRatio !== null) {
-      position.isAtRisk = position.healthFactor.le(collaterizationRatio!);
-    }
-  }
-
   position.save();
   return position as Position;
 }
 
-export function createPositionTransaction(
-  transactionHash: Bytes,
-  type: string,
-  position: Position,
-  deltaCollateral: BigInt,
-  deltaNormalDebt: BigInt,
-  ): PositionTransaction {
-  let id = transactionHash.toHexString();
-  let positionTransaction = new PositionTransaction(id);
+export function createModifyAction(position: Position, event: ModifyCollateralAndDebt): void {
+  let id = event.transaction.hash.toHexString();
+  let modifyAction = new ModifyCollateralAndDebtAction(id);
+  modifyAction.vault = event.params.vault;
+  modifyAction.tokenId = event.params.tokenId;
+  modifyAction.user = event.params.user;
+  modifyAction.collateralizer = event.params.collateralizer;
+  modifyAction.creditor = event.params.creditor;
+  modifyAction.deltaCollateral = event.params.deltaCollateral;
+  modifyAction.deltaNormalDebt = event.params.deltaNormalDebt;
 
-  positionTransaction.type = type;
-  positionTransaction.position = position.id;
-  positionTransaction.collateral = position.collateral;
-  positionTransaction.deltaCollateral = deltaCollateral;
-  positionTransaction.normalDebt = position.normalDebt;
-  positionTransaction.deltaNormalDebt = deltaNormalDebt;
-  positionTransaction.save();
-  return positionTransaction as PositionTransaction;
+  modifyAction.normalDebt = position.totalNormalDebt;
+  modifyAction.collateral = position.totalCollateral;
+  modifyAction.position = position.id;
+  modifyAction.transactionHash = event.transaction.hash;
+  modifyAction.save();
+}
+
+export function createTransferEvent(position: Position, event: TransferCollateralAndDebt): void {
+  let id = event.transaction.hash.toHexString();
+  let transferAction = new TransferCollateralAndDebtAction(id);
+  transferAction.vault = event.params.vault;
+  transferAction.tokenId = event.params.tokenId;
+  transferAction.user = event.params.src;
+  transferAction.userSrc = event.params.src;
+  transferAction.userDst = event.params.dst;
+  transferAction.deltaCollateral = event.params.deltaCollateral;
+  transferAction.deltaNormalDebt = event.params.deltaNormalDebt;
+
+  transferAction.normalDebt = position.totalNormalDebt;
+  transferAction.collateral = position.totalCollateral;
+  transferAction.position = position.id;
+  transferAction.transactionHash = event.transaction.hash;
+  transferAction.save();
+}
+
+export function createConfiscateEvent(position: Position, event: ConfiscateCollateralAndDebt): void {
+  let id = event.transaction.hash.toHexString();
+  let transferAction = new ConfiscateCollateralAndDebtAction(id);
+  transferAction.vault = event.params.vault;
+  transferAction.tokenId = event.params.tokenId;
+  transferAction.user = event.params.user;
+  transferAction.collateralizer = event.params.collateralizer;
+  transferAction.debtor = event.params.debtor;
+  transferAction.deltaCollateral = event.params.deltaCollateral;
+  transferAction.deltaNormalDebt = event.params.deltaNormalDebt;
+
+  transferAction.normalDebt = position.totalNormalDebt;
+  transferAction.collateral = position.totalCollateral;
+  transferAction.position = position.id;
+  transferAction.transactionHash = event.transaction.hash;
+  transferAction.save();
 }
 
 export function createUserPositionIfNonExistent(userAddress: Bytes): UserPosition {
@@ -106,74 +114,49 @@ export function createUserPositionIfNonExistent(userAddress: Bytes): UserPositio
     userPosition = new UserPosition(id);
     userPosition.totalCollateral = BigInt.fromI32(0);
     userPosition.totalFIAT = BigInt.fromI32(0);
+    userPosition.userAddress = userAddress;
     userPosition.save();
   }
   return userPosition as UserPosition;
 }
 
-export function updateUserPosition(
-  userPosition: UserPosition,
-  position: Position,
-  positionTransaction: PositionTransaction): void {
-  userPosition.totalCollateral = userPosition.totalCollateral.plus(positionTransaction.deltaCollateral);
-  userPosition.totalFIAT = userPosition.totalFIAT.plus(positionTransaction.deltaNormalDebt);
-  if (position.maturity) {
-    userPosition.nearestMaturity = min(userPosition.nearestMaturity, position.maturity!);
-  }
-  if (position.healthFactor) {
-    userPosition.lowestHealthFactor = min(userPosition.lowestHealthFactor, position.healthFactor!);
-  }
-
+export function updateUserPosition(userPosition: UserPosition, deltaFiat: BigInt): void {
+  userPosition.totalFIAT = userPosition.totalFIAT.plus(deltaFiat);
   userPosition.save();
 }
 
 export function handleTransferCollateralAndDebt(event: TransferCollateralAndDebt): void {
   let vault = event.params.vault;
-  let tokenId = event.params.tokenId;
+  let collateral = event.params.tokenId;
   let userSrc = event.params.src;
   let userDst = event.params.dst;
-  let deltaCollateral = event.params.deltaCollateral;
-  let deltaNormalDebt = event.params.deltaNormalDebt;
-
   let userPositionSrc = createUserPositionIfNonExistent(userSrc);
   let userPositionDst = createUserPositionIfNonExistent(userDst);
-
   let positionSrc = createPositionIfNonExistent(
     vault,
-    tokenId,
+    collateral,
     userPositionSrc,
   );
   let positionDst = createPositionIfNonExistent(
     vault,
-    tokenId,
+    collateral,
     userPositionDst,
   );
 
-  let id = event.transaction.hash;
-  let type = TRANSFER;
-  createPositionTransaction(id, type, positionSrc, deltaCollateral, deltaNormalDebt);
-  createPositionTransaction(id, type, positionDst, deltaCollateral, deltaNormalDebt);
+  createTransferEvent(positionSrc, event);
+  createTransferEvent(positionDst, event);
 }
 
 export function handleConfiscateCollateralAndDebt(event: ConfiscateCollateralAndDebt): void {
   let vault = event.params.vault;
-  let tokenId = event.params.tokenId;
+  let collateral = event.params.tokenId;
   let user = event.params.user;
-  // let collateralizer = event.params.collateralizer;
-  // let creditor = event.params.creditor;
-  let deltaCollateral = event.params.deltaCollateral;
-  let deltaNormalDebt = event.params.deltaNormalDebt;
-
   let userPosition = createUserPositionIfNonExistent(user);
-
   let position = createPositionIfNonExistent(
     vault,
-    tokenId,
+    collateral,
     userPosition,
   );
 
-  let id = event.transaction.hash;
-  let type = CONFISCATE;
-
-  createPositionTransaction(id, type, position, deltaCollateral, deltaNormalDebt);
+  createConfiscateEvent(position, event);
 }

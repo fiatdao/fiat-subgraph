@@ -49,6 +49,10 @@ dataSources:
           file: ./abis/IVault.json
         - name: Fiat
           file: ./abis/Fiat.json
+        - name: VaultEPT
+          file: ./abis/VaultEPT.json
+        - name: ERC20
+          file: ./abis/ERC20.json
       eventHandlers:
         - event: ModifyCollateralAndDebt(indexed address,indexed uint256,indexed address,address,address,int256,int256)
           handler: handleModifyCollateralAndDebt
@@ -79,6 +83,10 @@ dataSources:
           file: ./abis/Notional.json
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: Collybus
+          file: ./abis/Collybus.json
+        - name: IVault
+          file: ./abis/IVault.json
       eventHandlers:
         - event: MarketsInitialized(uint16)
           handler: handleMarketsInitialized
@@ -103,4 +111,25 @@ dataSources:
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleFiatTransfer
+      file: ./src/mappings.ts
+  - kind: ethereum/contract
+    name: Collybus
+    network: {{network}}
+    source:
+      address: '{{Collybus}}'
+      abi: Collybus
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Collybus
+        - Vault
+      abis:
+        - name: Collybus
+          file: ./abis/Collybus.json
+      eventHandlers:
+        - event: SetParam(indexed address,indexed bytes32,uint256)
+          handler: handleSetParam
       file: ./src/mappings.ts

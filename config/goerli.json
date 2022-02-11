@@ -11,37 +11,19 @@
       "idx": 1,
       "name": "Element",
       "address": "0xb4cea17b30dda38c544b317d48b11faa3ab996ef",
-      "type": "ELEMENT",
-      "collateralTokenId": "0",
-      "collateralMaturity": "1660165080000",
-      "collateralType": "Principal Token",
-      "underlierName": "USDC",
-      "underlierAddress": "0x78dEca24CBa286C0f8d56370f5406B48cFCE2f86",
-      "underlierToken": "0xDCf80C068B7fFDF7273d8ADAE4B076BF384F711A"
+      "type": "ELEMENT"
     },
     {
       "idx": 2,
       "name": "BarnBridge",
       "address": "",
-      "type": "BARNBRIDGE",
-      "collateralTokenId": "",
-      "collateralMaturity": "",
-      "collateralType": "Senior Bond",
-      "underlierName": "",
-      "underlierAddress": "",
-      "underlierToken": ""
+      "type": "BARNBRIDGE"
     },
     {
       "idx": 3,
       "name": "Notional",
       "address": "",
-      "type": "NOTIONAL",
-      "collateralTokenId": "",
-      "collateralMaturity": "",
-      "collateralType": "",
-      "underlierName": "",
-      "underlierAddress": "",
-      "underlierToken": ""
+      "type": "NOTIONAL"
     }
   ],
   "VaultNotional": "",
