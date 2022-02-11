@@ -22,6 +22,9 @@ export function handleMarketsInitialized(event: MarketsInitialized): void {
 
   for (let i: i32 = 0; i < marketsResult.length; i++) {
     let maturity = marketsResult[i].maturity;
-    createNotionalCollateralIfNonExistent(notional, currencyId, maturity);
+    let assetType = 1;
+    let tokenId = notional.encodeToId(currencyId, maturity, assetType);
+
+    createNotionalCollateralIfNonExistent(notional, tokenId, currencyId, maturity);
   }
 }

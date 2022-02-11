@@ -2,10 +2,17 @@ import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { Codex, Codex__positionsResult } from "../generated/Codex/Codex";
 import { Collybus } from "../generated/Codex/Collybus";
 import { IVault } from "../generated/Codex/IVault";
-import { COLLYBUS_ADDRESS, CODEX_ADDRESS } from "./constants";
+import { VaultEPT } from "../generated/Codex/VaultEPT";
+import { Fiat } from "../generated/Fiat/Fiat";
+import { ERC20 } from "../generated/Notional/ERC20";
+import { COLLYBUS_ADDRESS, CODEX_ADDRESS, FIAT_ADDRESS } from "./constants";
 
 let codex = Codex.bind(Address.fromString(CODEX_ADDRESS));
 let collybus = Collybus.bind(Address.fromString(COLLYBUS_ADDRESS));
+let fiat = Fiat.bind(Address.fromString(FIAT_ADDRESS));
+
+export let BIGINT_ZERO = BigInt.fromI32(0);
+export let ZERO_ADDRESS = Address.fromHexString('0x0000000000000000000000000000000000000000');
 
 export function max(a: BigInt | null, b: BigInt): BigInt {
   if (a == null) return b;
@@ -77,4 +84,42 @@ export function getCurrentValue(
     return currentValue.value;
   }
   return null;
+}
+
+export function getTotalSupply(): BigInt {
+  let totalSupply = fiat.try_totalSupply();
+  if (!totalSupply.reverted) {
+    return totalSupply.value;
+  }
+  return BIGINT_ZERO;
+}
+
+export function getSymbol(address: Address | null): string {
+  if (address !== null) {
+      let erc20 = ERC20.bind(address!);
+      let symbol = erc20.try_symbol();
+
+      if (!symbol.reverted) {
+        return symbol.value;
+      }
+  }
+  return "";
+}
+
+export function getToken(address: Address): Address | null {
+  let vault = VaultEPT.bind(address);
+  let token = vault.try_token();
+  if (!token.reverted) {
+    return token.value;
+  }
+  return null;
+}
+
+export function getVaultType(address: Address): string {
+  let ivault = IVault.bind(address);
+  let type = ivault.try_vaultType();
+  if (!type.reverted) {
+    return type.value.toHexString();
+  }
+  return "";
 }

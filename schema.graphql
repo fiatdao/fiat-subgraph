@@ -4,33 +4,76 @@ type UserProxy @entity {
   userAddress: Bytes!
 }
 
-enum PositionTransactionType {
-  MODIFY
-  TRANSFER
-  CONFISCATE
-}
-
-type PositionTransaction @entity {
+interface PositionTransactionAction {
   id: ID!
-  type: String!
   collateral: BigInt!
   deltaCollateral: BigInt!
   normalDebt: BigInt!
   deltaNormalDebt: BigInt!
+  transactionHash: Bytes!
   position: Position!
+  vault: Bytes!
+  tokenId: BigInt!
+  user: Bytes!
+}
+
+type ModifyCollateralAndDebtAction implements PositionTransactionAction @entity {
+  id: ID!
+  collateral: BigInt!
+  normalDebt: BigInt!
+  transactionHash: Bytes!
+  position: Position!
+  # Event Properties
+  vault: Bytes!
+  tokenId: BigInt!
+  user: Bytes!
+  collateralizer: Bytes!
+  creditor: Bytes!
+  deltaCollateral: BigInt!
+  deltaNormalDebt: BigInt!
+}
+
+type TransferCollateralAndDebtAction implements PositionTransactionAction @entity {
+  id: ID!
+  collateral: BigInt!
+  normalDebt: BigInt!
+  transactionHash: Bytes!
+  position: Position!
+  user: Bytes!
+  # Event Properties
+  vault: Bytes!
+  tokenId: BigInt!
+  userSrc: Bytes!
+  userDst: Bytes!
+  deltaCollateral: BigInt!
+  deltaNormalDebt: BigInt!
+}
+
+type ConfiscateCollateralAndDebtAction implements PositionTransactionAction @entity {
+  id: ID!
+  collateral: BigInt!
+  normalDebt: BigInt!
+  transactionHash: Bytes!
+  position: Position!
+  # Event Properties
+  vault: Bytes!
+  tokenId: BigInt!
+  user: Bytes!
+  collateralizer: Bytes!
+  debtor: Bytes!
+  deltaCollateral: BigInt!
+  deltaNormalDebt: BigInt!
 }
 
 type Position @entity {
   id: ID!
-  vault: Vault!
-  tokenId: Collateral!
-  user: UserPosition!
-  collateral: BigInt!
-  normalDebt: BigInt!
+  vault: Vault
+  collateral: Collateral
+  userPosition: UserPosition!
+  totalCollateral: BigInt!
+  totalNormalDebt: BigInt!
   maturity: BigInt
-  healthFactor: BigInt
-  isAtRisk: Boolean
-  positionTransactions: [PositionTransaction!] @derivedFrom(field: "position")
+  positionTransactions: [PositionTransactionAction!] @derivedFrom(field: "position")
 }
 
 enum VaultType {
@@ -44,31 +87,36 @@ type Vault @entity {
   address: Bytes
   name: String
   type: VaultType
+  collaterizationRatio: BigInt
   positions: [Position!] @derivedFrom(field: "vault")
   collaterals: [Collateral!] @derivedFrom(field: "vault")
 }
 
 type Collateral @entity {
   id: ID!
+  tokenId: BigInt
   address: Bytes
-  name: String
-  type: String
+  symbol: String
   maturity: BigInt
-  underlierName: String
+  underlierSymbol: String
   underlierAddress: Bytes
   vault: Vault
   faceValue: BigInt
-  currentValue: BigInt
-  collaterizationRatio: BigInt
+  depositedCollateral: BigInt
 }
 
 type UserPosition @entity {
   id: ID!
-  # User Proxy Address
   userAddress: Bytes
   totalCollateral: BigInt
   totalFIAT: BigInt
-  nearestMaturity: BigInt
-  lowestHealthFactor: BigInt
-  positions: [Position!] @derivedFrom(field: "user")
+  positions: [Position!] @derivedFrom(field: "userPosition")
+}
+
+type FiatData @entity {
+  id: ID!
+  address: Bytes
+  minted: BigInt
+  burned: BigInt
+  totalSupply: BigInt
 }

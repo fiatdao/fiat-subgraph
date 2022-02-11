@@ -3,8 +3,9 @@ import {
   handleModifyCollateralAndDebt,
   handleTransferCollateralAndDebt,
   handleConfiscateCollateralAndDebt } from "./position"
-import { handleVaultInit } from "./vault/vaults"
+import { handleVaultInit, handleSetParam } from "./vault/vaults"
 import { handleMarketsInitialized } from "./notional"
+import { handleFiatTransfer } from "./fiat"
 
 export {
   handleDeployProxy,
@@ -13,4 +14,6 @@ export {
   handleConfiscateCollateralAndDebt,
   handleVaultInit,
   handleMarketsInitialized,
+  handleFiatTransfer,
+  handleSetParam,
 }
