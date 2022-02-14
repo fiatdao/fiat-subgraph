@@ -2,7 +2,6 @@ import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { Codex, Codex__positionsResult } from "../generated/Codex/Codex";
 import { Collybus } from "../generated/Codex/Collybus";
 import { IVault } from "../generated/Codex/IVault";
-import { VaultEPT } from "../generated/Codex/VaultEPT";
 import { CollateralAuction } from "../generated/CollateralAuction/CollateralAuction";
 import { Fiat } from "../generated/Fiat/Fiat";
 import { ERC20 } from "../generated/Notional/ERC20";
@@ -109,7 +108,7 @@ export function getSymbol(address: Address | null): string {
 }
 
 export function getToken(address: Address): Address | null {
-  let vault = VaultEPT.bind(address);
+  let vault = IVault.bind(address);
   let token = vault.try_token();
   if (!token.reverted) {
     return token.value;

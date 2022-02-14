@@ -6,7 +6,7 @@ import {
 import { handleVaultInit, handleSetParam } from "./vault/vaults"
 import { handleMarketsInitialized } from "./notional"
 import { handleFiatTransfer } from "./fiat"
-import { handleStartAuction, handleTakeCollateral, handleStopAuction } from "./auctions"
+import { handleStartAuction, handleTakeCollateral, handleStopAuction, handleRedoAuction } from "./auctions"
 
 export {
   handleDeployProxy,
@@ -20,4 +20,5 @@ export {
   handleStartAuction,
   handleTakeCollateral,
   handleStopAuction,
+  handleRedoAuction,
 }

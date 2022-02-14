@@ -1,4 +1,4 @@
-import { StartAuction, StartAuction__Params, StopAuction, TakeCollateral } from "../generated/CollateralAuction/CollateralAuction";
+import { RedoAuction, RedoAuction__Params, StartAuction, StartAuction__Params, StopAuction, TakeCollateral } from "../generated/CollateralAuction/CollateralAuction";
 import { Collateral, UserAuction, Vault } from "../generated/schema";
 import { createCollateralIfNonExistent } from "./collaterals";
 import { createVaultIfNonExistent } from "./vault/vaults";
@@ -48,4 +48,16 @@ export function handleStopAuction(event: StopAuction): void {
     userAuction.isActive = isActiveAuction(auctionId);
     userAuction.save();
   }
+}
+
+// this events modifies the following properties: startsAt, startPrice, keeper, tip
+export function handleRedoAuction(event: RedoAuction): void {
+  let vault = createVaultIfNonExistent(event.params.vault.toHexString());
+  let collateral = createCollateralIfNonExistent(vault, event.params.tokenId.toString());
+  let auction = createUserAuctionIfNonExistent(vault, collateral, event.params as StartAuction__Params);
+  auction.startsAt = event.block.timestamp;
+  auction.startPrice = event.params.startPrice;
+  auction.keeper = event.params.keeper;
+  auction.tip = event.params.tip;
+  auction.save();
 }

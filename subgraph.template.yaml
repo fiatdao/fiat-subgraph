@@ -49,8 +49,6 @@ dataSources:
           file: ./abis/IVault.json
         - name: Fiat
           file: ./abis/Fiat.json
-        - name: VaultEPT
-          file: ./abis/VaultEPT.json
         - name: ERC20
           file: ./abis/ERC20.json
       eventHandlers:
@@ -129,6 +127,10 @@ dataSources:
       abis:
         - name: Collybus
           file: ./abis/Collybus.json
+        - name: IVault
+          file: ./abis/IVault.json
+        - name: ERC20
+          file: ./abis/ERC20.json
       eventHandlers:
         - event: SetParam(indexed address,indexed bytes32,uint256)
           handler: handleSetParam
@@ -152,9 +154,17 @@ dataSources:
       abis:
         - name: CollateralAuction
           file: ./abis/CollateralAuction.json
+        - name: Collybus
+          file: ./abis/Collybus.json
+        - name: IVault
+          file: ./abis/IVault.json
+        - name: ERC20
+          file: ./abis/ERC20.json
       eventHandlers:
         - event: StartAuction(indexed uint256,uint256,uint256,uint256,address,uint256,address,indexed address,uint256)
           handler: handleStartAuction
+        - event: RedoAuction(indexed uint256,uint256,uint256,uint256,address,uint256,address,indexed address,uint256)
+          handler: handleRedoAuction
         - event: TakeCollateral(indexed uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,indexed address)
           handler: handleTakeCollateral
         - event: StopAuction(uint256)
