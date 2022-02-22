@@ -59,15 +59,21 @@ export function createUserAuctionIfNonExistent(
 
 export function handleTakeCollateral(event: TakeCollateral): void {
   let auctionId = event.params.auctionId;
+  setAuctionActive(auctionId);
+
   let userAuction = UserAuction.load(auctionId.toString());
   if (userAuction) {
-    userAuction.isActive = isActiveAuction(auctionId);
+    userAuction.debt = event.params.debt;
+    userAuction.collateralToSell = event.params.collateralToSell;
     userAuction.save();
   }
 }
 
 export function handleStopAuction(event: StopAuction): void {
-  let auctionId = event.params.auctionId;
+  setAuctionActive(event.params.auctionId);
+}
+
+function setAuctionActive(auctionId: BigInt): void {
   let userAuction = UserAuction.load(auctionId.toString());
   if (userAuction) {
     userAuction.isActive = isActiveAuction(auctionId);
