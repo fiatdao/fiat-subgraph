@@ -10,9 +10,9 @@ export function handleFiatTransfer(event: Transfer): void {
   let fiatData = createFiatDataIfNonExistent(event.address);
 
   if (isMintOperation(fromAddress, toAddress)) {
-    fiatData.minted = fiatData.minted.plus(amount);
+    fiatData.minted = fiatData.minted!.plus(amount);
   } else {
-    fiatData.burned = fiatData.burned.plus(amount);
+    fiatData.burned = fiatData.burned!.plus(amount);
   }
   fiatData.totalSupply = getTotalSupply();
   fiatData.save();

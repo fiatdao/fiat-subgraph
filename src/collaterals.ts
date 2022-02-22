@@ -9,7 +9,7 @@ const NOTIONAL_COLLATERAL_TYPE = "fCash";
 const VAULT_TYPE_ERC20 = "ERC20";
 
 export function createCollateralIfNecessary(vault: Vault): Collateral | null {
-  let typeHex = getVaultType(vault.address as Address);
+  let typeHex = getVaultType(changetype<Address>(vault.address!));
   let type = Bytes.fromHexString(typeHex).toString();
 
   if (type.includes(VAULT_TYPE_ERC20)) {
@@ -20,13 +20,13 @@ export function createCollateralIfNecessary(vault: Vault): Collateral | null {
 
 export function createERC20CollateralIfNonExistent(vault: Vault): Collateral {
   let tokenId = "0";
-  let vaultAddress = vault.address as Address;
+  let vaultAddress = changetype<Address>(vault.address!);
   let collateral = createCollateralIfNonExistent(vault, tokenId);
   let tokenAddress = getToken(vaultAddress);
   let underlierAddress = getUnderlierToken(vaultAddress);
 
   collateral.maturity = getMaturity(vaultAddress, BigInt.fromString(tokenId));
-  setCollateralAddresses(collateral!, tokenAddress, underlierAddress);
+  setCollateralAddresses(collateral, tokenAddress, underlierAddress);
   collateral.save();
   return collateral as Collateral;
 }
@@ -41,7 +41,7 @@ export function createNotionalCollateralIfNonExistent(notional: Notional, tokenI
     let underlierAddress = currency.value1.tokenAddress;
 
     collateral.maturity = maturity;
-    setCollateralAddresses(collateral!, tokenAddress, underlierAddress);
+    setCollateralAddresses(collateral, tokenAddress, underlierAddress);
 
     collateral.save();
   }
@@ -64,7 +64,7 @@ export function createCollateralIfNonExistent(vault: Vault, tokenId: string): Co
 }
 
 export function updateCollateral(collateral: Collateral, deltaCollateral: BigInt): void {
-  collateral.depositedCollateral = collateral.depositedCollateral.plus(deltaCollateral);
+  collateral.depositedCollateral = collateral.depositedCollateral!.plus(deltaCollateral);
   collateral.save();
 }
 

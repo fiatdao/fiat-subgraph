@@ -3,10 +3,10 @@ import {
   handleModifyCollateralAndDebt,
   handleTransferCollateralAndDebt,
   handleConfiscateCollateralAndDebt } from "./position"
-import { handleVaultInit, handleSetParam } from "./vault/vaults"
+import { handleVaultInit, handleCollybusSetParam } from "./vault/vaults"
 import { handleMarketsInitialized } from "./notional"
 import { handleFiatTransfer } from "./fiat"
-import { handleStartAuction, handleTakeCollateral, handleStopAuction, handleRedoAuction } from "./auctions"
+import { handleStartAuction, handleTakeCollateral, handleStopAuction, handleRedoAuction, handleAuctionSetParam } from "./auctions"
 
 export {
   handleDeployProxy,
@@ -16,9 +16,10 @@ export {
   handleVaultInit,
   handleMarketsInitialized,
   handleFiatTransfer,
-  handleSetParam,
+  handleCollybusSetParam,
   handleStartAuction,
   handleTakeCollateral,
   handleStopAuction,
   handleRedoAuction,
+  handleAuctionSetParam,
 }

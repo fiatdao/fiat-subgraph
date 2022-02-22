@@ -28,13 +28,13 @@ export function createVaultIfNonExistent(vaultAddress: string): Vault {
     vault.maxAuctionDuration = BIGINT_ZERO;
     vault.maxDiscount = BIGINT_ZERO;
     vault.auctionDebtFloor = BIGINT_ZERO;
-    createCollateralIfNecessary(vault!);
+    createCollateralIfNecessary(vault);
     vault.save();
   }
   return vault as Vault;
 }
 
-export function handleSetParam(setParam: SetParam1): void {
+export function handleCollybusSetParam(setParam: SetParam1): void {
   let vaultAddress = setParam.params.vault;
   let vault = createVaultIfNonExistent(vaultAddress.toHexString());
   vault.collateralizationRatio = getCollateralizationRatio(vaultAddress);

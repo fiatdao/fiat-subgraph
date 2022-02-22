@@ -25,7 +25,7 @@ export function min(a: BigInt | null, b: BigInt): BigInt {
   return a < b ? a as BigInt : b;
 }
 
-export function getPosition(vault: Address, tokenId: BigInt, userAddress: Address): Codex__positionsResult {
+export function getPosition(vault: Address, tokenId: BigInt, userAddress: Address): Codex__positionsResult | null {
   let position = codex.try_positions(vault, tokenId, userAddress);
   if (!position.reverted) {
     return position.value;
@@ -97,7 +97,7 @@ export function getTotalSupply(): BigInt {
 
 export function getSymbol(address: Address | null): string {
   if (address !== null) {
-      let erc20 = ERC20.bind(address!);
+      let erc20 = ERC20.bind(address);
       let symbol = erc20.try_symbol();
 
       if (!symbol.reverted) {
