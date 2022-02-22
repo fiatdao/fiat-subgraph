@@ -3,14 +3,14 @@
   "description": "FIAT LUX Graph (goerli)",
   "startBlock": 6061940,
   "PRBProxyFactory": "0x4873EdD9246595b52AF0DE6349327ec13775dbD1",
-  "Codex": "0x3a94fa8fadbc48d6c4f44149a8b9f668bd510066",
-  "Collybus": "0x5438Fd8541135676e990295C1cd62EF779b05Ebb",
-  "Fiat": "0x8a372c777E96d8B3F3CA85Cf0449d05B822458ff",
+  "Codex": "0xdB85ee14BD31558C9620da98565622912E725958",
+  "Collybus": "0x4B1002aB18D7Ea45125D6F908B3A13f947C3FBF9",
+  "Fiat": "0xf4054D739592A28559b37D5950B62a18e5ec73DB",
   "Vaults": [
     {
       "idx": 1,
       "name": "Element",
-      "address": "0xb4cea17b30dda38c544b317d48b11faa3ab996ef",
+      "address": "0x517cD535B96941758469254484C0c0399Bb7363A",
       "type": "ELEMENT"
     },
     {
@@ -27,5 +27,6 @@
     }
   ],
   "VaultNotional": "",
-  "Notional": ""
+  "Notional": "0x0eae7badef8f95de91fddb74a89a786cf891eb0e",
+  "CollateralAuction": "0xfeba478B1a0CE24B86F064B51e489D8e79a41Cf0"
 }

@@ -2,14 +2,15 @@ import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { Codex, Codex__positionsResult } from "../generated/Codex/Codex";
 import { Collybus } from "../generated/Codex/Collybus";
 import { IVault } from "../generated/Codex/IVault";
-import { VaultEPT } from "../generated/Codex/VaultEPT";
+import { CollateralAuction } from "../generated/CollateralAuction/CollateralAuction";
 import { Fiat } from "../generated/Fiat/Fiat";
 import { ERC20 } from "../generated/Notional/ERC20";
-import { COLLYBUS_ADDRESS, CODEX_ADDRESS, FIAT_ADDRESS } from "./constants";
+import { COLLYBUS_ADDRESS, CODEX_ADDRESS, FIAT_ADDRESS, COLLATERAL_AUCTION_ADDRESS } from "./constants";
 
 let codex = Codex.bind(Address.fromString(CODEX_ADDRESS));
 let collybus = Collybus.bind(Address.fromString(COLLYBUS_ADDRESS));
 let fiat = Fiat.bind(Address.fromString(FIAT_ADDRESS));
+let collateralAuction = CollateralAuction.bind(Address.fromString(COLLATERAL_AUCTION_ADDRESS));
 
 export let BIGINT_ZERO = BigInt.fromI32(0);
 export let ZERO_ADDRESS = Address.fromHexString('0x0000000000000000000000000000000000000000');
@@ -51,7 +52,7 @@ export function getUnderlierToken(vault: Address): Address | null {
 }
 
 // Max LTV or getLiquidationRatio or Collaterization Ratio
-export function getCollaterizationRatio(vault: Address): BigInt | null {
+export function getCollateralizationRatio(vault: Address): BigInt | null {
   let vaultConfig = collybus.try_vaults(vault);
   if (!vaultConfig.reverted) {
     return vaultConfig.value.value0;
@@ -107,7 +108,7 @@ export function getSymbol(address: Address | null): string {
 }
 
 export function getToken(address: Address): Address | null {
-  let vault = VaultEPT.bind(address);
+  let vault = IVault.bind(address);
   let token = vault.try_token();
   if (!token.reverted) {
     return token.value;
@@ -122,4 +123,12 @@ export function getVaultType(address: Address): string {
     return type.value.toHexString();
   }
   return "";
+}
+
+export function isActiveAuction(auctionId: BigInt): boolean {
+  let list = collateralAuction.try_list();
+  if (!list.reverted) {
+    return list.value.includes(auctionId);
+  }
+  return false;
 }
