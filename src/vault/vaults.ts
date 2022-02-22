@@ -3,7 +3,7 @@ import { Init } from "../../generated/Codex/Codex";
 import { SetParam1 } from "../../generated/Codex/Collybus";
 import { Vault } from "../../generated/schema";
 import { createCollateralIfNecessary } from "../collaterals";
-import { BIGINT_ZERO, getCollateralizationRatio } from "../utils";
+import { BIGINT_ZERO, WAD, getCollateralizationRatio } from "../utils";
 import { vaultsData } from "./vaultsData";
 
 export function handleVaultInit(event: Init): void {
@@ -24,7 +24,7 @@ export function createVaultIfNonExistent(vaultAddress: string): Vault {
     }
     vault.address = address;
     vault.collateralizationRatio = getCollateralizationRatio(address);
-    vault.multiplier = BIGINT_ZERO;
+    vault.multiplier = WAD;
     vault.maxAuctionDuration = BIGINT_ZERO;
     vault.maxDiscount = BIGINT_ZERO;
     vault.auctionDebtFloor = BIGINT_ZERO;

@@ -12,6 +12,7 @@ let collybus = Collybus.bind(Address.fromString(COLLYBUS_ADDRESS));
 let fiat = Fiat.bind(Address.fromString(FIAT_ADDRESS));
 let collateralAuction = CollateralAuction.bind(Address.fromString(COLLATERAL_AUCTION_ADDRESS));
 
+export let WAD = BigInt.fromI64(1000000000000000000);
 export let BIGINT_ZERO = BigInt.fromI32(0);
 export let ZERO_ADDRESS = Address.fromHexString('0x0000000000000000000000000000000000000000');
 

@@ -1,5 +1,5 @@
 import { BigInt, Address, Bytes, ethereum } from '@graphprotocol/graph-ts';
-import { RedoAuction, RedoAuction__Params, StartAuction, StartAuction__Params, StopAuction, TakeCollateral, SetParam, CollateralAuction } from "../generated/CollateralAuction/CollateralAuction";
+import { RedoAuction, RedoAuction__Params, StartAuction, StartAuction__Params, StopAuction, TakeCollateral, SetParam, CollateralAuction, UpdateAuctionDebtFloorCall } from "../generated/CollateralAuction/CollateralAuction";
 import { Collateral, UserAuction, Vault } from "../generated/schema";
 import { createCollateralIfNonExistent } from "./collaterals";
 import { createVaultIfNonExistent } from "./vault/vaults";
@@ -102,7 +102,7 @@ export function handleAuctionSetParam(event: SetParam): void {
   let param = event.params.param.toString();
   if (VAULT_PARAMS.includes(param)) {
     // Skip the selector
-    let dataWithoutFunctionSelector = event.transaction.input.subarray(4) as Bytes;
+    let dataWithoutFunctionSelector = changetype<Bytes>(event.transaction.input.subarray(4));
     let params = ethereum.decode('(address,bytes32,address)', dataWithoutFunctionSelector)!.toTuple();
     let vault = createVaultIfNonExistent(params[0].toAddress().toHexString());
 
@@ -116,4 +116,21 @@ export function handleAuctionSetParam(event: SetParam): void {
       vault.save();
     }
   }
+}
+
+// NOTICE: Call handlers are not supported on Rinkeby, Goerli or Ganache.
+// Call handlers currently depend on the Parity tracing API and these networks do not support it.
+export function handleUpdateAuctionDebtFloor(call: UpdateAuctionDebtFloorCall): void {
+  let vaultAddress = call.inputs.vault;
+  let vault = createVaultIfNonExistent(vaultAddress.toHexString());
+
+  let collateralAuction = CollateralAuction.bind(call.to);
+  let caVault = collateralAuction.try_vaults(vaultAddress);
+  if (!caVault.reverted) {
+    // vault.auctionDebtFloor = caVault.value.value3;
+    // TODO - Uncomment previous line and remove the following once using CollateralAuction instead of NonLossCollateralAuction
+    vault.auctionDebtFloor = caVault.value.value2;
+    vault.save();
+  }
+
 }

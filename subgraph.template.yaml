@@ -171,4 +171,7 @@ dataSources:
           handler: handleStopAuction
         - event: SetParam(indexed bytes32,uint256)
           handler: handleAuctionSetParam
+      callHandlers:
+        - function: updateAuctionDebtFloor(address)
+          handler: handleUpdateAuctionDebtFloor
       file: ./src/mappings.ts

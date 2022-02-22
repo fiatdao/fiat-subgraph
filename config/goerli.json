@@ -10,18 +10,21 @@
     {
       "idx": 1,
       "name": "Element",
-      "address": "0x517cD535B96941758469254484C0c0399Bb7363A",
+      "_comment": "Vault address needs to be lower case",
+      "address": "0x517cd535b96941758469254484c0c0399bb7363a",
       "type": "ELEMENT"
     },
     {
       "idx": 2,
       "name": "BarnBridge",
+      "_comment": "Vault address needs to be lower case",
       "address": "",
       "type": "BARNBRIDGE"
     },
     {
       "idx": 3,
       "name": "Notional",
+      "_comment": "Vault address needs to be lower case",
       "address": "",
       "type": "NOTIONAL"
     }
