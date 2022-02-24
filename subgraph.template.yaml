@@ -68,7 +68,7 @@ dataSources:
     source:
       address: '{{Notional}}'
       abi: Notional
-      startBlock: {{startBlock}}
+      startBlock: {{notionalStartBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -85,6 +85,8 @@ dataSources:
           file: ./abis/Collybus.json
         - name: IVault
           file: ./abis/IVault.json
+        - name: VaultFC
+          file: ./abis/VaultFC.json
       eventHandlers:
         - event: MarketsInitialized(uint16)
           handler: handleMarketsInitialized
@@ -171,7 +173,9 @@ dataSources:
           handler: handleStopAuction
         - event: SetParam(indexed bytes32,uint256)
           handler: handleAuctionSetParam
-      callHandlers:
-        - function: updateAuctionDebtFloor(address)
-          handler: handleUpdateAuctionDebtFloor
+      # NOTICE: Call handlers are not supported on Rinkeby, Goerli or Ganache.
+      # Call handlers currently depend on the Parity tracing API and these networks do not support it.
+      # callHandlers:
+      #   - function: updateAuctionDebtFloor(address)
+      #     handler: handleUpdateAuctionDebtFloor
       file: ./src/mappings.ts

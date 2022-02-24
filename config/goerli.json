@@ -31,5 +31,6 @@
   ],
   "VaultNotional": "",
   "Notional": "0xd937e688765a38a01D37Fae67c2e9e2C38b1beC9",
+  "notionalStartBlock": 6338604,
   "CollateralAuction": "0xfeba478B1a0CE24B86F064B51e489D8e79a41Cf0"
 }
