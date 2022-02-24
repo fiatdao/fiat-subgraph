@@ -16,6 +16,149 @@
     "type": "constructor"
   },
   {
+    "inputs": [],
+    "name": "CollateralAuction__cancelAuction_notRunningAction",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__checkReentrancy_reentered",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__init_vaultAlreadyInit",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__isStopped_stoppedIncorrect",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__redoAuction_cannotReset",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__redoAuction_notRunningAuction",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__redoAuction_zeroStartPrice",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__setParam_unrecognizedParam",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__startAuction_overflow",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__startAuction_zeroCollateralToSell",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__startAuction_zeroDebt",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__startAuction_zeroStartPrice",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__startAuction_zeroUser",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__takeCollateral_needsReset",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__takeCollateral_noPartialPurchase",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__takeCollateral_notRunningAuction",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollateralAuction__takeCollateral_tooExpensive",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Guarded__notGranted",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Guarded__notRoot",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "x",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "y",
+        "type": "uint256"
+      }
+    ],
+    "name": "Math__add_overflow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "x",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "y",
+        "type": "uint256"
+      }
+    ],
+    "name": "Math__mul_overflow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "x",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "y",
+        "type": "uint256"
+      }
+    ],
+    "name": "Math__sub_overflow",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -298,6 +441,25 @@
       }
     ],
     "name": "TakeCollateral",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "auctionDebtFloor",
+        "type": "uint256"
+      }
+    ],
+    "name": "UpdateAuctionDebtFloor",
     "type": "event"
   },
   {
@@ -849,6 +1011,11 @@
       {
         "internalType": "uint256",
         "name": "maxAuctionDuration",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxDiscount",
         "type": "uint256"
       },
       {

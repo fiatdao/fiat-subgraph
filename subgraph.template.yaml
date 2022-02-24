@@ -173,9 +173,6 @@ dataSources:
           handler: handleStopAuction
         - event: SetParam(indexed bytes32,uint256)
           handler: handleAuctionSetParam
-      # NOTICE: Call handlers are not supported on Rinkeby, Goerli or Ganache.
-      # Call handlers currently depend on the Parity tracing API and these networks do not support it.
-      # callHandlers:
-      #   - function: updateAuctionDebtFloor(address)
-      #     handler: handleUpdateAuctionDebtFloor
+        - event: UpdateAuctionDebtFloor(indexed address,uint256)
+          handler: handleUpdateAuctionDebtFloor
       file: ./src/mappings.ts
