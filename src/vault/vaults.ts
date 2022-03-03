@@ -30,8 +30,9 @@ export function createVaultIfNonExistent(vaultAddress: string): Vault {
     vault.maxDiscount = BIGINT_ZERO;
     vault.auctionDebtFloor = BIGINT_ZERO;
     let collateral = createCollateralIfNecessary(vault);
-    if (collateral !== null && vault.type === "ELEMENT") {
+    if (collateral !== null && vault.type && vault.type!.includes("ELEMENT")) {
       collateral.ccp = collateral.address!.toHexString();
+      collateral.save();
     }
     vault.save();
   }
