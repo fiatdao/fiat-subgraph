@@ -13,7 +13,7 @@ dataSources:
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - UserProxy
@@ -33,7 +33,7 @@ dataSources:
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - Position
@@ -68,10 +68,10 @@ dataSources:
     source:
       address: '{{Notional}}'
       abi: Notional
-      startBlock: {{startBlock}}
+      startBlock: {{notionalStartBlock}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - Vault
@@ -85,6 +85,8 @@ dataSources:
           file: ./abis/Collybus.json
         - name: IVault
           file: ./abis/IVault.json
+        - name: VaultFC
+          file: ./abis/VaultFC.json
       eventHandlers:
         - event: MarketsInitialized(uint16)
           handler: handleMarketsInitialized
@@ -99,7 +101,7 @@ dataSources:
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - FiatData
@@ -119,7 +121,7 @@ dataSources:
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - Collybus
@@ -133,7 +135,7 @@ dataSources:
           file: ./abis/ERC20.json
       eventHandlers:
         - event: SetParam(indexed address,indexed bytes32,uint256)
-          handler: handleSetParam
+          handler: handleCollybusSetParam
       file: ./src/mappings.ts
   - kind: ethereum/contract
     name: CollateralAuction
@@ -144,7 +146,7 @@ dataSources:
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - CollateralAuction
@@ -169,4 +171,50 @@ dataSources:
           handler: handleTakeCollateral
         - event: StopAuction(uint256)
           handler: handleStopAuction
+        - event: SetParam(indexed bytes32,uint256)
+          handler: handleAuctionSetParam
+        - event: UpdateAuctionDebtFloor(indexed address,uint256)
+          handler: handleUpdateAuctionDebtFloor
+      file: ./src/mappings.ts
+  - kind: ethereum/contract
+    name: Publican
+    network: {{network}}
+    source:
+      address: '{{Publican}}'
+      abi: Publican
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Vault
+      abis:
+        - name: Publican
+          file: ./abis/Publican.json
+      eventHandlers:
+        - event: SetParam(indexed address,indexed bytes32,uint256)
+          handler: handlePublicanSetParam
+      file: ./src/mappings.ts
+  - kind: ethereum/contract
+    name: CCPFactory
+    network: {{network}}
+    source:
+      address: '{{ConvergentCurvePoolFactory}}'
+      abi: CCPFactory
+      startBlock: {{ccpStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Collateral
+      abis:
+        - name: CCPFactory
+          file: ./abis/CCPFactory.json
+        - name: ICCP
+          file: ./abis/ICCP.json
+      eventHandlers:
+        - event: CCPoolCreated(indexed address,indexed address)
+          handler: handleCCPoolCreated
       file: ./src/mappings.ts

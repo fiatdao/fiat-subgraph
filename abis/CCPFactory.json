@@ -1,0 +1,21 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "pool",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "bondToken",
+        "type": "address"
+      }
+    ],
+    "name": "CCPoolCreated",
+    "type": "event"
+  }
+]

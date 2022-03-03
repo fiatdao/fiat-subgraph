@@ -1,0 +1,75 @@
+[
+  {
+    "inputs": [],
+    "name": "getPoolId",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getVault",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "percentFee",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amountX",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "reserveX",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "reserveY",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "out",
+        "type": "bool"
+      }
+    ],
+    "name": "solveTradeInvariant",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
