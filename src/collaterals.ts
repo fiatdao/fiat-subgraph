@@ -29,6 +29,11 @@ export function createERC20CollateralIfNonExistent(vault: Vault): Collateral {
 
   collateral.maturity = getMaturity(vaultAddress, BigInt.fromString(tokenId));
   setCollateralAddresses(collateral, tokenAddress, underlierAddress);
+
+  if (vault.type === "ELEMENT") {
+    collateral.ccp = tokenAddress!.toHexString();
+  }
+
   collateral.save();
   return collateral as Collateral;
 }
