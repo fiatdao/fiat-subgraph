@@ -176,3 +176,23 @@ dataSources:
         - event: UpdateAuctionDebtFloor(indexed address,uint256)
           handler: handleUpdateAuctionDebtFloor
       file: ./src/mappings.ts
+  - kind: ethereum/contract
+    name: Publican
+    network: {{network}}
+    source:
+      address: '{{Publican}}'
+      abi: Publican
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Vault
+      abis:
+        - name: Publican
+          file: ./abis/Publican.json
+      eventHandlers:
+        - event: SetParam(indexed address,indexed bytes32,uint256)
+          handler: handlePublicanSetParam
+      file: ./src/mappings.ts

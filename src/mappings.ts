@@ -7,6 +7,7 @@ import { handleVaultInit, handleCollybusSetParam } from "./vault/vaults"
 import { handleMarketsInitialized } from "./notional"
 import { handleFiatTransfer } from "./fiat"
 import { handleStartAuction, handleTakeCollateral, handleStopAuction, handleRedoAuction, handleAuctionSetParam } from "./auctions"
+import { handlePublicanSetParam } from "./publican"
 
 export {
   handleDeployProxy,
@@ -22,4 +23,5 @@ export {
   handleStopAuction,
   handleRedoAuction,
   handleAuctionSetParam,
+  handlePublicanSetParam,
 }

@@ -94,6 +94,7 @@ type Vault @entity {
   name: String
   type: VaultType
   collateralizationRatio: BigInt
+  interestPerSecond: BigInt
 
   # Auction related data
   # Multiplicative factor to increase start price [wad]

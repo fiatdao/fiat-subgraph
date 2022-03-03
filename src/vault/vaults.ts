@@ -25,6 +25,7 @@ export function createVaultIfNonExistent(vaultAddress: string): Vault {
     vault.address = address;
     vault.collateralizationRatio = getCollateralizationRatio(address);
     vault.multiplier = WAD;
+    vault.interestPerSecond = WAD;
     vault.maxAuctionDuration = BIGINT_ZERO;
     vault.maxDiscount = BIGINT_ZERO;
     vault.auctionDebtFloor = BIGINT_ZERO;
