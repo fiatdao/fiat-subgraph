@@ -46,7 +46,7 @@ export function createNotionalCollateralIfNonExistent(notional: Notional, tokenI
 
     // only notional vaults
     let vaultType = vData!.get('type');
-    if (vaultType != null && vaultType == NOTIONAL) {
+    if (vaultsData.entries[i].key !== "" && vaultType !== null && vaultType === NOTIONAL) {
       currency = notional.getCurrency(currencyId);
       let marketUnderlierAddress = currency.value1.tokenAddress;
 
