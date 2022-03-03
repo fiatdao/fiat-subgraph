@@ -196,3 +196,25 @@ dataSources:
         - event: SetParam(indexed address,indexed bytes32,uint256)
           handler: handlePublicanSetParam
       file: ./src/mappings.ts
+  - kind: ethereum/contract
+    name: CCPFactory
+    network: {{network}}
+    source:
+      address: '{{ConvergentCurvePoolFactory}}'
+      abi: CCPFactory
+      startBlock: {{ccpStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Collateral
+      abis:
+        - name: CCPFactory
+          file: ./abis/CCPFactory.json
+        - name: ICCP
+          file: ./abis/ICCP.json
+      eventHandlers:
+        - event: CCPoolCreated(indexed address,indexed address)
+          handler: handleCCPoolCreated
+      file: ./src/mappings.ts

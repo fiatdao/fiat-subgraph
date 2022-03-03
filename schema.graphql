@@ -122,7 +122,25 @@ type Collateral @entity {
   vaultName: String
   faceValue: BigInt
   depositedCollateral: BigInt
+
+  # Only valid when collateral is a Element pToken
+  ccp: CCP
 }
+
+# Element pToken ConvergentPool data
+type CCP @entity {
+  # pToken address
+  id: ID!
+
+  balancerVault: Bytes
+
+  # Element pToken ConvergentCurvePool address
+  convergentCurvePool: Bytes
+  # Element pToken ConvergentCurvePool id
+  poolId: Bytes
+
+}
+
 
 type UserPosition @entity {
   id: ID!

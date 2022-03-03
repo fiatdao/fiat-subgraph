@@ -8,6 +8,7 @@ import { handleMarketsInitialized } from "./notional"
 import { handleFiatTransfer } from "./fiat"
 import { handleStartAuction, handleTakeCollateral, handleStopAuction, handleRedoAuction, handleAuctionSetParam } from "./auctions"
 import { handlePublicanSetParam } from "./publican"
+import { handleCCPoolCreated } from "./ccpFactory"
 
 export {
   handleDeployProxy,
@@ -24,4 +25,5 @@ export {
   handleRedoAuction,
   handleAuctionSetParam,
   handlePublicanSetParam,
+  handleCCPoolCreated,
 }

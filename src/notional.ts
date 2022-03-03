@@ -33,10 +33,7 @@ function getMarketTenor(maturity: BigInt, blockTime: BigInt): BigInt {
   for (let i = 1; i <= MAX_TRADED_MARKET_INDEX; i++) {
       let tadeMarket = getTradedMarket(i);
       let marketMaturity = tRef.plus(BigInt.fromI32(tadeMarket));
-      // If market matches then is not idiosyncratic
       if (marketMaturity.equals(maturity)) return BigInt.fromI32(tadeMarket);
-      // // Returns the market that is immediately greater than the maturity
-      // if (marketMaturity.gt(maturity)) return 0;
   }
 
   return BigInt.fromI32(0)
