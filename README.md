@@ -1,6 +1,6 @@
-# FIAT LUX Subgraph
+# FIAT Subgraph
 
-Collection of Subgraphs to support the usage of FIAT LUX protocols.
+Subgraph for the FIAT smart contract system
 
 Hosted Subgraph: [TODO]()
 
