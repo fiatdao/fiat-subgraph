@@ -2,7 +2,9 @@
 
 Subgraph for the FIAT smart contract system
 
-Hosted Subgraph: [TODO]()
+Hosted Subgraphs: 
+- [Mainnet](https://thegraph.com/hosted-service/subgraph/fiatdao/protocol-subgraph)
+- [Goerli Testnet](https://thegraph.com/hosted-service/subgraph/fiatdao/protocol-subgraph-goerli)
 
 ## Running Local Graph Node
 
