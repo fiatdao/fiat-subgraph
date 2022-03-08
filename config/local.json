@@ -1,6 +1,6 @@
 {
   "network": "goerli",
-  "description": "FIAT LUX Graph (goerli)",
+  "description": "Subgraph for the FIAT smart contract system (goerli)",
   "startBlock": 6061940,
   "PRBProxyFactory": "0x4873EdD9246595b52AF0DE6349327ec13775dbD1",
   "Codex": "0xdB85ee14BD31558C9620da98565622912E725958",

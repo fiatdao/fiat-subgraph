@@ -1,6 +1,6 @@
 import { BigInt, Address, Bytes, ethereum } from '@graphprotocol/graph-ts';
-import { RedoAuction, StartAuction, StopAuction, TakeCollateral, SetParam, CollateralAuction, UpdateAuctionDebtFloor } from "../generated/CollateralAuction/CollateralAuction";
-import { Collateral, UserAuction, Vault } from "../generated/schema";
+import { RedoAuction, StartAuction, StopAuction, TakeCollateral, SetParam, CollateralAuction as CollateralAuctionContract, UpdateAuctionDebtFloor } from "../generated/CollateralAuction/CollateralAuction";
+import { CollateralType, CollateralAuction, Vault } from "../generated/schema";
 import { createCollateralIfNonExistent } from "./collaterals";
 import { createVaultIfNonExistent } from "./vault/vaults";
 import { isActiveAuction } from "./utils";
@@ -9,10 +9,10 @@ const VAULT_PARAMS = ['multiplier','maxAuctionDuration','maxDiscount'];
 
 export function handleStartAuction(event: StartAuction): void {
   let vault = createVaultIfNonExistent(event.params.vault.toHexString());
-  let collateral = createCollateralIfNonExistent(vault, event.params.tokenId.toString());
-  createUserAuctionIfNonExistent(
+  let collateralType = createCollateralIfNonExistent(vault, event.params.tokenId.toString());
+  createCollateralAuctionIfNonExistent(
     vault,
-    collateral,
+    collateralType,
     event.params.auctionId,
     event.params.startPrice,
     event.params.debt,
@@ -24,9 +24,9 @@ export function handleStartAuction(event: StartAuction): void {
   );
 }
 
-export function createUserAuctionIfNonExistent(
+export function createCollateralAuctionIfNonExistent(
   vault: Vault,
-  collateral: Collateral,
+  collateralType: CollateralType,
   auctionId: BigInt,
   startPrice: BigInt,
   debt: BigInt,
@@ -35,37 +35,37 @@ export function createUserAuctionIfNonExistent(
   user: Address,
   keeper: Address,
   tip: BigInt
-): UserAuction {
+): CollateralAuction {
 
-  let userAuction = UserAuction.load(auctionId.toString());
-  if (!userAuction) {
-    userAuction = new UserAuction(auctionId.toString());
-    userAuction.auctionId = auctionId;
-    userAuction.startPrice = startPrice;
-    userAuction.debt = debt;
-    userAuction.collateralToSell = collateralToSell;
-    userAuction.vault = vault.id;
-    userAuction.vaultName = vault.name;
-    userAuction.tokenId = tokenId;
-    userAuction.collateral = collateral.id
-    userAuction.user = user;
-    userAuction.keeper = keeper;
-    userAuction.tip = tip;
-    userAuction.isActive = true;
-    userAuction.save();
+  let collateralAuction = CollateralAuction.load(auctionId.toString());
+  if (!collateralAuction) {
+    collateralAuction = new CollateralAuction(auctionId.toString());
+    collateralAuction.auctionId = auctionId;
+    collateralAuction.startPrice = startPrice;
+    collateralAuction.debt = debt;
+    collateralAuction.collateralToSell = collateralToSell;
+    collateralAuction.vault = vault.id;
+    collateralAuction.vaultName = vault.name;
+    collateralAuction.tokenId = tokenId;
+    collateralAuction.collateralType = collateralType.id
+    collateralAuction.user = user;
+    collateralAuction.keeper = keeper;
+    collateralAuction.tip = tip;
+    collateralAuction.isActive = true;
+    collateralAuction.save();
   }
-  return userAuction as UserAuction;
+  return collateralAuction as CollateralAuction;
 }
 
 export function handleTakeCollateral(event: TakeCollateral): void {
   let auctionId = event.params.auctionId;
   setAuctionActive(auctionId);
 
-  let userAuction = UserAuction.load(auctionId.toString());
-  if (userAuction) {
-    userAuction.debt = event.params.debt;
-    userAuction.collateralToSell = event.params.collateralToSell;
-    userAuction.save();
+  let collateralAuction = CollateralAuction.load(auctionId.toString());
+  if (collateralAuction) {
+    collateralAuction.debt = event.params.debt;
+    collateralAuction.collateralToSell = event.params.collateralToSell;
+    collateralAuction.save();
   }
 }
 
@@ -74,20 +74,20 @@ export function handleStopAuction(event: StopAuction): void {
 }
 
 function setAuctionActive(auctionId: BigInt): void {
-  let userAuction = UserAuction.load(auctionId.toString());
-  if (userAuction) {
-    userAuction.isActive = isActiveAuction(auctionId);
-    userAuction.save();
+  let collateralAuction = CollateralAuction.load(auctionId.toString());
+  if (collateralAuction) {
+    collateralAuction.isActive = isActiveAuction(auctionId);
+    collateralAuction.save();
   }
 }
 
 // this events modifies the following properties: startsAt, startPrice, keeper, tip
 export function handleRedoAuction(event: RedoAuction): void {
   let vault = createVaultIfNonExistent(event.params.vault.toHexString());
-  let collateral = createCollateralIfNonExistent(vault, event.params.tokenId.toString());
-  let auction = createUserAuctionIfNonExistent(
+  let collateralType = createCollateralIfNonExistent(vault, event.params.tokenId.toString());
+  let auction = createCollateralAuctionIfNonExistent(
     vault,
-    collateral,
+    collateralType,
     event.params.auctionId,
     event.params.startPrice,
     event.params.debt,
@@ -112,7 +112,7 @@ export function handleAuctionSetParam(event: SetParam): void {
     let params = ethereum.decode('(address,bytes32,address)', dataWithoutFunctionSelector)!.toTuple();
     let vault = createVaultIfNonExistent(params[0].toAddress().toHexString());
 
-    let collateralAuction = CollateralAuction.bind(event.address);
+    let collateralAuction = CollateralAuctionContract.bind(event.address);
     let caVault = collateralAuction.try_vaults(params[0].toAddress());
     if (!caVault.reverted) {
       vault.multiplier = caVault.value.value0;
