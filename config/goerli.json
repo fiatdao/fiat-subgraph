@@ -2,16 +2,16 @@
   "network": "goerli",
   "description": "FIAT LUX Graph (goerli)",
   "startBlock": 6378347,
-  "PRBProxyFactory": "0x4873EdD9246595b52AF0DE6349327ec13775dbD1",
-  "Codex": "0xdB85ee14BD31558C9620da98565622912E725958",
-  "Collybus": "0x4B1002aB18D7Ea45125D6F908B3A13f947C3FBF9",
-  "Fiat": "0xf4054D739592A28559b37D5950B62a18e5ec73DB",
+  "PRBProxyFactory": "0x87ca60e2c2545ae94c9fb850daf670a91685933d",
+  "Codex": "0x46ae7f3b5B9b32231F1e88df806672a182FbdA0C",
+  "Collybus": "0xcaF187fBF3137dA36a10A72c77d1A68a6986B710",
+  "Fiat": "0xeA8B4F3df3b7628A618a06A372EdC310DBdEd950",
   "Vaults": [
     {
       "idx": 1,
       "name": "Element",
       "_comment": "Vault address needs to be lower case",
-      "address": "0x517cd535b96941758469254484c0c0399bb7363a",
+      "address": "0x29810bc0a883dd289ca13c1e24fd71b07a42fe1c",
       "type": "ELEMENT"
     },
     {
@@ -32,8 +32,8 @@
   "VaultNotional": "",
   "Notional": "0xD8229B55bD73c61D840d339491219ec6Fa667B0a",
   "notionalStartBlock": 6362131,
-  "CollateralAuction": "0xfeba478B1a0CE24B86F064B51e489D8e79a41Cf0",
-  "Publican": "0xc6E2fCBEB28Fd981f7CB79f3c81a740595725975",
+  "CollateralAuction": "0x0978DaA4Bf9AA2A99021b672f955F16d8caD590a",
+  "Publican": "0x678728f228333Ca158Df3128f62DAd012BB5314C",
   "ConvergentCurvePoolFactory": "0x0766B218517d9dC198155f0dC3485270cF788aF7",
   "ccpStartBlock": 4752668
 }
