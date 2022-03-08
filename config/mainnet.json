@@ -1,6 +1,6 @@
 {
   "network": "mainnet",
-  "description": "FIAT LUX Graph",
+  "description": "Subgraph for the FIAT smart contract system",
   "startBlock": 13542270,
   "PRBProxyFactory": "",
   "Codex": "",

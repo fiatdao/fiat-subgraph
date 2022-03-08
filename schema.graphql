@@ -73,7 +73,7 @@ type Position @entity {
   id: ID!
   vault: Vault
   vaultName: String
-  collateral: Collateral
+  collateralType: CollateralType
   userPosition: UserPosition!
   userAddress: Bytes!
   totalCollateral: BigInt!
@@ -107,10 +107,10 @@ type Vault @entity {
   auctionDebtFloor: BigInt
 
   positions: [Position!] @derivedFrom(field: "vault")
-  collaterals: [Collateral!] @derivedFrom(field: "vault")
+  collateralTypes: [CollateralType!] @derivedFrom(field: "vault")
 }
 
-type Collateral @entity {
+type CollateralType @entity {
   id: ID!
   tokenId: BigInt
   address: Bytes
@@ -150,7 +150,7 @@ type UserPosition @entity {
   positions: [Position!] @derivedFrom(field: "userPosition")
 }
 
-type FiatData @entity {
+type Fiat @entity {
   id: ID!
   address: Bytes
   minted: BigInt
@@ -158,7 +158,7 @@ type FiatData @entity {
   totalSupply: BigInt
 }
 
-type UserAuction @entity {
+type CollateralAuction @entity {
   id: ID!
   # Contract Generated Id
   auctionId: BigInt
@@ -171,7 +171,7 @@ type UserAuction @entity {
   vaultName: String
   # TokenId of the liquidated Positions collateral
   tokenId: BigInt
-  collateral: Collateral
+  collateralType: CollateralType
   # Owner of the liquidated Position
   user: Bytes
   # Auction start time

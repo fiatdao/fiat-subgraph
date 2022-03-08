@@ -1,6 +1,6 @@
 {
   "network": "kovan",
-  "description": "FIAT LUX Graph (kovan)",
+  "description": "Subgraph for the FIAT smart contract system (kovan)",
   "startBlock": 27189640,
   "PRBProxyFactory": "0x4873EdD9246595b52AF0DE6349327ec13775dbD1",
   "Codex": "0x3a94fa8fadbc48d6c4f44149a8b9f668bd510066",
