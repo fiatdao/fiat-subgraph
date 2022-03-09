@@ -105,12 +105,16 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - FiatData
+        - FiatTokenBalance
+        - FiatTokenAllowance
       abis:
         - name: Fiat
           file: ./abis/Fiat.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleFiatTransfer
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleFiatApprovals
       file: ./src/mappings.ts
   - kind: ethereum/contract
     name: Collybus

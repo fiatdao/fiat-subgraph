@@ -158,6 +158,19 @@ type Fiat @entity {
   totalSupply: BigInt
 }
 
+type FiatTokenAllowance @entity {
+  id: ID!
+  owner: Bytes
+  spender: Bytes
+  amount: BigInt
+}
+
+type FiatTokenBalance @entity {
+  id: ID!
+  address: Bytes
+  balance: BigInt
+}
+
 type CollateralAuction @entity {
   id: ID!
   # Contract Generated Id
