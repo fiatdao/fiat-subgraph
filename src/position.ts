@@ -1,6 +1,6 @@
 import { Bytes, BigInt, Address } from "@graphprotocol/graph-ts";
 import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt } from "../generated/Codex/Codex";
-import { CollateralType, ConfiscateCollateralAndDebtAction, ModifyCollateralAndDebtAction, Position, TransferCollateralAndDebtAction, UserPosition, Vault } from "../generated/schema";
+import { CollateralType, ConfiscateCollateralAndDebtAction, ModifyCollateralAndDebtAction, Position, TransferCollateralAndDebtAction, UserPositions, Vault } from "../generated/schema";
 import { createCollateralIfNonExistent, updateCollateral } from "./collaterals";
 import { getMaturity, getPosition } from "./utils";
 import { createVaultIfNonExistent } from "./vault/vaults";
@@ -15,16 +15,16 @@ export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): v
   let deltaNormalDebt = event.params.deltaNormalDebt;
   let vault = createVaultIfNonExistent(vaultAddress.toHexString());
   let collateralType = createCollateralIfNonExistent(vault, tokenId.toString());
-  let userPosition = createUserPositionIfNonExistent(user);
+  let userPositions = createUserPositionsIfNonExistent(user);
   let position = createPositionIfNonExistent(
     vault,
     collateralType,
-    userPosition,
+    userPositions,
   );
 
   createModifyAction(position, event);
 
-  updateUserPosition(userPosition, deltaNormalDebt);
+  updateUserPositions(userPositions, deltaNormalDebt);
 
   updateCollateral(collateralType, deltaCollateral);
 }
@@ -32,12 +32,12 @@ export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): v
 export function createPositionIfNonExistent(
   vault: Vault,
   collateralType: CollateralType,
-  userPosition: UserPosition,
+  userPositions: UserPositions,
   ): Position {
-  let userPositionAddress = userPosition.id;
+  let userPositionsAddress = userPositions.id;
   let tokenId = collateralType.tokenId;
-  let currentPosition = getPosition(changetype<Address>(vault.address!), tokenId!, Address.fromString(userPositionAddress));
-  let id = vault.address!.toHexString() + "-" + tokenId!.toHexString() + "-" + userPositionAddress;
+  let currentPosition = getPosition(changetype<Address>(vault.address!), tokenId!, Address.fromString(userPositionsAddress));
+  let id = vault.address!.toHexString() + "-" + tokenId!.toHexString() + "-" + userPositionsAddress;
 
   let position = Position.load(id);
   if (position == null) {
@@ -45,8 +45,8 @@ export function createPositionIfNonExistent(
     position.vault = vault.id;
     position.vaultName = vault.name;
     position.collateralType = collateralType.id;
-    position.userPosition = userPositionAddress;
-    position.userAddress = Address.fromString(userPositionAddress);
+    position.userPositions = userPositionsAddress;
+    position.owner = Address.fromString(userPositionsAddress);
   }
   position.totalCollateral = currentPosition!.value0;
   position.totalNormalDebt = currentPosition!.value1;
@@ -112,23 +112,23 @@ export function createConfiscateEvent(position: Position, event: ConfiscateColla
   confiscateAction.save();
 }
 
-export function createUserPositionIfNonExistent(userAddress: Bytes): UserPosition {
-  let id = userAddress.toHexString();
-  let userPosition = UserPosition.load(id);
+export function createUserPositionsIfNonExistent(owner: Bytes): UserPositions {
+  let id = owner.toHexString();
+  let userPositions = UserPositions.load(id);
 
-  if (userPosition == null) {
-    userPosition = new UserPosition(id);
-    userPosition.totalCollateral = BigInt.fromI32(0);
-    userPosition.totalFIAT = BigInt.fromI32(0);
-    userPosition.userAddress = userAddress;
-    userPosition.save();
+  if (userPositions == null) {
+    userPositions = new UserPositions(id);
+    userPositions.totalCollateral = BigInt.fromI32(0);
+    userPositions.totalFIAT = BigInt.fromI32(0);
+    userPositions.owner = owner;
+    userPositions.save();
   }
-  return userPosition as UserPosition;
+  return userPositions as UserPositions;
 }
 
-export function updateUserPosition(userPosition: UserPosition, deltaFiat: BigInt): void {
-  userPosition.totalFIAT = userPosition.totalFIAT!.plus(deltaFiat);
-  userPosition.save();
+export function updateUserPosition(userPositions: UserPositions, deltaFiat: BigInt): void {
+  userPositions.totalFIAT = userPositions.totalFIAT!.plus(deltaFiat);
+  userPositions.save();
 }
 
 export function handleTransferCollateralAndDebt(event: TransferCollateralAndDebt): void {
@@ -138,17 +138,17 @@ export function handleTransferCollateralAndDebt(event: TransferCollateralAndDebt
   let userDst = event.params.dst;
   let vault = createVaultIfNonExistent(vaultAddress.toHexString());
   let collateralType = createCollateralIfNonExistent(vault, tokenId.toString());
-  let userPositionSrc = createUserPositionIfNonExistent(userSrc);
-  let userPositionDst = createUserPositionIfNonExistent(userDst);
+  let userPositionsSrc = createUserPositionsIfNonExistent(userSrc);
+  let userPositionsDst = createUserPositionsIfNonExistent(userDst);
   let positionSrc = createPositionIfNonExistent(
     vault,
     collateralType,
-    userPositionSrc,
+    userPositionsSrc,
   );
   let positionDst = createPositionIfNonExistent(
     vault,
     collateralType,
-    userPositionDst,
+    userPositionsDst,
   );
 
   createTransferEvent(positionSrc, event);
@@ -161,11 +161,11 @@ export function handleConfiscateCollateralAndDebt(event: ConfiscateCollateralAnd
   let user = event.params.user;
   let vault = createVaultIfNonExistent(vaultAddress.toHexString());
   let collateralType = createCollateralIfNonExistent(vault, tokenId.toString());
-  let userPosition = createUserPositionIfNonExistent(user);
+  let userPositions = createUserPositionsIfNonExistent(user);
   let position = createPositionIfNonExistent(
     vault,
     collateralType,
-    userPosition,
+    userPositions,
   );
 
   createConfiscateEvent(position, event);

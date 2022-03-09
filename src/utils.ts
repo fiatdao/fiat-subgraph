@@ -3,13 +3,13 @@ import { Codex, Codex__positionsResult } from "../generated/Codex/Codex";
 import { Collybus } from "../generated/Codex/Collybus";
 import { IVault } from "../generated/Codex/IVault";
 import { CollateralAuction } from "../generated/CollateralAuction/CollateralAuction";
-import { Fiat } from "../generated/Fiat/Fiat";
+import { FIAT } from "../generated/Fiat/Fiat";
 import { ERC20 } from "../generated/Notional/ERC20";
 import { COLLYBUS_ADDRESS, CODEX_ADDRESS, FIAT_ADDRESS, COLLATERAL_AUCTION_ADDRESS } from "./constants";
 
 let codex = Codex.bind(Address.fromString(CODEX_ADDRESS));
 let collybus = Collybus.bind(Address.fromString(COLLYBUS_ADDRESS));
-let fiat = Fiat.bind(Address.fromString(FIAT_ADDRESS));
+let fiat = FIAT.bind(Address.fromString(FIAT_ADDRESS));
 let collateralAuction = CollateralAuction.bind(Address.fromString(COLLATERAL_AUCTION_ADDRESS));
 
 export let WAD = BigInt.fromI64(1000000000000000000);
@@ -26,8 +26,8 @@ export function min(a: BigInt | null, b: BigInt): BigInt {
   return a < b ? a as BigInt : b;
 }
 
-export function getPosition(vault: Address, tokenId: BigInt, userAddress: Address): Codex__positionsResult | null {
-  let position = codex.try_positions(vault, tokenId, userAddress);
+export function getPosition(vault: Address, tokenId: BigInt, owner: Address): Codex__positionsResult | null {
+  let position = codex.try_positions(vault, tokenId, owner);
   if (!position.reverted) {
     return position.value;
   }
