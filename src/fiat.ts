@@ -11,17 +11,28 @@ export function handleFiatTransfer(event: Transfer): void {
   let balanceFrom = createFiatTokenBalanceIfNonExistent(fromAddress);
   let balanceTo = createFiatTokenBalanceIfNonExistent(toAddress);
 
+  // Checking if the event that is coming is from mint() 
   if (isMintOperation(fromAddress, toAddress)) {
     fiat.minted = fiat.minted!.plus(amount);
     balanceTo.balance = balanceTo.balance!.plus(amount);
-  } else { // If it's not mint() this is transferFrom() and burn() case
+  }
+  // Checking if the even that is coming is from burn() 
+  if (isBurnOperation(fromAddress, toAddress)) {
     fiat.burned = fiat.burned!.plus(amount);
-    balanceFrom.balance = balanceFrom.balance!.minus(amount)
+    balanceFrom.balance = balanceFrom.balance!.minus(amount);
 
-    // On the transferFrom() and burn() we perform allowance changes as well:
+    // On the burn() we perform allowance changes as well:
+    // we load the entity if we have it, otherwise we create it, and save the incoming amount
     let to = event.transaction.from // message sender
-    // we load the entity if we have it, otherwise we create it, and save the changed amount
     createFiatTokenAllowanceIfNonExistent(fromAddress, to, amount)
+  } else { // If it's not mint() or burn(), it is from transferFrom()
+    balanceFrom.balance = balanceFrom.balance.minus(amount);
+    balanceTo.balance = balanceTo.balance.plus(amount);
+
+    // On the transferFrom() we perform allowance changes as well:
+    // we load the entity if we have it, otherwise we create it, and save the incoming amount
+    let to = event.transaction.from // message sender
+    createFiatTokenAllowanceIfNonExistent(fromAddress, to, amount);
   }
 
   fiat.totalSupply = getTotalSupply();
@@ -61,6 +72,10 @@ export function createFiatIfNonExistent(address: Address): Fiat {
 
 export function isMintOperation(from: Address, to: Address): boolean {
   return from.equals(ZERO_ADDRESS) && !to.equals(ZERO_ADDRESS);
+}
+
+export function isBurnOperation(from: Address, to: Address): boolean {
+  return from.notEqual(ZERO_ADDRESS) && to.equals(ZERO_ADDRESS);
 }
 
 export function handleFiatApprovals(event: Approval): void {
