@@ -9,7 +9,7 @@
   "Vaults": [
     {
       "idx": 1,
-      "name": "Notional",
+      "name": "Notional Finance fCash Vault",
       "address": "0x8456841bEd14F9B566B72837AdE1C844DD6B7f73",
       "type": "NOTIONAL"
     }

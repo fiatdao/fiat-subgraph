@@ -9,19 +9,19 @@
   "Vaults": [
     {
       "idx": 1,
-      "name": "Element",
+      "name": "Element Finance pToken Vault",
       "address": "0x517cD535B96941758469254484C0c0399Bb7363A",
       "type": "ELEMENT"
     },
     {
       "idx": 2,
-      "name": "BarnBridge",
+      "name": "BarnBridge Smart Yield Vault",
       "address": "",
       "type": "BARNBRIDGE"
     },
     {
       "idx": 3,
-      "name": "Notional",
+      "name": "Notional Finance fCash Vault",
       "address": "",
       "type": "NOTIONAL"
     }

@@ -9,21 +9,21 @@
   "Vaults": [
     {
       "idx": 1,
-      "name": "Element",
+      "name": "Element Finance pToken Vault",
       "_comment": "Vault address needs to be lower case",
       "address": "0x29810bc0a883dd289ca13c1e24fd71b07a42fe1c",
       "type": "ELEMENT"
     },
     {
       "idx": 2,
-      "name": "BarnBridge",
+      "name": "BarnBridge Smart Yield Vault",
       "_comment": "Vault address needs to be lower case",
       "address": "",
       "type": "BARNBRIDGE"
     },
     {
       "idx": 3,
-      "name": "Notional",
+      "name": "Notional Finance fCash Vault",
       "_comment": "Vault address needs to be lower case",
       "address": "",
       "type": "NOTIONAL"
