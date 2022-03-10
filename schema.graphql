@@ -1,7 +1,7 @@
 type UserProxy @entity {
   id: ID!
   proxyAddress: Bytes!
-  userAddress: Bytes!
+  owner: Bytes!
 }
 
 interface PositionTransactionAction {
@@ -74,8 +74,8 @@ type Position @entity {
   vault: Vault
   vaultName: String
   collateralType: CollateralType
-  userPosition: UserPosition!
-  userAddress: Bytes!
+  userPositions: UserPositions!
+  owner: Bytes!
   totalCollateral: BigInt!
   totalNormalDebt: BigInt!
   maturity: BigInt
@@ -141,21 +141,33 @@ type CCP @entity {
 
 }
 
-
-type UserPosition @entity {
+type UserPositions @entity {
   id: ID!
-  userAddress: Bytes
+  owner: Bytes
   totalCollateral: BigInt
   totalFIAT: BigInt
-  positions: [Position!] @derivedFrom(field: "userPosition")
+  positions: [Position!] @derivedFrom(field: "userPositions")
 }
 
-type Fiat @entity {
+type FIAT @entity {
   id: ID!
   address: Bytes
   minted: BigInt
   burned: BigInt
   totalSupply: BigInt
+}
+
+type FIATTokenAllowance @entity {
+  id: ID!
+  owner: Bytes
+  spender: Bytes
+  amount: BigInt
+}
+
+type FIATTokenBalance @entity {
+  id: ID!
+  address: Bytes
+  balance: BigInt
 }
 
 type CollateralAuction @entity {

@@ -38,8 +38,8 @@ dataSources:
       entities:
         - Position
         - PositionTransaction
-        - Collateral
-        - FiatData
+        - CollateralType
+        - FIAT
       abis:
         - name: Codex
           file: ./abis/Codex.json
@@ -47,7 +47,7 @@ dataSources:
           file: ./abis/Collybus.json
         - name: IVault
           file: ./abis/IVault.json
-        - name: Fiat
+        - name: FIAT
           file: ./abis/Fiat.json
         - name: ERC20
           file: ./abis/ERC20.json
@@ -75,7 +75,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Vault
-        - Collateral
+        - CollateralType
       abis:
         - name: Notional
           file: ./abis/Notional.json
@@ -93,24 +93,28 @@ dataSources:
       file: ./src/mappings.ts
   {{/Notional}}
   - kind: ethereum/contract
-    name: Fiat
+    name: FIAT
     network: {{network}}
     source:
-      address: '{{Fiat}}'
-      abi: Fiat
+      address: '{{FIAT}}'
+      abi: FIAT
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - FiatData
+        - FIAT
+        - FIATTokenBalance
+        - FIATTokenAllowance
       abis:
-        - name: Fiat
+        - name: FIAT
           file: ./abis/Fiat.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleFiatTransfer
+          handler: handleFIATTransfer
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleFIATApprovals
       file: ./src/mappings.ts
   - kind: ethereum/contract
     name: Collybus
@@ -151,7 +155,7 @@ dataSources:
       entities:
         - CollateralAuction
         - Vault
-        - Collateral
+        - CollateralType
         - UserProxy
       abis:
         - name: CollateralAuction
@@ -208,7 +212,7 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - Collateral
+        - CollateralType
       abis:
         - name: CCPFactory
           file: ./abis/CCPFactory.json

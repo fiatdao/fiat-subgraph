@@ -2,10 +2,11 @@ import { handleDeployProxy } from "./userProxy"
 import {
   handleModifyCollateralAndDebt,
   handleTransferCollateralAndDebt,
-  handleConfiscateCollateralAndDebt } from "./position"
+  handleConfiscateCollateralAndDebt
+} from "./position"
 import { handleVaultInit, handleCollybusSetParam } from "./vault/vaults"
 import { handleMarketsInitialized } from "./notional"
-import { handleFiatTransfer } from "./fiat"
+import { handleFIATTransfer, handleFIATApprovals } from "./fiat"
 import { handleStartAuction, handleTakeCollateral, handleStopAuction, handleRedoAuction, handleAuctionSetParam } from "./auctions"
 import { handlePublicanSetParam } from "./publican"
 import { handleCCPoolCreated } from "./ccpFactory"
@@ -17,7 +18,8 @@ export {
   handleConfiscateCollateralAndDebt,
   handleVaultInit,
   handleMarketsInitialized,
-  handleFiatTransfer,
+  handleFIATTransfer,
+  handleFIATApprovals,
   handleCollybusSetParam,
   handleStartAuction,
   handleTakeCollateral,
