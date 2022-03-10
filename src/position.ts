@@ -126,7 +126,7 @@ export function createUserPositionsIfNonExistent(owner: Bytes): UserPositions {
   return userPositions as UserPositions;
 }
 
-export function updateUserPosition(userPositions: UserPositions, deltaFiat: BigInt): void {
+export function updateUserPositions(userPositions: UserPositions, deltaFiat: BigInt): void {
   userPositions.totalFIAT = userPositions.totalFIAT!.plus(deltaFiat);
   userPositions.save();
 }

@@ -1,6 +1,10 @@
 # FIAT Subgraph
 
-Subgraph for the FIAT smart contract system
+Subgraph for the FIAT smart contract system indexing:
+- Auctions
+- Collaterals
+- Balance and Allowances
+- Positions
 
 Hosted Subgraphs: 
 - [Mainnet](https://thegraph.com/hosted-service/subgraph/fiatdao/protocol-subgraph)
@@ -29,7 +33,7 @@ There are `npm scripts` for all the stages of subgraph development.
 > F.e if you want to deploy locally the mainnet config, edit env `NETWORK_CONFIG=mainnet.json` and execute: `npm run deploy:local`
 
 ## Supported APIs
-
+- [x] FIAT erc20 functionalities
 - [x] PRB Proxies for UserProxies
 - [x] Codex for Positions and PositionTransactions
 - [x] Codex for supported Vaults
