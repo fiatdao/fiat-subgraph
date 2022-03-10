@@ -17,14 +17,14 @@ export function handleFIATTransfer(event: Transfer): void {
     balanceTo.balance = balanceTo.balance!.plus(amount);
   }
   // Checking if the even that is coming is from burn() 
-  if (isBurnOperation(fromAddress, toAddress)) {
+  else if (isBurnOperation(fromAddress, toAddress)) {
     fiat.burned = fiat.burned!.plus(amount);
     balanceFrom.balance = balanceFrom.balance!.minus(amount);
 
     // On the burn() we perform allowance changes as well:
     // we load the entity if we have it, otherwise we create it, and save the incoming amount
-    let to = event.transaction.from // message sender
-    createFIATTokenAllowanceIfNonExistent(fromAddress, to, amount)
+    let to = event.transaction.from; // message sender
+    createFIATTokenAllowanceIfNonExistent(fromAddress, to, amount);
   } else { // If it's not mint() or burn(), it is from transferFrom()
     balanceFrom.balance = balanceFrom.balance.minus(amount);
     balanceTo.balance = balanceTo.balance.plus(amount);
@@ -43,16 +43,18 @@ export function handleFIATTransfer(event: Transfer): void {
 }
 
 export function createFIATTokenBalanceIfNonExistent(address: Address): FIATTokenBalance {
-  let id = address.toHexString();
-  let fiatTokenBalance = FIATTokenBalance.load(id);
+  if (address.notEqual(ZERO_ADDRESS)) {
+    let id = address.toHexString();
+    let fiatTokenBalance = FIATTokenBalance.load(id);
 
-  if (!fiatTokenBalance) {
-    fiatTokenBalance = new FIATTokenBalance(id);
-    fiatTokenBalance.address = address;
-    fiatTokenBalance.balance = BIGINT_ZERO;
-    fiatTokenBalance.save();
+    if (!fiatTokenBalance) {
+      fiatTokenBalance = new FIATTokenBalance(id);
+      fiatTokenBalance.address = address;
+      fiatTokenBalance.balance = BIGINT_ZERO;
+      fiatTokenBalance.save();
+    }
+    return fiatTokenBalance as FIATTokenBalance;
   }
-  return fiatTokenBalance as FIATTokenBalance;
 }
 
 export function createFIATIfNonExistent(address: Address): FIAT {

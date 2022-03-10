@@ -141,7 +141,6 @@ type CCP @entity {
 
 }
 
-
 type UserPositions @entity {
   id: ID!
   owner: Bytes
