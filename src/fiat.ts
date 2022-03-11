@@ -18,6 +18,7 @@ export function handleFIATTransfer(event: Transfer): void {
     fiat.burned = fiat.burned!.plus(amount);
   }
 
+  fiat.totalSupply = getTotalSupply()
   fiat.save();
 
   // Getting balance of the two addresses and saving them in their entities
@@ -36,7 +37,7 @@ export function createFIATIfNonExistent(address: Address): FIAT {
     fiat.address = address;
     fiat.burned = BIGINT_ZERO;
     fiat.minted = BIGINT_ZERO;
-    fiat.totalSupply = getTotalSupply();
+    fiat.totalSupply = BIGINT_ZERO;
     fiat.save();
   }
   return fiat as FIAT;
@@ -50,9 +51,9 @@ export function createFIATTokenBalanceIfNonExistent(address: Address, balance: B
     if (!fiatTokenBalance) {
       fiatTokenBalance = new FIATTokenBalance(id);
       fiatTokenBalance.address = address;
-      fiatTokenBalance.save();
     }
     fiatTokenBalance.balance = balance;
+    fiatTokenBalance.save();
   }
 }
 
