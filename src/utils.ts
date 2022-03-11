@@ -74,7 +74,7 @@ export function getCurrentValue(
   underlierAddress: Address,
   tokenId: BigInt,
   maturity: BigInt,
-  net: boolean=false): BigInt | null {
+  net: boolean = false): BigInt | null {
   let currentValue = collybus.try_read(
     vault,
     underlierAddress,
@@ -88,6 +88,14 @@ export function getCurrentValue(
   return null;
 }
 
+export function getBalance(address: Address): BigInt {
+  let balance = fiat.try_balanceOf(address);
+  if (!balance.reverted) {
+    return balance.value;
+  }
+  return BIGINT_ZERO;
+}
+
 export function getTotalSupply(): BigInt {
   let totalSupply = fiat.try_totalSupply();
   if (!totalSupply.reverted) {
@@ -98,12 +106,12 @@ export function getTotalSupply(): BigInt {
 
 export function getSymbol(address: Address | null): string {
   if (address !== null) {
-      let erc20 = ERC20.bind(address);
-      let symbol = erc20.try_symbol();
+    let erc20 = ERC20.bind(address);
+    let symbol = erc20.try_symbol();
 
-      if (!symbol.reverted) {
-        return symbol.value;
-      }
+    if (!symbol.reverted) {
+      return symbol.value;
+    }
   }
   return "";
 }
