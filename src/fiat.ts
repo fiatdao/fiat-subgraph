@@ -18,7 +18,7 @@ export function handleFIATTransfer(event: Transfer): void {
     fiat.burned = fiat.burned!.plus(amount);
   }
 
-  fiat.totalSupply = getTotalSupply()
+  fiat.totalSupply = getTotalSupply();
   fiat.save();
 
   // Getting balance of the two addresses and saving them in their entities

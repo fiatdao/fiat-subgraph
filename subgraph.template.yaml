@@ -129,6 +129,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Collybus
+        - CollybusSpot
         - Vault
       abis:
         - name: Collybus
@@ -140,6 +141,8 @@ dataSources:
       eventHandlers:
         - event: SetParam(indexed address,indexed bytes32,uint256)
           handler: handleCollybusSetParam
+        - event: UpdateSpot(indexed address,uint256)
+          handler: handlerCollybusUpdateSpot
       file: ./src/mappings.ts
   - kind: ethereum/contract
     name: CollateralAuction

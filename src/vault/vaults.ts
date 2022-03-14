@@ -1,6 +1,5 @@
 import { Address } from "@graphprotocol/graph-ts";
 import { Init } from "../../generated/Codex/Codex";
-import { SetParam1 } from "../../generated/Codex/Collybus";
 import { Vault } from "../../generated/schema";
 import { createCollateralIfNecessary } from "../collaterals";
 import { BIGINT_ZERO, WAD, getCollateralizationRatio } from "../utils";
@@ -33,11 +32,4 @@ export function createVaultIfNonExistent(vaultAddress: string): Vault {
     vault.save();
   }
   return vault as Vault;
-}
-
-export function handleCollybusSetParam(setParam: SetParam1): void {
-  let vaultAddress = setParam.params.vault;
-  let vault = createVaultIfNonExistent(vaultAddress.toHexString());
-  vault.collateralizationRatio = getCollateralizationRatio(vaultAddress);
-  vault.save();
 }
