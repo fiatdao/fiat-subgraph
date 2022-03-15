@@ -3,7 +3,7 @@ import { Codex, Codex__positionsResult } from "../generated/Codex/Codex";
 import { Collybus } from "../generated/Codex/Collybus";
 import { IVault } from "../generated/Codex/IVault";
 import { CollateralAuction } from "../generated/CollateralAuction/CollateralAuction";
-import { FIAT } from "../generated/Fiat/Fiat";
+import { FIAT } from "../generated/FIAT/FIAT";
 import { ERC20 } from "../generated/Notional/ERC20";
 import { COLLYBUS_ADDRESS, CODEX_ADDRESS, FIAT_ADDRESS, COLLATERAL_AUCTION_ADDRESS } from "./constants";
 
