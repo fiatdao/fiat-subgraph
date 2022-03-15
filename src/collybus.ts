@@ -1,8 +1,8 @@
 import { SetParam1, UpdateSpot } from "../generated/Codex/Collybus";
 import { createVaultIfNonExistent } from "./vault/vaults";
 import { getCollateralizationRatio } from "./utils";
-import { CollybusSpot, Collybus } from "../generated/schema"
-import { Address, BigInt } from "@graphprotocol/graph-ts";
+import { CollybusSpot, Collybus } from "../generated/schema";
+import { Address } from "@graphprotocol/graph-ts";
 
 export function handleCollybusSetParam(setParam: SetParam1): void {
     let vaultAddress = setParam.params.vault;
@@ -21,22 +21,22 @@ export function handlerCollybusUpdateSpot(event: UpdateSpot): void {
     let collybusAddress = event.address;
 
     let collybus = createCollybusIfNonExistent(collybusAddress);
-    let collybusSpot = createCollybusSpotIfNonExistent(spot, token);
+    let collybusSpot = createCollybusSpotIfNonExistent(token);
+    collybusSpot.spot = spot;
     collybusSpot.collybus = collybus.id;
     collybusSpot.save();
 }
 
-function createCollybusSpotIfNonExistent(spot: BigInt, token: Address): CollybusSpot {
+function createCollybusSpotIfNonExistent(token: Address): CollybusSpot {
     let id = token.toHexString();
     let collybusSpot = CollybusSpot.load(id);
 
     if (!collybusSpot) {
         collybusSpot = new CollybusSpot(id);
         collybusSpot.token = token;
-    }
 
-    collybusSpot.spot = spot;
-    collybusSpot.save();
+        collybusSpot.save();
+    }
 
     return collybusSpot;
 }
@@ -49,7 +49,6 @@ function createCollybusIfNonExistent(address: Address): Collybus {
         collybus = new Collybus(id);
         collybus.save();
     }
-
 
     return collybus;
 }
