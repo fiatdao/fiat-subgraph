@@ -2,7 +2,12 @@ import { handleDeployProxy } from "./userProxy"
 import {
   handleModifyCollateralAndDebt,
   handleTransferCollateralAndDebt,
-  handleConfiscateCollateralAndDebt
+  handleConfiscateCollateralAndDebt,
+  handleGrantDelegate,
+  handleRevokeDelegate,
+  handleLock,
+  handleModifyBalance,
+  handleTransferBalance
 } from "./position"
 import { handleVaultInit, handleCollybusSetParam } from "./vault/vaults"
 import { handleMarketsInitialized } from "./notional"
@@ -28,4 +33,9 @@ export {
   handleAuctionSetParam,
   handlePublicanSetParam,
   handleCCPoolCreated,
+  handleGrantDelegate,
+  handleRevokeDelegate,
+  handleLock,
+  handleModifyBalance,
+  handleTransferBalance
 }

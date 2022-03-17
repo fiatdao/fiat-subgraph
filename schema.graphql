@@ -82,6 +82,26 @@ type Position @entity {
   positionTransactions: [PositionTransactionAction!] @derivedFrom(field: "position")
 }
 
+type CodexBalance @entity {
+  id: ID!
+  balance: BigInt
+  vault: Bytes
+  tokenId: BigInt
+  owner: Bytes
+}
+
+type IsCodexAlive @entity {
+  id: ID!
+  isAlive: BigInt
+}
+
+type Delegate @entity {
+  id: ID!
+  delegator: Bytes!
+  delegatee: Bytes!
+  hasDelegate: BigInt
+}
+
 enum VaultType {
   ELEMENT,
   BARNBRIDGE,
@@ -118,6 +138,7 @@ type CollateralType @entity {
   maturity: BigInt
   underlierSymbol: String
   underlierAddress: Bytes
+  underlierScale: BigInt
   vault: Vault
   vaultName: String
   faceValue: BigInt

@@ -38,6 +38,9 @@ dataSources:
       entities:
         - Position
         - PositionTransaction
+        - Delegate
+        - IsCodexAlive
+        - CodexBalance
         - CollateralType
         - FIAT
       abis:
@@ -60,6 +63,16 @@ dataSources:
           handler: handleConfiscateCollateralAndDebt
         - event: Init(indexed address)
           handler: handleVaultInit
+        - event: GrantDelegate(indexed address,indexed address)
+          handler: handleGrantDelegate
+        - event: RevokeDelegate(indexed address,indexed address)
+          handler: handleRevokeDelegate
+        - event: Lock()
+          handler: handleLock
+        - event: ModifyBalance(indexed address,indexed uint256,indexed address,int256,uint256)
+          handler: handleModifyBalance
+        - event: TransferBalance(indexed address,indexed uint256,indexed address,address,uint256,uint256,uint256)
+          handler: handleTransferBalance
       file: ./src/mappings.ts
   {{#Notional}}
   - kind: ethereum/contract
