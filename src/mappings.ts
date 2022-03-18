@@ -7,7 +7,8 @@ import {
   handleRevokeDelegate,
   handleLock,
   handleModifyBalance,
-  handleTransferBalance
+  handleTransferBalance,
+  handleSetParam
 } from "./position"
 import { handleVaultInit, handleCollybusSetParam } from "./vault/vaults"
 import { handleMarketsInitialized } from "./notional"
@@ -37,5 +38,6 @@ export {
   handleRevokeDelegate,
   handleLock,
   handleModifyBalance,
-  handleTransferBalance
+  handleTransferBalance,
+  handleSetParam
 }

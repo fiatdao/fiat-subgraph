@@ -29,6 +29,8 @@ export function createVaultIfNonExistent(vaultAddress: string): Vault {
     vault.maxAuctionDuration = BIGINT_ZERO;
     vault.maxDiscount = BIGINT_ZERO;
     vault.auctionDebtFloor = BIGINT_ZERO;
+    vault.debtCeiling = BIGINT_ZERO;
+    vault.debtFloor = BIGINT_ZERO;
     createCollateralIfNecessary(vault);
     vault.save();
   }

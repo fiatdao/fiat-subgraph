@@ -1,5 +1,5 @@
 import { Bytes, BigInt, Address } from "@graphprotocol/graph-ts";
-import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt, GrantDelegate, RevokeDelegate, Lock, ModifyBalance, TransferBalance } from "../generated/Codex/Codex";
+import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt, GrantDelegate, RevokeDelegate, Lock, ModifyBalance, TransferBalance, SetParam } from "../generated/Codex/Codex";
 import { CollateralType, ConfiscateCollateralAndDebtAction, ModifyCollateralAndDebtAction, Position, TransferCollateralAndDebtAction, UserPositions, Vault, Delegate, IsCodexAlive, CodexBalance } from "../generated/schema";
 import { createCollateralIfNonExistent, updateCollateral } from "./collaterals";
 import { getMaturity, getCodexPosition, getCodexBalance, getDelegates, BIGINT_ZERO } from "./utils";
@@ -257,6 +257,23 @@ export function handleTransferBalance(event: TransferBalance): void {
 
   balanceSrcEntity.save();
   balanceDstEntity.save();
+}
+
+export function handleSetParam(event: SetParam): void {
+  let vaultAddress = event.params.vault;
+  let param = event.params.param;
+  let data = event.params.data;
+
+  let vault = createVaultIfNonExistent(vaultAddress.toHexString());
+
+  if (param.toHexString() == "debtCeiling") {
+    vault.debtCeiling = data;
+  }
+  if (param.toHexString() == "debtFloor") {
+    vault.debtFloor = data;
+  }
+
+  vault.save();
 }
 
 export function handleLock(event: Lock): void {

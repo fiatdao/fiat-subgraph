@@ -115,6 +115,8 @@ type Vault @entity {
   type: VaultType
   collateralizationRatio: BigInt
   interestPerSecond: BigInt
+  debtFloor: BigInt
+  debtCeiling: BigInt
 
   # Auction related data
   # Multiplicative factor to increase start price [wad]
