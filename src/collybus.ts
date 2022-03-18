@@ -1,8 +1,8 @@
-import { SetParam1, UpdateSpot } from "../generated/Codex/Collybus";
+import { SetParam1, UpdateSpot, UpdateDiscountRate } from "../generated/Codex/Collybus";
 import { createVaultIfNonExistent } from "./vault/vaults";
 import { getCollateralizationRatio } from "./utils";
-import { CollybusSpot, Collybus } from "../generated/schema";
-import { Address } from "@graphprotocol/graph-ts";
+import { CollybusSpot, Collybus, CollybusDiscountRates } from "../generated/schema";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
 
 export function handleCollybusSetParam(setParam: SetParam1): void {
     let vaultAddress = setParam.params.vault;
@@ -15,20 +15,34 @@ export function handleCollybusSetParam(setParam: SetParam1): void {
     vault.save();
 }
 
-export function handlerCollybusUpdateSpot(event: UpdateSpot): void {
+export function handleCollybusUpdateSpot(event: UpdateSpot): void {
     let spot = event.params.spot;
     let token = event.params.token;
     let collybusAddress = event.address;
 
     let collybus = createCollybusIfNonExistent(collybusAddress);
-    let collybusSpot = createCollybusSpotIfNonExistent(token);
+    let collybusSpot = createCollybusSpotIfNonExistent(token, collybusAddress);
     collybusSpot.spot = spot;
     collybusSpot.collybus = collybus.id;
     collybusSpot.save();
 }
 
-function createCollybusSpotIfNonExistent(token: Address): CollybusSpot {
-    let id = token.toHexString();
+export function handleDiscountRate(event: UpdateDiscountRate): void {
+    // rateId is from the discount rate feed
+    let rateId = event.params.rateId;
+    let discountRate = event.params.rate;
+    let collybusAddress = event.address;
+
+    let collybus = createCollybusIfNonExistent(collybusAddress);
+    let collybusRate = createCollybusRateIfNonExistent(collybusAddress, rateId);
+    collybusRate.rateId = rateId;
+    collybusRate.discountRate = discountRate;
+    collybusRate.collybus = collybus.id;
+    collybusRate.save();
+}
+
+function createCollybusSpotIfNonExistent(token: Address, collybusAddress: Address): CollybusSpot {
+    let id = collybusAddress.toHexString() + "-" + token.toHexString();
     let collybusSpot = CollybusSpot.load(id);
 
     if (!collybusSpot) {
@@ -38,7 +52,19 @@ function createCollybusSpotIfNonExistent(token: Address): CollybusSpot {
         collybusSpot.save();
     }
 
-    return collybusSpot;
+    return collybusSpot as CollybusSpot;
+}
+
+function createCollybusRateIfNonExistent(collybusAddress: Address, rateId: BigInt): CollybusDiscountRates {
+    let id = collybusAddress.toHexString() + "-" + rateId.toHexString();
+    let collybusRate = CollybusDiscountRates.load(id);
+
+    if (!collybusRate) {
+        collybusRate = new CollybusDiscountRates(id);
+        collybusRate.save();
+    }
+
+    return collybusRate as CollybusDiscountRates;
 }
 
 function createCollybusIfNonExistent(address: Address): Collybus {

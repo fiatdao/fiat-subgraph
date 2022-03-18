@@ -5,7 +5,7 @@ import {
   handleConfiscateCollateralAndDebt
 } from "./position"
 import { handleVaultInit, } from "./vault/vaults"
-import { handleCollybusSetParam, handlerCollybusUpdateSpot} from "./collybus"
+import { handleCollybusSetParam, handleCollybusUpdateSpot, handleDiscountRate } from "./collybus"
 import { handleMarketsInitialized } from "./notional"
 import { handleFIATTransfer, handleFIATApprovals } from "./fiat"
 import { handleStartAuction, handleTakeCollateral, handleStopAuction, handleRedoAuction, handleAuctionSetParam } from "./auctions"
@@ -22,7 +22,8 @@ export {
   handleFIATTransfer,
   handleFIATApprovals,
   handleCollybusSetParam,
-  handlerCollybusUpdateSpot,
+  handleCollybusUpdateSpot,
+  handleDiscountRate,
   handleStartAuction,
   handleTakeCollateral,
   handleStopAuction,

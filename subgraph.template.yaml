@@ -130,6 +130,7 @@ dataSources:
       entities:
         - Collybus
         - CollybusSpot
+        - CollybusDiscountRates
         - Vault
       abis:
         - name: Collybus
@@ -142,7 +143,9 @@ dataSources:
         - event: SetParam(indexed address,indexed bytes32,uint256)
           handler: handleCollybusSetParam
         - event: UpdateSpot(indexed address,uint256)
-          handler: handlerCollybusUpdateSpot
+          handler: handleCollybusUpdateSpot
+        - event: UpdateDiscountRate(indexed uint256,uint256)
+          handler: handleDiscountRate
       file: ./src/mappings.ts
   - kind: ethereum/contract
     name: CollateralAuction

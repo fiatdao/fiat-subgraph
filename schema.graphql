@@ -204,6 +204,10 @@ type Collybus @entity {
  id: ID!
  # One-to-many reverse lookup with CollybusSpot's `collybus` field
  spots: [CollybusSpot!] @derivedFrom(field: "collybus")
+
+ # One-to-many reverse lookup with CollybusDiscountRates's `collybus` field
+ rates: [CollybusDiscountRates!] @derivedFrom(field: "collybus")
+
  # One-to-many reverse lookup with Vault's `collybus` field
  vaults: [Vault!] @derivedFrom(field: "collybus")
 }
@@ -212,6 +216,15 @@ type CollybusSpot @entity {
   id: ID!
   token: Bytes
   spot: BigInt
+
+  # One-to-many relation with Collybus
+  collybus: Collybus
+}
+
+type CollybusDiscountRates @entity {
+  id: ID!
+  rateId: BigInt
+  discountRate: BigInt
 
   # One-to-many relation with Collybus
   collybus: Collybus
