@@ -106,6 +106,9 @@ type Vault @entity {
   # Cache (v.debtFloor * v.liquidationPenalty) to prevent excessive SLOADs [wad]
   auctionDebtFloor: BigInt
 
+  # One-to-many relation with Collybus
+  collybus: Collybus
+
   positions: [Position!] @derivedFrom(field: "vault")
   collateralTypes: [CollateralType!] @derivedFrom(field: "vault")
 }
@@ -195,4 +198,34 @@ type CollateralAuction @entity {
   # Tip
   tip: BigInt
   isActive: Boolean
+}
+
+type Collybus @entity {
+ id: ID!
+ # One-to-many reverse lookup with CollybusSpot's `collybus` field
+ spots: [CollybusSpot!] @derivedFrom(field: "collybus")
+
+ # One-to-many reverse lookup with CollybusDiscountRate's `collybus` field
+ rates: [CollybusDiscountRate!] @derivedFrom(field: "collybus")
+
+ # One-to-many reverse lookup with Vault's `collybus` field
+ vaults: [Vault!] @derivedFrom(field: "collybus")
+}
+
+type CollybusSpot @entity {
+  id: ID!
+  token: Bytes
+  spot: BigInt
+
+  # One-to-many relation with Collybus
+  collybus: Collybus
+}
+
+type CollybusDiscountRate @entity {
+  id: ID!
+  rateId: BigInt
+  discountRate: BigInt
+
+  # One-to-many relation with Collybus
+  collybus: Collybus
 }
