@@ -14,6 +14,7 @@ let collateralAuction = CollateralAuction.bind(Address.fromString(COLLATERAL_AUC
 
 export let WAD = BigInt.fromI64(1000000000000000000);
 export let BIGINT_ZERO = BigInt.fromI32(0);
+export let BIGINT_ONE = BigInt.fromI32(1);
 export let ZERO_ADDRESS = Address.fromHexString('0x0000000000000000000000000000000000000000');
 
 export function max(a: BigInt | null, b: BigInt): BigInt {
