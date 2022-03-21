@@ -1,15 +1,15 @@
 import { Bytes, BigInt, Address } from "@graphprotocol/graph-ts";
-import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt } from "../generated/Codex/Codex";
-import { CollateralType, ConfiscateCollateralAndDebtAction, ModifyCollateralAndDebtAction, Position, TransferCollateralAndDebtAction, UserPositions, Vault } from "../generated/schema";
+import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt, GrantDelegate, RevokeDelegate, Lock, ModifyBalance, TransferBalance, SetParam } from "../generated/Codex/Codex";
+import { CollateralType, ConfiscateCollateralAndDebtAction, ModifyCollateralAndDebtAction, Position, TransferCollateralAndDebtAction, UserPositions, Vault, Delegate, IsCodexAlive, CodexBalance } from "../generated/schema";
 import { createCollateralIfNonExistent, updateCollateral } from "./collaterals";
-import { getMaturity, getPosition } from "./utils";
+import { getMaturity, getCodexPosition, getCodexBalance, getDelegates, BIGINT_ZERO } from "./utils";
 import { createVaultIfNonExistent } from "./vault/vaults";
 
 export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): void {
   let vaultAddress = event.params.vault;
   let tokenId = event.params.tokenId;
   let user = event.params.user;
-  // let collateralizer = event.params.collateralizer;
+  let collateralizer = event.params.collateralizer;
   // let creditor = event.params.creditor;
   let deltaCollateral = event.params.deltaCollateral;
   let deltaNormalDebt = event.params.deltaNormalDebt;
@@ -21,6 +21,10 @@ export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): v
     collateralType,
     userPositions,
   );
+  let balance = getCodexBalance(vaultAddress, tokenId, collateralizer);
+  let balanceEntity = createBalanceIfNotExistent(vaultAddress, tokenId, collateralizer);
+  balanceEntity.balance = balance;
+  balanceEntity.save();
 
   createModifyAction(position, event);
 
@@ -33,10 +37,10 @@ export function createPositionIfNonExistent(
   vault: Vault,
   collateralType: CollateralType,
   userPositions: UserPositions,
-  ): Position {
+): Position {
   let userPositionsAddress = userPositions.id;
   let tokenId = collateralType.tokenId;
-  let currentPosition = getPosition(changetype<Address>(vault.address!), tokenId!, Address.fromString(userPositionsAddress));
+  let currentPosition = getCodexPosition(changetype<Address>(vault.address!), tokenId!, Address.fromString(userPositionsAddress));
   let id = vault.address!.toHexString() + "-" + tokenId!.toHexString() + "-" + userPositionsAddress;
 
   let position = Position.load(id);
@@ -159,6 +163,7 @@ export function handleConfiscateCollateralAndDebt(event: ConfiscateCollateralAnd
   let vaultAddress = event.params.vault;
   let tokenId = event.params.tokenId;
   let user = event.params.user;
+  let collateralizer = event.params.collateralizer;
   let vault = createVaultIfNonExistent(vaultAddress.toHexString());
   let collateralType = createCollateralIfNonExistent(vault, tokenId.toString());
   let userPositions = createUserPositionsIfNonExistent(user);
@@ -169,4 +174,117 @@ export function handleConfiscateCollateralAndDebt(event: ConfiscateCollateralAnd
   );
 
   createConfiscateEvent(position, event);
+
+  let balance = getCodexBalance(vaultAddress, tokenId, collateralizer);
+  let balanceEntity = createBalanceIfNotExistent(vaultAddress, tokenId, collateralizer);
+  balanceEntity.balance = balance;
+  balanceEntity.save();
+}
+
+function createBalanceIfNotExistent(vaultAddress: Address, tokenId: BigInt, collateralizer: Address): CodexBalance {
+  let id = vaultAddress.toHexString() + "-" + tokenId.toHexString() + "-" + collateralizer.toHexString();
+  let balanceEntity = CodexBalance.load(id);
+
+  if (balanceEntity == null) {
+    balanceEntity = new CodexBalance(id);
+    balanceEntity.owner = collateralizer;
+    balanceEntity.tokenId = tokenId;
+    balanceEntity.vault = vaultAddress;
+    balanceEntity.save();
+  }
+
+  return balanceEntity as CodexBalance;
+}
+
+export function handleGrantDelegate(event: GrantDelegate): void {
+  let delegator = event.params.delegator;
+  let delegatee = event.params.delegatee;
+  let hasDelegate = getDelegates(delegator, delegatee);
+
+  let delegates = createGrantDelegateIfNotExistent(delegator, delegatee);
+  delegates.hasDelegate = hasDelegate;
+  delegates.save();
+}
+
+export function handleRevokeDelegate(event: RevokeDelegate): void {
+  let delegator = event.params.delegator;
+  let delegatee = event.params.delegatee;
+  let hasDelegate = getDelegates(delegator, delegatee);
+
+  let delegates = createGrantDelegateIfNotExistent(delegator, delegatee);
+  delegates.hasDelegate = hasDelegate;
+  delegates.save();
+}
+
+function createGrantDelegateIfNotExistent(delegator: Address, delegatee: Address): Delegate {
+  let id = delegator.toHexString() + "-" + delegatee.toHexString();
+  let delegates = Delegate.load(id);
+
+  if (delegates == null) {
+    delegates = new Delegate(id);
+    delegates.delegator = delegator;
+    delegates.delegatee = delegatee;
+    delegates.save();
+  }
+  return delegates as Delegate;
+}
+
+export function handleModifyBalance(event: ModifyBalance): void {
+  let vaultAddress = event.params.vault;
+  let tokenId = event.params.tokenId;
+  let user = event.params.user;
+
+  let balance = getCodexBalance(vaultAddress, tokenId, user);
+  let balanceEntity = createBalanceIfNotExistent(vaultAddress, tokenId, user);
+  balanceEntity.balance = balance;
+  balanceEntity.save();
+}
+
+export function handleTransferBalance(event: TransferBalance): void {
+  let vaultAddress = event.params.vault;
+  let tokenId = event.params.tokenId;
+  let source = event.params.src;
+  let destination = event.params.dst;
+
+  let balanceSrc = getCodexBalance(vaultAddress, tokenId, source);
+  let balanceDst = getCodexBalance(vaultAddress, tokenId, destination);
+
+  let balanceSrcEntity = createBalanceIfNotExistent(vaultAddress, tokenId, source);
+  balanceSrcEntity.balance = balanceSrc;
+
+  let balanceDstEntity = createBalanceIfNotExistent(vaultAddress, tokenId, destination);
+  balanceDstEntity.balance = balanceDst;
+
+  balanceSrcEntity.save();
+  balanceDstEntity.save();
+}
+
+export function handleSetParam(event: SetParam): void {
+  let vaultAddress = event.params.vault;
+  let param = event.params.param;
+  let data = event.params.data;
+
+  let vault = createVaultIfNonExistent(vaultAddress.toHexString());
+
+  if (param.toHexString() == "debtCeiling") {
+    vault.debtCeiling = data;
+  }
+  if (param.toHexString() == "debtFloor") {
+    vault.debtFloor = data;
+  }
+
+  vault.save();
+}
+
+export function handleLock(event: Lock): void {
+  let contractAddr = event.address;
+
+  let id = contractAddr.toHexString();
+  let live = IsCodexAlive.load(id);
+
+  if (live == null) {
+    live = new IsCodexAlive(id);
+    live.isAlive = BIGINT_ZERO;
+    live.save();
+  }
 }

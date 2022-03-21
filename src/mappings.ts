@@ -2,7 +2,13 @@ import { handleDeployProxy } from "./userProxy"
 import {
   handleModifyCollateralAndDebt,
   handleTransferCollateralAndDebt,
-  handleConfiscateCollateralAndDebt
+  handleConfiscateCollateralAndDebt,
+  handleGrantDelegate,
+  handleRevokeDelegate,
+  handleLock,
+  handleModifyBalance,
+  handleTransferBalance,
+  handleSetParam
 } from "./position"
 import { handleVaultInit, } from "./vault/vaults"
 import { handleCollybusSetParam, handleCollybusUpdateSpot, handleCollybusUpdateDiscountRate } from "./collybus"
@@ -31,4 +37,10 @@ export {
   handleAuctionSetParam,
   handlePublicanSetParam,
   handleCCPoolCreated,
+  handleGrantDelegate,
+  handleRevokeDelegate,
+  handleLock,
+  handleModifyBalance,
+  handleTransferBalance,
+  handleSetParam
 }

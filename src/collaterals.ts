@@ -4,7 +4,7 @@ import { VaultFC } from "../generated/Notional/VaultFC";
 import { CollateralType, Vault } from "../generated/schema";
 import { createVaultIfNonExistent } from "./vault/vaults";
 import { vaultsData } from "./vault/vaultsData";
-import { BIGINT_ZERO, getFaceValue, getMaturity, getSymbol, getToken, getUnderlierToken, getVaultType } from "./utils";
+import { BIGINT_ZERO, getFaceValue, getMaturity, getSymbol, getToken, getUnderlierToken, getVaultType, getUnderlierScale } from "./utils";
 
 const NOTIONAL = "NOTIONAL";
 const NOTIONAL_COLLATERAL_TYPE = "fCash";
@@ -86,6 +86,7 @@ export function createCollateralIfNonExistent(vault: Vault, tokenId: string): Co
     collateralType.vault = vault.id;
     collateralType.vaultName = vault.name;
     collateralType.faceValue = getFaceValue();
+    collateralType.underlierScale = getUnderlierScale(changetype<Address>(vault.address!));
     collateralType.save();
   }
   return collateralType as CollateralType;
