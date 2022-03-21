@@ -205,8 +205,8 @@ type Collybus @entity {
  # One-to-many reverse lookup with CollybusSpot's `collybus` field
  spots: [CollybusSpot!] @derivedFrom(field: "collybus")
 
- # One-to-many reverse lookup with CollybusDiscountRates's `collybus` field
- rates: [CollybusDiscountRates!] @derivedFrom(field: "collybus")
+ # One-to-many reverse lookup with CollybusDiscountRate's `collybus` field
+ rates: [CollybusDiscountRate!] @derivedFrom(field: "collybus")
 
  # One-to-many reverse lookup with Vault's `collybus` field
  vaults: [Vault!] @derivedFrom(field: "collybus")
@@ -221,7 +221,7 @@ type CollybusSpot @entity {
   collybus: Collybus
 }
 
-type CollybusDiscountRates @entity {
+type CollybusDiscountRate @entity {
   id: ID!
   rateId: BigInt
   discountRate: BigInt

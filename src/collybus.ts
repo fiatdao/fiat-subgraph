@@ -1,7 +1,7 @@
 import { SetParam1, UpdateSpot, UpdateDiscountRate } from "../generated/Codex/Collybus";
 import { createVaultIfNonExistent } from "./vault/vaults";
 import { getCollateralizationRatio } from "./utils";
-import { CollybusSpot, Collybus, CollybusDiscountRates } from "../generated/schema";
+import { CollybusSpot, Collybus, CollybusDiscountRate } from "../generated/schema";
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 
 export function handleCollybusSetParam(setParam: SetParam1): void {
@@ -27,7 +27,7 @@ export function handleCollybusUpdateSpot(event: UpdateSpot): void {
     collybusSpot.save();
 }
 
-export function handleDiscountRate(event: UpdateDiscountRate): void {
+export function handleCollybusUpdateDiscountRate(event: UpdateDiscountRate): void {
     // rateId is from the discount rate feed
     let rateId = event.params.rateId;
     let discountRate = event.params.rate;
@@ -55,16 +55,16 @@ function createCollybusSpotIfNonExistent(token: Address, collybusAddress: Addres
     return collybusSpot as CollybusSpot;
 }
 
-function createCollybusRateIfNonExistent(collybusAddress: Address, rateId: BigInt): CollybusDiscountRates {
+function createCollybusRateIfNonExistent(collybusAddress: Address, rateId: BigInt): CollybusDiscountRate {
     let id = collybusAddress.toHexString() + "-" + rateId.toHexString();
-    let collybusRate = CollybusDiscountRates.load(id);
+    let collybusRate = CollybusDiscountRate.load(id);
 
     if (!collybusRate) {
-        collybusRate = new CollybusDiscountRates(id);
+        collybusRate = new CollybusDiscountRate(id);
         collybusRate.save();
     }
 
-    return collybusRate as CollybusDiscountRates;
+    return collybusRate as CollybusDiscountRate;
 }
 
 function createCollybusIfNonExistent(address: Address): Collybus {
