@@ -38,9 +38,9 @@ dataSources:
       entities:
         - Position
         - PositionTransaction
+        - Codex
         - Delegate
-        - IsCodexAlive
-        - CodexBalance
+        - Balance
         - CollateralType
         - FIAT
       abis:

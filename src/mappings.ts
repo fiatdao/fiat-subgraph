@@ -2,13 +2,7 @@ import { handleDeployProxy } from "./userProxy"
 import {
   handleModifyCollateralAndDebt,
   handleTransferCollateralAndDebt,
-  handleConfiscateCollateralAndDebt,
-  handleGrantDelegate,
-  handleRevokeDelegate,
-  handleLock,
-  handleModifyBalance,
-  handleTransferBalance,
-  handleSetParam
+  handleConfiscateCollateralAndDebt
 } from "./position"
 import { handleVaultInit, } from "./vault/vaults"
 import { handleCollybusSetParam, handleCollybusUpdateSpot, handleCollybusUpdateDiscountRate } from "./collybus"
@@ -17,6 +11,14 @@ import { handleFIATTransfer, handleFIATApprovals } from "./fiat"
 import { handleStartAuction, handleTakeCollateral, handleStopAuction, handleRedoAuction, handleAuctionSetParam } from "./auctions"
 import { handlePublicanSetParam } from "./publican"
 import { handleCCPoolCreated } from "./ccpFactory"
+import {
+  handleGrantDelegate,
+  handleRevokeDelegate,
+  handleLock,
+  handleModifyBalance,
+  handleTransferBalance,
+  handleSetParam
+} from "./codex"
 
 export {
   handleDeployProxy,

@@ -82,17 +82,22 @@ type Position @entity {
   positionTransactions: [PositionTransactionAction!] @derivedFrom(field: "position")
 }
 
-type CodexBalance @entity {
+type Codex @entity {
+  id: ID!
+  # Reverse look-up from this entity to the balance entity
+  balances: [Balance!] @derivedFrom(field: "codex")
+  delegates: Delegate
+  vault: Vault
+  isAlive: BigInt
+}
+
+type Balance @entity {
   id: ID!
   balance: BigInt
   vault: Bytes
   tokenId: BigInt
   owner: Bytes
-}
-
-type IsCodexAlive @entity {
-  id: ID!
-  isAlive: BigInt
+  codex: Codex
 }
 
 type Delegate @entity {
@@ -100,6 +105,8 @@ type Delegate @entity {
   delegator: Bytes!
   delegatee: Bytes!
   hasDelegate: BigInt
+  # Reverse look-up from this entity to the Codex entity
+  codex: [Codex!] @derivedFrom(field: "delegates")
 }
 
 enum VaultType {
@@ -133,6 +140,7 @@ type Vault @entity {
 
   positions: [Position!] @derivedFrom(field: "vault")
   collateralTypes: [CollateralType!] @derivedFrom(field: "vault")
+  codex: [Codex!] @derivedFrom(field: "vault")
 }
 
 type CollateralType @entity {
