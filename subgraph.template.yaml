@@ -227,7 +227,7 @@ dataSources:
     source:
       address: '{{ConvergentCurvePoolFactory}}'
       abi: CCPFactory
-      startBlock: {{ccpStartBlock}}
+      startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
