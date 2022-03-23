@@ -9,11 +9,11 @@ interface PositionTransactionAction {
   collateral: BigInt!
   deltaCollateral: BigInt!
   normalDebt: BigInt!
+  timestamp: BigInt!
   deltaNormalDebt: BigInt!
   transactionHash: Bytes!
   position: Position!
-  vault: Bytes!
-  vaultName: String
+  vault: Vault
   tokenId: BigInt!
   user: Bytes!
 }
@@ -23,10 +23,10 @@ type ModifyCollateralAndDebtAction implements PositionTransactionAction @entity 
   collateral: BigInt!
   normalDebt: BigInt!
   transactionHash: Bytes!
+  timestamp: BigInt!
   position: Position!
-  vaultName: String
   # Event Properties
-  vault: Bytes!
+  vault: Vault
   tokenId: BigInt!
   user: Bytes!
   collateralizer: Bytes!
@@ -40,11 +40,11 @@ type TransferCollateralAndDebtAction implements PositionTransactionAction @entit
   collateral: BigInt!
   normalDebt: BigInt!
   transactionHash: Bytes!
+  timestamp: BigInt!
   position: Position!
   user: Bytes!
-  vaultName: String
   # Event Properties
-  vault: Bytes!
+  vault: Vault
   tokenId: BigInt!
   userSrc: Bytes!
   userDst: Bytes!
@@ -57,10 +57,10 @@ type ConfiscateCollateralAndDebtAction implements PositionTransactionAction @ent
   collateral: BigInt!
   normalDebt: BigInt!
   transactionHash: Bytes!
+  timestamp: BigInt!
   position: Position!
-  vaultName: String
   # Event Properties
-  vault: Bytes!
+  vault: Vault
   tokenId: BigInt!
   user: Bytes!
   collateralizer: Bytes!
@@ -72,20 +72,17 @@ type ConfiscateCollateralAndDebtAction implements PositionTransactionAction @ent
 type Position @entity {
   id: ID!
   vault: Vault
-  vaultName: String
   collateralType: CollateralType
-  userPositions: UserPositions!
+  users: User!
   owner: Bytes!
-  totalCollateral: BigInt!
-  totalNormalDebt: BigInt!
+  collateral: BigInt!
+  normalDebt: BigInt!
   maturity: BigInt
   positionTransactions: [PositionTransactionAction!] @derivedFrom(field: "position")
 }
 
 type Codex @entity {
   id: ID!
-  # Reverse look-up from this entity to the balance entity
-  balances: [Balance!] @derivedFrom(field: "codex")
   delegates: Delegate
   vault: Vault
   isAlive: BigInt
@@ -97,7 +94,6 @@ type Balance @entity {
   vault: Bytes
   tokenId: BigInt
   owner: Bytes
-  codex: Codex
 }
 
 type Delegate @entity {
@@ -153,16 +149,15 @@ type CollateralType @entity {
   underlierAddress: Bytes
   underlierScale: BigInt
   vault: Vault
-  vaultName: String
   faceValue: BigInt
   depositedCollateral: BigInt
 
   # Only valid when collateral is a Element pToken
-  ccp: CCP
+  ept: EPTData
 }
 
 # Element pToken ConvergentPool data
-type CCP @entity {
+type EPTData @entity {
   # pToken address
   id: ID!
 
@@ -175,12 +170,13 @@ type CCP @entity {
 
 }
 
-type UserPositions @entity {
+type User @entity {
   id: ID!
   owner: Bytes
   totalCollateral: BigInt
-  totalFIAT: BigInt
-  positions: [Position!] @derivedFrom(field: "userPositions")
+  totalCredit: BigInt
+  totalNormalDebt: BigInt
+  positions: [Position!] @derivedFrom(field: "users")
 }
 
 type FIAT @entity {
@@ -214,7 +210,6 @@ type CollateralAuction @entity {
   collateralToSell: BigInt
   # Vault of the liquidated Positions collateral
   vault: Vault
-  vaultName: String
   # TokenId of the liquidated Positions collateral
   tokenId: BigInt
   collateralType: CollateralType

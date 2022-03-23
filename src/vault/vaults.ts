@@ -1,7 +1,7 @@
 import { Address } from "@graphprotocol/graph-ts";
 import { Init } from "../../generated/Codex/Codex";
 import { Vault } from "../../generated/schema";
-import { createCollateralIfNecessary } from "../collaterals";
+import { createCollateralIfNecessary } from "../collateralType";
 import { BIGINT_ZERO, WAD, getCollateralizationRatio } from "../utils";
 import { vaultsData } from "./vaultsData";
 
