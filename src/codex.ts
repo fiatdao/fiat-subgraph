@@ -73,7 +73,6 @@ export function handleModifyBalance(event: ModifyBalance): void {
     let balance = getCodexBalance(vaultAddress, tokenId, user);
     let balanceEntity = createBalanceIfNotExistent(vaultAddress, tokenId, user);
     balanceEntity.balance = balance;
-    balanceEntity.codex = codex.id;
     balanceEntity.save();
 }
 
@@ -93,11 +92,9 @@ export function handleTransferBalance(event: TransferBalance): void {
 
     let balanceSrcEntity = createBalanceIfNotExistent(vaultAddress, tokenId, source);
     balanceSrcEntity.balance = balanceSrc;
-    balanceSrcEntity.codex = codex.id;
 
     let balanceDstEntity = createBalanceIfNotExistent(vaultAddress, tokenId, destination);
     balanceDstEntity.balance = balanceDst;
-    balanceDstEntity.codex = codex.id;
 
     balanceSrcEntity.save();
     balanceDstEntity.save();
@@ -130,10 +127,10 @@ export function handleSetParam(event: SetParam): void {
 
     let vault = createVaultIfNonExistent(vaultAddress.toHexString());
 
-    if (param.toHexString() == "debtCeiling") {
+    if (param.toString() == "debtCeiling") {
         vault.debtCeiling = data;
     }
-    if (param.toHexString() == "debtFloor") {
+    if (param.toString() == "debtFloor") {
         vault.debtFloor = data;
     }
 

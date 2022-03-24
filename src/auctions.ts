@@ -1,7 +1,7 @@
 import { BigInt, Address, Bytes, ethereum } from '@graphprotocol/graph-ts';
 import { RedoAuction, StartAuction, StopAuction, TakeCollateral, SetParam, CollateralAuction as CollateralAuctionContract, UpdateAuctionDebtFloor } from "../generated/CollateralAuction/CollateralAuction";
 import { CollateralType, CollateralAuction, Vault } from "../generated/schema";
-import { createCollateralIfNonExistent } from "./collaterals";
+import { createCollateralIfNonExistent } from "./collateralType";
 import { createVaultIfNonExistent } from "./vault/vaults";
 import { isActiveAuction } from "./utils";
 
@@ -45,7 +45,6 @@ export function createCollateralAuctionIfNonExistent(
     collateralAuction.debt = debt;
     collateralAuction.collateralToSell = collateralToSell;
     collateralAuction.vault = vault.id;
-    collateralAuction.vaultName = vault.name;
     collateralAuction.tokenId = tokenId;
     collateralAuction.collateralType = collateralType.id;
     collateralAuction.user = user;

@@ -1,6 +1,6 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { MarketsInitialized, Notional } from "../generated/Notional/Notional";
-import { createNotionalCollateralIfNonExistent } from "./collaterals";
+import { createNotionalCollateralIfNonExistent } from "./collateralType";
 
 export const RATE_PRECISION = 1000000000;
 export const BASIS_POINTS = 100000;

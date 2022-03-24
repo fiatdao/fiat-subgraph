@@ -31,7 +31,7 @@ export function createERC20CollateralIfNonExistent(vault: Vault): CollateralType
   setCollateralAddresses(collateralType, tokenAddress, underlierAddress);
 
   if (vault.type === "ELEMENT") {
-    collateralType.ccp = tokenAddress!.toHexString();
+    collateralType.eptData = tokenAddress!.toHexString();
   }
 
   collateralType.save();
@@ -72,7 +72,6 @@ export function createNotionalCollateralIfNonExistent(notional: Notional, tokenI
     }
   }
 
-
   return collateralType as CollateralType;
 }
 
@@ -84,7 +83,6 @@ export function createCollateralIfNonExistent(vault: Vault, tokenId: string): Co
     collateralType.tokenId = BigInt.fromString(tokenId);
     collateralType.depositedCollateral = BIGINT_ZERO;
     collateralType.vault = vault.id;
-    collateralType.vaultName = vault.name;
     collateralType.faceValue = getFaceValue();
     collateralType.underlierScale = getUnderlierScale(changetype<Address>(vault.address!));
     collateralType.save();
