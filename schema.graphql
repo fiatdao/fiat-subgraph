@@ -153,7 +153,7 @@ type CollateralType @entity {
   depositedCollateral: BigInt
 
   # Only valid when collateral is a Element pToken
-  ept: EPTData
+  eptData: EPTData
 }
 
 # Element pToken ConvergentPool data

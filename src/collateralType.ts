@@ -31,7 +31,7 @@ export function createERC20CollateralIfNonExistent(vault: Vault): CollateralType
   setCollateralAddresses(collateralType, tokenAddress, underlierAddress);
 
   if (vault.type === "ELEMENT") {
-    collateralType.ept = tokenAddress!.toHexString();
+    collateralType.eptData = tokenAddress!.toHexString();
   }
 
   collateralType.save();
