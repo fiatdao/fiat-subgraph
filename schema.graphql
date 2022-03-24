@@ -14,6 +14,7 @@ interface PositionTransactionAction {
   transactionHash: Bytes!
   position: Position!
   vault: Vault
+  vaultName: String
   tokenId: BigInt!
   user: Bytes!
 }
@@ -27,6 +28,7 @@ type ModifyCollateralAndDebtAction implements PositionTransactionAction @entity 
   position: Position!
   # Event Properties
   vault: Vault
+  vaultName: String
   tokenId: BigInt!
   user: Bytes!
   collateralizer: Bytes!
@@ -45,6 +47,7 @@ type TransferCollateralAndDebtAction implements PositionTransactionAction @entit
   user: Bytes!
   # Event Properties
   vault: Vault
+  vaultName: String
   tokenId: BigInt!
   userSrc: Bytes!
   userDst: Bytes!
@@ -61,6 +64,7 @@ type ConfiscateCollateralAndDebtAction implements PositionTransactionAction @ent
   position: Position!
   # Event Properties
   vault: Vault
+  vaultName: String
   tokenId: BigInt!
   user: Bytes!
   collateralizer: Bytes!
@@ -72,6 +76,7 @@ type ConfiscateCollateralAndDebtAction implements PositionTransactionAction @ent
 type Position @entity {
   id: ID!
   vault: Vault
+  vaultName: String
   collateralType: CollateralType
   users: User!
   owner: Bytes!
@@ -149,6 +154,7 @@ type CollateralType @entity {
   underlierAddress: Bytes
   underlierScale: BigInt
   vault: Vault
+  vaultName: String
   faceValue: BigInt
   depositedCollateral: BigInt
 
@@ -210,6 +216,7 @@ type CollateralAuction @entity {
   collateralToSell: BigInt
   # Vault of the liquidated Positions collateral
   vault: Vault
+  vaultName: String
   # TokenId of the liquidated Positions collateral
   tokenId: BigInt
   collateralType: CollateralType

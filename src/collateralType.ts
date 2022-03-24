@@ -83,6 +83,7 @@ export function createCollateralIfNonExistent(vault: Vault, tokenId: string): Co
     collateralType.tokenId = BigInt.fromString(tokenId);
     collateralType.depositedCollateral = BIGINT_ZERO;
     collateralType.vault = vault.id;
+    collateralType.vaultName = vault.name;
     collateralType.faceValue = getFaceValue();
     collateralType.underlierScale = getUnderlierScale(changetype<Address>(vault.address!));
     collateralType.save();

@@ -45,6 +45,7 @@ export function createCollateralAuctionIfNonExistent(
     collateralAuction.debt = debt;
     collateralAuction.collateralToSell = collateralToSell;
     collateralAuction.vault = vault.id;
+    collateralAuction.vaultName = vault.name;
     collateralAuction.tokenId = tokenId;
     collateralAuction.collateralType = collateralType.id;
     collateralAuction.user = user;

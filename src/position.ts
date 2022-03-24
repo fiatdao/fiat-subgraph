@@ -52,6 +52,7 @@ export function createPositionIfNonExistent(
   if (position == null) {
     position = new Position(id);
     position.vault = vault.id;
+    position.vaultName = vault.name;
     position.collateralType = collateralType.id;
     position.users = userAddress;
     position.owner = Address.fromString(userAddress);
@@ -67,6 +68,7 @@ export function createModifyAction(position: Position, event: ModifyCollateralAn
   let id = event.transaction.hash.toHexString();
   let modifyAction = new ModifyCollateralAndDebtAction(id);
   modifyAction.vault = position.vault;
+  modifyAction.vaultName = position.vaultName;
   modifyAction.tokenId = event.params.tokenId;
   modifyAction.user = event.params.user;
   modifyAction.collateralizer = event.params.collateralizer;
@@ -86,6 +88,7 @@ export function createTransferEvent(position: Position, event: TransferCollatera
   let id = event.transaction.hash.toHexString();
   let transferAction = new TransferCollateralAndDebtAction(id);
   transferAction.vault = position.vault;
+  transferAction.vaultName = position.vaultName;
   transferAction.tokenId = event.params.tokenId;
   transferAction.user = event.params.src;
   transferAction.userSrc = event.params.src;
@@ -105,6 +108,7 @@ export function createConfiscateEvent(position: Position, event: ConfiscateColla
   let id = event.transaction.hash.toHexString();
   let confiscateAction = new ConfiscateCollateralAndDebtAction(id);
   confiscateAction.vault = position.vault;
+  confiscateAction.vaultName = position.vaultName;
   confiscateAction.tokenId = event.params.tokenId;
   confiscateAction.user = event.params.user;
   confiscateAction.collateralizer = event.params.collateralizer;
