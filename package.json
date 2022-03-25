@@ -5,13 +5,10 @@
     "build": "NO_DEPLOY=true ./deploy.sh",
     "deploy:local": "GRAPH=local ./deploy.sh",
     "deploy:goerli": "GRAPH=goerli ./deploy.sh",
-    "deploy:kovan": "GRAPH=kovan ./deploy.sh",
     "deploy:mainnet": "GRAPH=mainnet ./deploy.sh",
     "deploy:goerli-remote": "GRAPH=goerli-remote ./deploy.sh",
-    "deploy:kovan-remote": "GRAPH=kovan-remote ./deploy.sh",
     "deploy:mainnet-remote": "GRAPH=mainnet-remote ./deploy.sh",
     "deploy:goerli-hosted": "GRAPH=goerli-hosted ./deploy.sh",
-    "deploy:kovan-hosted": "GRAPH=kovan-hosted ./deploy.sh",
     "deploy:mainnet-hosted": "GRAPH=mainnet-hosted ./deploy.sh"
   },
   "devDependencies": {
