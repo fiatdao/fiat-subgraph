@@ -3,16 +3,16 @@
   "description": "Subgraph for the FIAT smart contract system (goerli)",
   "startBlock": 6492500,
   "PRBProxyFactory": "0x87ca60e2c2545ae94c9fb850daf670a91685933d",
-  "Codex": "0x46ae7f3b5B9b32231F1e88df806672a182FbdA0C",
-  "Collybus": "0xcaF187fBF3137dA36a10A72c77d1A68a6986B710",
-  "CollateralAuction": "0xEeF8e029bA352D90Ffa3b0d85E0bf9f88280a0e5",
-  "FIAT": "0xeA8B4F3df3b7628A618a06A372EdC310DBdEd950",
+  "Codex": "0xBB789154514c0E04CA40b988a2Fa94AF1b80a840",
+  "Collybus": "0xe1c58e1BAD975b4882902783Ca458B6719aE3533",
+  "CollateralAuction": "0x4e21296DB6366dF6380C34a5bd47e79C80231E16",
+  "FIAT": "0x004e84d9eea17Bdad2912B475f7C473064A3Ca1C",
   "Vaults": [
     {
       "idx": 1,
       "name": "Element Finance pToken Vault",
       "_comment": "Vault address needs to be lower case",
-      "address": "0x29810bc0a883dd289ca13c1e24fd71b07a42fe1c",
+      "address": "0x8Fa1fC5aE2E5ECd703aad41dD48De224304947b2",
       "type": "ELEMENT"
     },
     {
