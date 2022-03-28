@@ -1,7 +1,7 @@
 {
   "network": "goerli",
   "description": "Subgraph for the FIAT smart contract system (goerli)",
-  "startBlock": 6492500,
+  "startBlock": 6611000,
   "PRBProxyFactory": "0x87ca60e2c2545ae94c9fb850daf670a91685933d",
   "Codex": "0xBB789154514c0E04CA40b988a2Fa94AF1b80a840",
   "Collybus": "0xe1c58e1BAD975b4882902783Ca458B6719aE3533",
@@ -33,7 +33,7 @@
   "VaultNotional": "",
   "Notional": "0xD8229B55bD73c61D840d339491219ec6Fa667B0a",
   "notionalStartBlock": 6362131,
-  "Publican": "0x678728f228333Ca158Df3128f62DAd012BB5314C",
+  "Publican": "0xF54DCE28537c00bfA4b41Fd54BF87f3Ace51aC8e",
   "ConvergentCurvePoolFactory": "0x0766B218517d9dC198155f0dC3485270cF788aF7",
   "ccpStartBlock": 4752668
 }
