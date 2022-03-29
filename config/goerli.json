@@ -12,7 +12,7 @@
       "idx": 1,
       "name": "Element Finance pToken Vault",
       "_comment": "Vault address needs to be lower case",
-      "address": "0x8Fa1fC5aE2E5ECd703aad41dD48De224304947b2",
+      "address": "0x8fa1fc5ae2e5ecd703aad41dd48de224304947b2",
       "type": "ELEMENT"
     },
     {
