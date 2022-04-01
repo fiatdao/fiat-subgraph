@@ -14,6 +14,7 @@
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.26.0",
     "@graphprotocol/graph-ts": "^0.24.1",
+    "matchstick-as": "^0.4.2",
     "mustache": "^4.2.0"
   }
 }

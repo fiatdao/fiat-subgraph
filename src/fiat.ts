@@ -1,7 +1,7 @@
 import { FIAT, FIATTokenBalance, FIATTokenAllowance } from "../generated/schema";
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { Transfer, Approval } from "../generated/FIAT/FIAT";
-import { BIGINT_ZERO, getTotalSupply, getBalance, ZERO_ADDRESS } from "./utils";
+import { BIGINT_ZERO, getTotalSupply, ZERO_ADDRESS } from "./utils";
 
 export function handleFIATTransfer(event: Transfer): void {
   let fromAddress = event.params.from;
@@ -21,11 +21,13 @@ export function handleFIATTransfer(event: Transfer): void {
   fiat.totalSupply = getTotalSupply();
   fiat.save();
 
-  // Getting balance of the two addresses and saving them in their entities
-  let balanceFrom = getBalance(fromAddress);
-  let balanceTo = getBalance(toAddress);
-  createFIATTokenBalanceIfNonExistent(fromAddress, balanceFrom);
-  createFIATTokenBalanceIfNonExistent(toAddress, balanceTo);
+  let fromObject = createFIATTokenBalanceIfNonExistent(fromAddress);
+  fromObject.balance = fromObject.balance!.minus(amount);
+  let toObject = createFIATTokenBalanceIfNonExistent(toAddress);
+  toObject.balance = toObject.balance!.plus(amount);
+
+  fromObject.save();
+  toObject.save();
 }
 
 export function createFIATIfNonExistent(address: Address): FIAT {
@@ -43,18 +45,18 @@ export function createFIATIfNonExistent(address: Address): FIAT {
   return fiat as FIAT;
 }
 
-export function createFIATTokenBalanceIfNonExistent(address: Address, balance: BigInt = BIGINT_ZERO): void {
-  if (address.notEqual(ZERO_ADDRESS)) {
-    let id = address.toHexString();
-    let fiatTokenBalance = FIATTokenBalance.load(id);
+export function createFIATTokenBalanceIfNonExistent(address: Address): FIATTokenBalance {
+  let id = address.toHexString();
+  let fiatTokenBalance = FIATTokenBalance.load(id);
 
-    if (!fiatTokenBalance) {
-      fiatTokenBalance = new FIATTokenBalance(id);
-      fiatTokenBalance.address = address;
-    }
-    fiatTokenBalance.balance = balance;
+  if (!fiatTokenBalance) {
+    fiatTokenBalance = new FIATTokenBalance(id);
+    fiatTokenBalance.address = address;
+    fiatTokenBalance.balance = BIGINT_ZERO;
     fiatTokenBalance.save();
   }
+
+  return fiatTokenBalance;
 }
 
 export function isMintOperation(from: Address, to: Address): boolean {
@@ -73,7 +75,7 @@ export function handleFIATApprovals(event: Approval): void {
   createFIATTokenAllowanceIfNonExistent(owner, spender, amount);
 }
 
-function createFIATTokenAllowanceIfNonExistent(owner: Address, spender: Address, amount: BigInt): void {
+export function createFIATTokenAllowanceIfNonExistent(owner: Address, spender: Address, amount: BigInt): void {
   if (owner.notEqual(ZERO_ADDRESS) && spender.notEqual(ZERO_ADDRESS)) {
     let id = owner.toHexString() + "-" + spender.toHexString();
     let allowanceData = FIATTokenAllowance.load(id);
