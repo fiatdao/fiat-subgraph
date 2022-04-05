@@ -1,12 +1,12 @@
 {
   "network": "mainnet",
   "description": "Subgraph for the FIAT smart contract system",
-  "startBlock": 13542270,
-  "PRBProxyFactory": "",
-  "Codex": "",
-  "Collybus": "",
-  "FIAT": "",
-  "Vaults": [],
-  "VaultNotional": "",
-  "Notional": ""
+  "startBlock": 14515000,
+  "PRBProxyRegistry": "",
+  "Codex": "0xCE0e395cF61D0F836ddd4fC021f009C93DFe3a63",
+  "Collybus": "0x6B576f65DE4B8B171aEF412DEBc33dc53500cFdB",
+  "CollateralAuction": "0xa50D5B25E29a8FA7E94DA10698fE5100f0eb0cc5",
+  "FIAT": "0x2d9579552cD679943cbBc23BDdd9467840C98c75",
+  "Publican": "0x3C688e38f95810985608C18A6eeCA3694Af33BE4",
+  "Vaults": []
 }

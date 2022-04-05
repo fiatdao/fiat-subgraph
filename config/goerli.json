@@ -1,39 +1,21 @@
 {
   "network": "goerli",
   "description": "Subgraph for the FIAT smart contract system (goerli)",
-  "startBlock": 6611000,
-  "PRBProxyFactory": "0x87ca60e2c2545ae94c9fb850daf670a91685933d",
-  "Codex": "0xBB789154514c0E04CA40b988a2Fa94AF1b80a840",
-  "Collybus": "0xe1c58e1BAD975b4882902783Ca458B6719aE3533",
-  "CollateralAuction": "0x4e21296DB6366dF6380C34a5bd47e79C80231E16",
-  "FIAT": "0x004e84d9eea17Bdad2912B475f7C473064A3Ca1C",
+  "startBlock": 6651000,
+  "PRBProxyRegistry": "",
+  "Codex": "0x406ADF43ed603a39eae058975235d53d46138033",
+  "Collybus": "0xd419496FF8f66bdAfDeD859b439aa5807e835d7d",
+  "CollateralAuction": "0x57a5185692DEc513bFe6e5D5ed9ef9FC2f72e01D",
+  "FIAT": "0x391eCE49AD1019041FB6ab5424318e5001Ee55cc",
+  "Publican": "0xE56Ae3dDE8498c05f7aCE2DCf88c530A3FE2D983",
   "Vaults": [
     {
       "idx": 1,
-      "name": "Element Finance pToken Vault",
+      "VaultEPT": "vaultEPT_eP:eyUSDC:10-AUG-22-GMT_1660165080",
+      "ConvergentCurvePool": "0x4294005520c453EB8Fa66F53042cfC79707855c4",
       "_comment": "Vault address needs to be lower case",
-      "address": "0x8fa1fc5ae2e5ecd703aad41dd48de224304947b2",
+      "address": "0x1EEF91a96a5E5e962b5B64a09611C1d51e7abDE3",
       "type": "ELEMENT"
-    },
-    {
-      "idx": 2,
-      "name": "BarnBridge Smart Yield Vault",
-      "_comment": "Vault address needs to be lower case",
-      "address": "",
-      "type": "BARNBRIDGE"
-    },
-    {
-      "idx": 3,
-      "name": "Notional Finance fCash Vault",
-      "_comment": "Vault address needs to be lower case",
-      "address": "",
-      "type": "NOTIONAL"
     }
-  ],
-  "VaultNotional": "",
-  "Notional": "0xD8229B55bD73c61D840d339491219ec6Fa667B0a",
-  "notionalStartBlock": 6362131,
-  "Publican": "0xF54DCE28537c00bfA4b41Fd54BF87f3Ace51aC8e",
-  "ConvergentCurvePoolFactory": "0x0766B218517d9dC198155f0dC3485270cF788aF7",
-  "ccpStartBlock": 4752668
+  ]
 }
