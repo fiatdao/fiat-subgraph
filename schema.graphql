@@ -140,7 +140,7 @@ type Vault @entity {
   # One-to-many relation with Collybus
   collybus: Collybus
 
-  convergentCurvePool: Bytes
+  convergentCurvePool: EPTData
 
   positions: [Position!] @derivedFrom(field: "vault")
   collateralTypes: [CollateralType!] @derivedFrom(field: "vault")
@@ -177,7 +177,7 @@ type EPTData @entity {
   # Element pToken ConvergentCurvePool id
   poolId: Bytes
 
-  # vault: [Vault!] @derivedFrom(field: "convergentCurvePool")
+  vault: [Vault!] @derivedFrom(field: "convergentCurvePool")
 }
 
 type User @entity {
