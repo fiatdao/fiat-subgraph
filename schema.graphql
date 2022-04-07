@@ -90,6 +90,7 @@ type Codex @entity {
   id: ID!
   delegates: Delegate
   vault: Vault
+  globalDebtCeiling: BigInt!
   isAlive: BigInt
 }
 
