@@ -6,11 +6,10 @@ import {
 } from "./position"
 import { handleVaultInit, } from "./vault/vaults"
 import { handleCollybusSetParam, handleCollybusUpdateSpot, handleCollybusUpdateDiscountRate } from "./collybus"
-import { handleMarketsInitialized } from "./notional"
+// import { handleMarketsInitialized } from "./notional"
 import { handleFIATTransfer, handleFIATApprovals } from "./fiat"
 import { handleStartAuction, handleTakeCollateral, handleStopAuction, handleRedoAuction, handleAuctionSetParam, handleUpdateAuctionDebtFloor } from "./auctions"
 import { handlePublicanSetParam } from "./publican"
-import { handleCCPoolCreated } from "./ccpFactory"
 import {
   handleGrantDelegate,
   handleRevokeDelegate,
@@ -26,7 +25,7 @@ export {
   handleTransferCollateralAndDebt,
   handleConfiscateCollateralAndDebt,
   handleVaultInit,
-  handleMarketsInitialized,
+  // handleMarketsInitialized,
   handleFIATTransfer,
   handleFIATApprovals,
   handleCollybusSetParam,
@@ -38,7 +37,6 @@ export {
   handleRedoAuction,
   handleAuctionSetParam,
   handlePublicanSetParam,
-  handleCCPoolCreated,
   handleGrantDelegate,
   handleRevokeDelegate,
   handleLock,

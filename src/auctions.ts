@@ -3,11 +3,14 @@ import { RedoAuction, StartAuction, StopAuction, TakeCollateral, SetParam, Colla
 import { CollateralType, CollateralAuction, Vault } from "../generated/schema";
 import { createCollateralIfNonExistent } from "./collateralType";
 import { createVaultIfNonExistent } from "./vault/vaults";
+import { log } from '@graphprotocol/graph-ts'
 import { isActiveAuction } from "./utils";
 
 const VAULT_PARAMS = ['multiplier', 'maxAuctionDuration', 'maxDiscount'];
 
 export function handleStartAuction(event: StartAuction): void {
+  log.debug("Auctions1: " + event.params.vault.toHexString(), [])
+
   let vault = createVaultIfNonExistent(event.params.vault.toHexString());
   let collateralType = createCollateralIfNonExistent(vault, event.params.tokenId.toString());
   createCollateralAuctionIfNonExistent(
@@ -83,6 +86,8 @@ function setAuctionActive(auctionId: BigInt): void {
 
 // this events modifies the following properties: startsAt, startPrice, keeper, tip
 export function handleRedoAuction(event: RedoAuction): void {
+  log.debug("Auctions2: " + event.params.vault.toHexString(), [])
+
   let vault = createVaultIfNonExistent(event.params.vault.toHexString());
   let collateralType = createCollateralIfNonExistent(vault, event.params.tokenId.toString());
   let auction = createCollateralAuctionIfNonExistent(
@@ -110,6 +115,8 @@ export function handleAuctionSetParam(event: SetParam): void {
     // Skip the selector
     let dataWithoutFunctionSelector = changetype<Bytes>(event.transaction.input.subarray(4));
     let params = ethereum.decode('(address,bytes32,address)', dataWithoutFunctionSelector)!.toTuple();
+    log.debug("Auctions3: " + params[0].toAddress().toHexString(), [])
+
     let vault = createVaultIfNonExistent(params[0].toAddress().toHexString());
 
     let collateralAuction = CollateralAuctionContract.bind(event.address);
@@ -126,6 +133,7 @@ export function handleAuctionSetParam(event: SetParam): void {
 
 export function handleUpdateAuctionDebtFloor(event: UpdateAuctionDebtFloor): void {
   let vaultAddress = event.params.vault;
+  log.debug("Codex: " + vaultAddress.toHexString(), [])
   let vault = createVaultIfNonExistent(vaultAddress.toHexString());
   vault.auctionDebtFloor = event.params.auctionDebtFloor;
   vault.save();

@@ -2,7 +2,7 @@
   "network": "goerli",
   "description": "Subgraph for the FIAT smart contract system (goerli)",
   "startBlock": 6651000,
-  "PRBProxyRegistry": "",
+  "PRBProxyFactory": "0xaBe829031705bf022A21b3F94427E9A22183eBDE",
   "Codex": "0x406ADF43ed603a39eae058975235d53d46138033",
   "Collybus": "0xd419496FF8f66bdAfDeD859b439aa5807e835d7d",
   "CollateralAuction": "0x57a5185692DEc513bFe6e5D5ed9ef9FC2f72e01D",
@@ -11,11 +11,14 @@
   "Vaults": [
     {
       "idx": 1,
-      "VaultEPT": "vaultEPT_eP:eyUSDC:10-AUG-22-GMT_1660165080",
+      "name": "vaultEPT_eP:eyUSDC:10-AUG-22-GMT_1660165080",
+      "VaultEPT": "0x1eef91a96a5e5e962b5b64a09611c1d51e7abde3",
+      "_comment": "Vault address needs to be lower case ^",
       "ConvergentCurvePool": "0x4294005520c453EB8Fa66F53042cfC79707855c4",
-      "_comment": "Vault address needs to be lower case",
-      "address": "0x1EEF91a96a5E5e962b5B64a09611C1d51e7abDE3",
       "type": "ELEMENT"
     }
-  ]
+  ],
+  "VaultNotional": "",
+  "Notional": "",
+  "notionalStartBlock": 6362131
 }

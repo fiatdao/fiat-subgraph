@@ -74,10 +74,6 @@ For more info see [deploy.sh](/deploy.sh)
 
 `MarketsInitialized`
 
-- ## CcpFactory:
-
-`CCPoolCreated`
-
 - ## UserProxy:
 
 `DeployProxy`
