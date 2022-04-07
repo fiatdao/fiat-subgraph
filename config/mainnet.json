@@ -11,14 +11,19 @@
   "Vaults": [
     {
       "idx": 1,
-      "name": "",
-      "VaultEPT": "",
+      "name": "vaultEPT_ePyvUSDC_29APR22",
+      "VaultEPT": "0x23cc2492f079df1516db34f257bc1aa98131a085",
       "_comment": "Vault address needs to be lower case ^",
-      "ConvergentCurvePool": "",
-      "type": ""
+      "ConvergentCurvePool": "0x7edde0cb05ed19e03a9a47cd5e53fc57fde1c80c",
+      "type": "ELEMENT"
+    },
+    {
+      "idx": 1,
+      "name": "VaultEPT_ePyvDAI_29APR22",
+      "VaultEPT": "0xca1467e6bcfea869c40d2ac3ac53fd60c2ec6149",
+      "_comment": "Vault address needs to be lower case ^",
+      "ConvergentCurvePool": "0xedf085f65b4f6c155e13155502ef925c9a756003",
+      "type": "ELEMENT"
     }
-  ],
-  "VaultNotional": "",
-  "Notional": "",
-  "notionalStartBlock": 6362131
+  ]
 }
