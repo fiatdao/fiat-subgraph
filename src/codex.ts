@@ -3,8 +3,6 @@ import { GrantDelegate, RevokeDelegate, Lock, ModifyBalance, TransferBalance, Se
 import { Delegate, Balance, Codex } from "../generated/schema";
 import { BIGINT_ZERO, BIGINT_ONE, getCodexBalance, getDelegates } from "./utils";
 import { createVaultIfNonExistent } from "./vault/vaults";
-import { log } from '@graphprotocol/graph-ts'
-
 
 export function handleGrantDelegate(event: GrantDelegate): void {
     let codexContract = event.address;
@@ -127,7 +125,13 @@ export function handleSetParam(event: SetParam): void {
     codex.vault = vaultAddress.toHexString();
     codex.save();
 
-    log.debug("Auctions4: " + vaultAddress.toHexString(), [])
+    // workaround for wrongly emitted event in Codex
+    if (param.toString() == "globalDebtCeiling") {
+        codex.globalDebtCeiling = data;
+        codex.save();
+        return;
+    }
+
     let vault = createVaultIfNonExistent(vaultAddress.toHexString());
 
     if (param.toString() == "debtCeiling") {

@@ -3,13 +3,10 @@ import { Init } from "../../generated/Codex/Codex";
 import { Vault } from "../../generated/schema";
 import { createCollateralIfNecessary } from "../collateralType";
 import { BIGINT_ZERO, WAD, getCollateralizationRatio } from "../utils";
-import { log } from '@graphprotocol/graph-ts'
 import { vaultsData } from "./vaultsData";
 
 export function handleVaultInit(event: Init): void {
   let vaultAddress = event.params.vault;
-  log.debug("Vault1: " + vaultAddress.toString(), [])
-  
   createVaultIfNonExistent(vaultAddress.toHexString());
 }
 
@@ -20,8 +17,6 @@ export function createVaultIfNonExistent(vaultAddress: string): Vault {
     let address = Address.fromString(vaultAddress);
 
     let config = vaultsData.get(vaultAddress);
-    log.debug("Address2: " + address.toString(), [])
-    log.debug("VaultAddr2: " + vaultAddress, [])
     if (config) {
       vault.name = (config.get('name')) as string;
       vault.type = (config.get('type')) as string;

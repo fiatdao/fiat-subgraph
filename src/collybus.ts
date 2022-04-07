@@ -3,7 +3,6 @@ import { createVaultIfNonExistent } from "./vault/vaults";
 import { getCollateralizationRatio } from "./utils";
 import { CollybusSpot, Collybus, CollybusDiscountRate } from "../generated/schema";
 import { Address, BigInt } from "@graphprotocol/graph-ts";
-import { log } from '@graphprotocol/graph-ts'
 
 
 export function handleCollybusSetParam(setParam: SetParam1): void {
@@ -11,7 +10,6 @@ export function handleCollybusSetParam(setParam: SetParam1): void {
     let collybusAddress = setParam.address;
 
     let collybus = createCollybusIfNonExistent(collybusAddress);
-    log.debug("Collybus: " + vaultAddress.toHexString(), [])
     let vault = createVaultIfNonExistent(vaultAddress.toHexString());
     vault.collateralizationRatio = getCollateralizationRatio(vaultAddress);
     vault.collybus = collybus.id;
