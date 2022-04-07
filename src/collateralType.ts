@@ -1,9 +1,9 @@
 import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
-import { Notional, Notional__getCurrencyResult } from "../generated/Notional/Notional";
-import { VaultFC } from "../generated/Notional/VaultFC";
+// import { Notional, Notional__getCurrencyResult } from "../generated/Notional/Notional";
+// import { VaultFC } from "../generated/Notional/VaultFC";
 import { CollateralType, Vault } from "../generated/schema";
-import { createVaultIfNonExistent } from "./vault/vaults";
-import { vaultsData } from "./vault/vaultsData";
+// import { createVaultIfNonExistent } from "./vault/vaults";
+// import { vaultsData } from "./vault/vaultsData";
 import { BIGINT_ZERO, getFaceValue, getMaturity, getSymbol, getToken, getUnderlierToken, getVaultType, getUnderlierScale } from "./utils";
 
 const NOTIONAL = "NOTIONAL";
@@ -38,42 +38,42 @@ export function createERC20CollateralIfNonExistent(vault: Vault): CollateralType
   return collateralType as CollateralType;
 }
 
-export function createNotionalCollateralIfNonExistent(notional: Notional, tokenId: BigInt, currencyId: i32, maturity: BigInt, tenor: BigInt): CollateralType {
-  let id = tokenId.toString();
+// export function createNotionalCollateralIfNonExistent(notional: Notional, tokenId: BigInt, currencyId: i32, maturity: BigInt, tenor: BigInt): CollateralType {
+//   let id = tokenId.toString();
 
-  let collateralType: CollateralType;
-  let vault: Vault;
-  let currency: Notional__getCurrencyResult;
+//   let collateralType: CollateralType;
+//   let vault: Vault;
+//   let currency: Notional__getCurrencyResult;
 
-  // look for corresponding vault
-  for (let i: i32 = 0; i < vaultsData.entries.length; i++) {
-    let vData = vaultsData.get(vaultsData.entries[i].key);
+//   // look for corresponding vault
+//   for (let i: i32 = 0; i < vaultsData.entries.length; i++) {
+//     let vData = vaultsData.get(vaultsData.entries[i].key);
 
-    // only notional vaults
-    let vaultType = vData!.get('type');
-    if (vaultsData.entries[i].key !== "" && vaultType !== null && vaultType === NOTIONAL) {
-      currency = notional.getCurrency(currencyId);
-      let marketUnderlierAddress = currency.value1.tokenAddress;
+//     // only notional vaults
+//     let vaultType = vData!.get('type');
+//     if (vaultsData.entries[i].key !== "" && vaultType !== null && vaultType === NOTIONAL) {
+//       currency = notional.getCurrency(currencyId);
+//       let marketUnderlierAddress = currency.value1.tokenAddress;
 
-      let vaultFC = VaultFC.bind(changetype<Address>(Address.fromHexString(vaultsData.entries[i].key)))
-      let vaultUnderlier = vaultFC.underlierToken()
-      let vaultTenor = vaultFC.tenor()
+//       let vaultFC = VaultFC.bind(changetype<Address>(Address.fromHexString(vaultsData.entries[i].key)))
+//       let vaultUnderlier = vaultFC.underlierToken()
+//       let vaultTenor = vaultFC.tenor()
 
-      // same underlier and tenor
-      if (vaultUnderlier.equals(marketUnderlierAddress) && vaultTenor.equals(tenor)) {
-        vault = createVaultIfNonExistent(vaultsData.entries[i].key);
-        let collateralType = createCollateralIfNonExistent(vault, id);
-        if (!collateralType.address) {
-          collateralType.maturity = maturity;
-          setCollateralAddresses(collateralType, notional._address, marketUnderlierAddress);
-          collateralType.save();
-        }
-      }
-    }
-  }
+//       // same underlier and tenor
+//       if (vaultUnderlier.equals(marketUnderlierAddress) && vaultTenor.equals(tenor)) {
+//         vault = createVaultIfNonExistent(vaultsData.entries[i].key);
+//         let collateralType = createCollateralIfNonExistent(vault, id);
+//         if (!collateralType.address) {
+//           collateralType.maturity = maturity;
+//           setCollateralAddresses(collateralType, notional._address, marketUnderlierAddress);
+//           collateralType.save();
+//         }
+//       }
+//     }
+//   }
 
-  return collateralType as CollateralType;
-}
+//   return collateralType as CollateralType;
+// }
 
 export function createCollateralIfNonExistent(vault: Vault, tokenId: string): CollateralType {
   let id = vault.id + "-" + tokenId;

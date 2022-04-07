@@ -20,8 +20,9 @@ export function createVaultIfNonExistent(vaultAddress: string): Vault {
     if (config) {
       vault.name = (config.get('name')) as string;
       vault.type = (config.get('type')) as string;
+      vault.address = Address.fromString((config.get('VaultEPT')) as string)
+      vault.convergentCurvePool = (config.get('ConvergentCurvePool')) as string
     }
-    vault.address = address;
     vault.collateralizationRatio = getCollateralizationRatio(address);
     vault.multiplier = WAD;
     vault.interestPerSecond = WAD;

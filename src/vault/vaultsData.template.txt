@@ -5,7 +5,8 @@ let vaultsData = new TypedMap<string, TypedMap<string, string>>();
 let val{{idx}} = new TypedMap<string, string>();
 
 val{{idx}}.set("name", "{{name}}");
-val{{idx}}.set("address", "{{address}}");
+val{{idx}}.set("VaultEPT", "{{VaultEPT}}");
+val{{idx}}.set("ConvergentCurvePool", "{{ConvergentCurvePool}}");
 val{{idx}}.set("type", "{{type}}");
 val{{idx}}.set("collateralTokenId", "{{collateralTokenId}}");
 val{{idx}}.set("collateralMaturity", "{{collateralMaturity}}");
@@ -13,7 +14,7 @@ val{{idx}}.set("collateralType", "{{collateralType}}");
 val{{idx}}.set("underlierName", "{{underlierName}}");
 val{{idx}}.set("underlierAddress", "{{underlierAddress}}");
 val{{idx}}.set("underlierToken", "{{underlierToken}}");
-vaultsData.set("{{address}}", val{{idx}});
+vaultsData.set("{{VaultEPT}}", val{{idx}});
 
 {{/Vaults}}
 export {

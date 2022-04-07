@@ -6,7 +6,7 @@ import { BIGINT_ZERO, getTotalSupply, getBalance, ZERO_ADDRESS } from "./utils";
 export function handleFIATTransfer(event: Transfer): void {
   let fromAddress = event.params.from;
   let toAddress = event.params.to;
-  let amount = event.params.amount;
+  let amount = event.params.value;
   let fiat = createFIATIfNonExistent(event.address);
 
   // Checking if the event that is coming is from mint() 
@@ -68,7 +68,7 @@ export function isBurnOperation(from: Address, to: Address): boolean {
 export function handleFIATApprovals(event: Approval): void {
   const owner = event.params.owner;
   const spender = event.params.spender;
-  const amount = event.params.amount;
+  const amount = event.params.value;
 
   createFIATTokenAllowanceIfNonExistent(owner, spender, amount);
 }

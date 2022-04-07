@@ -125,6 +125,13 @@ export function handleSetParam(event: SetParam): void {
     codex.vault = vaultAddress.toHexString();
     codex.save();
 
+    // workaround for wrongly emitted event in Codex
+    if (param.toString() == "globalDebtCeiling") {
+        codex.globalDebtCeiling = data;
+        codex.save();
+        return;
+    }
+
     let vault = createVaultIfNonExistent(vaultAddress.toHexString());
 
     if (param.toString() == "debtCeiling") {

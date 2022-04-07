@@ -1,8 +1,125 @@
 [
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Collybus__setParam_notLive",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Collybus__setParam_unrecognizedParam",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Collybus__updateDiscountRate_invalidRate",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Collybus__updateDiscountRate_invalidRateId",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Collybus__updateDiscountRate_notLive",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Collybus__updateSpot_notLive",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Guarded__notGranted",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Guarded__notRoot",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "x",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "y",
+        "type": "uint256"
+      }
+    ],
+    "name": "Math__add_overflow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "x",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "y",
+        "type": "uint256"
+      }
+    ],
+    "name": "Math__mul_overflow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "x",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "y",
+        "type": "uint256"
+      }
+    ],
+    "name": "Math__sub_overflow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "prod1",
+        "type": "uint256"
+      }
+    ],
+    "name": "PRBMath__MulDivFixedPointOverflow",
+    "type": "error"
   },
   {
     "anonymous": false,
@@ -44,7 +161,9 @@
   },
   {
     "anonymous": false,
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "Lock",
     "type": "event"
   },
@@ -162,7 +281,9 @@
     "type": "event"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "ANY_CALLER",
     "outputs": [
       {
@@ -175,7 +296,9 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "ANY_SIG",
     "outputs": [
       {
@@ -201,7 +324,9 @@
       }
     ],
     "name": "allowCaller",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -219,7 +344,9 @@
       }
     ],
     "name": "blockCaller",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -248,7 +375,9 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "live",
     "outputs": [
       {
@@ -261,9 +390,13 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "lock",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -350,7 +483,9 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "redemptionPrice",
     "outputs": [
       {
@@ -376,7 +511,9 @@
       }
     ],
     "name": "setParam",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -404,7 +541,9 @@
       }
     ],
     "name": "setParam",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -427,7 +566,9 @@
       }
     ],
     "name": "setParam",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -464,7 +605,9 @@
       }
     ],
     "name": "updateDiscountRate",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -482,7 +625,9 @@
       }
     ],
     "name": "updateSpot",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },

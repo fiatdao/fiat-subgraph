@@ -4,6 +4,7 @@ import { getCollateralizationRatio } from "./utils";
 import { CollybusSpot, Collybus, CollybusDiscountRate } from "../generated/schema";
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 
+
 export function handleCollybusSetParam(setParam: SetParam1): void {
     let vaultAddress = setParam.params.vault;
     let collybusAddress = setParam.address;

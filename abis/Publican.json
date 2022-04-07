@@ -11,6 +11,112 @@
     "type": "constructor"
   },
   {
+    "inputs": [
+      
+    ],
+    "name": "Guarded__notGranted",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Guarded__notRoot",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "x",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "y",
+        "type": "uint256"
+      }
+    ],
+    "name": "Math__add_overflow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "x",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "y",
+        "type": "uint256"
+      }
+    ],
+    "name": "Math__diff_overflow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "x",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "y",
+        "type": "uint256"
+      }
+    ],
+    "name": "Math__mul_overflow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "x",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "y",
+        "type": "uint256"
+      }
+    ],
+    "name": "Math__sub_overflow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Publican__collect_invalidBlockTimestamp",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Publican__init_vaultAlreadyInit",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Publican__setParam_notCollected",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      
+    ],
+    "name": "Publican__setParam_unrecognizedParam",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -119,7 +225,9 @@
     "type": "event"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "ANY_CALLER",
     "outputs": [
       {
@@ -132,7 +240,9 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "ANY_SIG",
     "outputs": [
       {
@@ -145,7 +255,9 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "aer",
     "outputs": [
       {
@@ -171,12 +283,16 @@
       }
     ],
     "name": "allowCaller",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "baseInterest",
     "outputs": [
       {
@@ -202,7 +318,9 @@
       }
     ],
     "name": "blockCaller",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -231,7 +349,9 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      
+    ],
     "name": "codex",
     "outputs": [
       {
@@ -290,7 +410,9 @@
       }
     ],
     "name": "init",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -308,7 +430,9 @@
       }
     ],
     "name": "setParam",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -326,7 +450,9 @@
       }
     ],
     "name": "setParam",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -349,7 +475,9 @@
       }
     ],
     "name": "setParam",
-    "outputs": [],
+    "outputs": [
+      
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -371,6 +499,25 @@
       {
         "internalType": "uint256",
         "name": "lastCollected",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      }
+    ],
+    "name": "virtualRate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "rate",
         "type": "uint256"
       }
     ],

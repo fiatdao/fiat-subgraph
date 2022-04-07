@@ -4,7 +4,8 @@ import { Collybus } from "../generated/Codex/Collybus";
 import { IVault } from "../generated/Codex/IVault";
 import { CollateralAuction } from "../generated/CollateralAuction/CollateralAuction";
 import { FIAT } from "../generated/FIAT/FIAT";
-import { ERC20 } from "../generated/Notional/ERC20";
+import { ERC20 } from "../generated/Codex/ERC20" // remove me when we deploy notional
+// import { ERC20 } from "../generated/Notional/ERC20";
 import { COLLYBUS_ADDRESS, CODEX_ADDRESS, FIAT_ADDRESS, COLLATERAL_AUCTION_ADDRESS } from "./constants";
 
 let codex = Codex.bind(Address.fromString(CODEX_ADDRESS));

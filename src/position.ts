@@ -14,6 +14,7 @@ export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): v
   // let creditor = event.params.creditor;
   let deltaCollateral = event.params.deltaCollateral;
   let deltaNormalDebt = event.params.deltaNormalDebt;
+
   let vault = createVaultIfNonExistent(vaultAddress.toHexString());
   let collateralType = createCollateralIfNonExistent(vault, tokenId.toString());
   let userEntity = createUserIfNonExistent(user);
@@ -149,6 +150,7 @@ export function handleTransferCollateralAndDebt(event: TransferCollateralAndDebt
   let tokenId = event.params.tokenId;
   let userSrc = event.params.src;
   let userDst = event.params.dst;
+
   let vault = createVaultIfNonExistent(vaultAddress.toHexString());
   let collateralType = createCollateralIfNonExistent(vault, tokenId.toString());
   let userSrcEntity = createUserIfNonExistent(userSrc);
@@ -179,6 +181,7 @@ export function handleConfiscateCollateralAndDebt(event: ConfiscateCollateralAnd
   let tokenId = event.params.tokenId;
   let user = event.params.user;
   let collateralizer = event.params.collateralizer;
+
   let vault = createVaultIfNonExistent(vaultAddress.toHexString());
   let collateralType = createCollateralIfNonExistent(vault, tokenId.toString());
   let userEntity = createUserIfNonExistent(user);

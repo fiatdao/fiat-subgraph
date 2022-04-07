@@ -1,7 +1,7 @@
 version: '3'
 services:
   graph-node:
-    image: graphprotocol/graph-node:v0.24.0
+    image: graphprotocol/graph-node:v0.26.0
     restart: on-failure
     ports:
       - '8000:8000'
@@ -19,7 +19,7 @@ services:
       postgres_db: graph-node
       ipfs: 'ipfs:5001'
       # Change next line if you want to connect to a different JSON-RPC endpoint
-      ethereum: 'mainnet:https://mainnet.infura.io/v3/'
+      ethereum: 'goerli:https://eth-goerli.alchemyapi.io/v2/fe2m2g2zR0VSdfeDvvTlFCVgNycVTybN'
       GRAPH_LOG: info
   ipfs:
     image: ipfs/go-ipfs:v0.4.23

@@ -76,37 +76,37 @@ dataSources:
         - event: SetParam(indexed address,indexed bytes32,uint256)
           handler: handleSetParam
       file: ./src/mappings.ts
-  {{#Notional}}
-  - kind: ethereum/contract
-    name: Notional
-    network: {{network}}
-    source:
-      address: '{{Notional}}'
-      abi: Notional
-      startBlock: {{notionalStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Vault
-        - CollateralType
-      abis:
-        - name: Notional
-          file: ./abis/Notional.json
-        - name: ERC20
-          file: ./abis/ERC20.json
-        - name: Collybus
-          file: ./abis/Collybus.json
-        - name: IVault
-          file: ./abis/IVault.json
-        - name: VaultFC
-          file: ./abis/VaultFC.json
-      eventHandlers:
-        - event: MarketsInitialized(uint16)
-          handler: handleMarketsInitialized
-      file: ./src/mappings.ts
-  {{/Notional}}
+  # {{#Notional}}
+  # - kind: ethereum/contract
+  #   name: Notional
+  #   network: {{network}}
+  #   source:
+  #     address: '{{Notional}}'
+  #     abi: Notional
+  #     startBlock: {{notionalStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.5
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - Vault
+  #       - CollateralType
+  #     abis:
+  #       - name: Notional
+  #         file: ./abis/Notional.json
+  #       - name: ERC20
+  #         file: ./abis/ERC20.json
+  #       - name: Collybus
+  #         file: ./abis/Collybus.json
+  #       - name: IVault
+  #         file: ./abis/IVault.json
+  #       - name: VaultFC
+  #         file: ./abis/VaultFC.json
+  #     eventHandlers:
+  #       - event: MarketsInitialized(uint16)
+  #         handler: handleMarketsInitialized
+  #     file: ./src/mappings.ts
+  # {{/Notional}}
   - kind: ethereum/contract
     name: FIAT
     network: {{network}}
@@ -220,26 +220,4 @@ dataSources:
       eventHandlers:
         - event: SetParam(indexed address,indexed bytes32,uint256)
           handler: handlePublicanSetParam
-      file: ./src/mappings.ts
-  - kind: ethereum/contract
-    name: CCPFactory
-    network: {{network}}
-    source:
-      address: '{{ConvergentCurvePoolFactory}}'
-      abi: CCPFactory
-      startBlock: {{startBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - CollateralType
-      abis:
-        - name: CCPFactory
-          file: ./abis/CCPFactory.json
-        - name: ICCP
-          file: ./abis/ICCP.json
-      eventHandlers:
-        - event: CCPoolCreated(indexed address,indexed address)
-          handler: handleCCPoolCreated
       file: ./src/mappings.ts
