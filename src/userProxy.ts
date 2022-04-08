@@ -9,13 +9,13 @@ export function handleDeployProxy(event: DeployProxy): void {
 }
 
 export function createUserProxyIfNonExistent(owner: Bytes, proxyAddress: Bytes): UserProxy {
-  let address = owner.toHexString();
-  let userProxy = UserProxy.load(address);
+  let userProxy = UserProxy.load(owner.toHexString());
   if (userProxy == null) {
-    userProxy = new UserProxy(address);
+    userProxy = new UserProxy(owner.toHexString());
   }
   userProxy.owner = owner;
   userProxy.proxyAddress = proxyAddress;
   userProxy.save();
+
   return userProxy as UserProxy;
 }

@@ -23,7 +23,6 @@ export function createCollateralTypeIfNonExistent(vault: Vault, tokenId: string)
     collateralType.tokenId = BigInt.fromString(tokenId);
     collateralType.depositedCollateral = BIGINT_ZERO;
     collateralType.vault = vault.id;
-    collateralType.vaultName = vault.name;
     collateralType.faceValue = getFaceValue();
     collateralType.save();
   }
@@ -41,7 +40,6 @@ export function createCollateralTypeIfNonExistent(vault: Vault, tokenId: string)
 }
 
 function createEPTCollateralTypeIfNonExistent(collateralType: CollateralType): CollateralType {
-  let tokenId = "0";
   let vaultAddress = Address.fromString(collateralType.vault!);
   let tokenAddress = getToken(vaultAddress);
   let underlierAddress = getUnderlierToken(vaultAddress);
@@ -53,7 +51,7 @@ function createEPTCollateralTypeIfNonExistent(collateralType: CollateralType): C
   collateralType.underlierSymbol = getSymbol(underlierAddress);
   collateralType.underlierScale = getUnderlierScale(vaultAddress);
 
-  collateralType.maturity = getMaturity(vaultAddress, BigInt.fromString(tokenId));
+  collateralType.maturity = getMaturity(vaultAddress, BigInt.fromString("0"));
   collateralType.eptData = createEPTDataIfNonExistent(collateralType.vault!).id;
   collateralType.save();
 
@@ -100,8 +98,3 @@ function createEPTCollateralTypeIfNonExistent(collateralType: CollateralType): C
 
 //   return collateralType as CollateralType;
 // }
-
-export function updateCollateral(collateralType: CollateralType, deltaCollateral: BigInt): void {
-  collateralType.depositedCollateral = collateralType.depositedCollateral!.plus(deltaCollateral);
-  collateralType.save();
-}

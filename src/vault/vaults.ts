@@ -23,12 +23,14 @@ export function createVaultIfNonExistent(vaultAddress: string): Vault {
     vault.collateralizationRatio = getLiquidationRatio(Address.fromString(vaultAddress));
     vault.multiplier = WAD;
     vault.interestPerSecond = WAD;
+    
     // set via SetParam
     vault.maxAuctionDuration = BIGINT_ZERO;
     vault.maxDiscount = BIGINT_ZERO;
     vault.auctionDebtFloor = BIGINT_ZERO;
     vault.debtCeiling = BIGINT_ZERO;
     vault.debtFloor = BIGINT_ZERO;
+    vault.defaultRateId = BIGINT_ZERO;
     vault.save();
 
     log.debug("CreateVaultIfNonExistent: vaultAddress: {}", [vaultAddress]);

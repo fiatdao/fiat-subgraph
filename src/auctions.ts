@@ -13,8 +13,6 @@ import { createCollateralTypeIfNonExistent } from "./collateralType";
 import { createVaultIfNonExistent } from "./vault/vaults";
 import { isActiveAuction } from "./utils";
 
-const VAULT_PARAMS = ['multiplier', 'maxAuctionDuration', 'maxDiscount'];
-
 export function handleStartAuction(event: StartAuction): void {
   let vault = createVaultIfNonExistent(event.params.vault.toHexString());
   let collateralType = createCollateralTypeIfNonExistent(vault, event.params.tokenId.toString());
@@ -53,7 +51,6 @@ export function createCollateralAuctionIfNonExistent(
     collateralAuction.debt = debt;
     collateralAuction.collateralToSell = collateralToSell;
     collateralAuction.vault = vault.id;
-    collateralAuction.vaultName = vault.name;
     collateralAuction.tokenId = tokenId;
     collateralAuction.collateralType = collateralType.id;
     collateralAuction.user = user;
@@ -114,6 +111,7 @@ export function handleRedoAuction(event: RedoAuction): void {
 
 // TODO
 export function handleAuctionSetParam(event: SetParam): void {
+  // const VAULT_PARAMS = ['multiplier', 'maxAuctionDuration', 'maxDiscount'];
   // let param = event.params.param.toString();
   // if (VAULT_PARAMS.includes(param)) {
   //   // Skip the selector

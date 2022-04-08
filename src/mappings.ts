@@ -19,7 +19,6 @@ import { handlePublicanSetParam } from "./publican"
 import {
   handleGrantDelegate,
   handleRevokeDelegate,
-  handleLock,
   handleModifyBalance,
   handleTransferBalance,
   handleSetParam
@@ -46,7 +45,6 @@ export {
   handlePublicanSetParam,
   handleGrantDelegate,
   handleRevokeDelegate,
-  handleLock,
   handleModifyBalance,
   handleTransferBalance,
   handleSetParam,

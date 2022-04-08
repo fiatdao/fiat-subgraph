@@ -1,22 +1,18 @@
 import { BigInt, Address } from "@graphprotocol/graph-ts";
 import {
-    GrantDelegate, RevokeDelegate, Lock, ModifyBalance, TransferBalance, SetParam
+    GrantDelegate, RevokeDelegate, ModifyBalance, TransferBalance, SetParam
 } from "../generated/Codex/Codex";
-import { Delegate, Balance, Codex } from "../generated/schema";
-import { BIGINT_ZERO, BIGINT_ONE, getCodexBalance, getDelegates } from "./utils";
+import { Delegate, Balance, Codex, User } from "../generated/schema";
+import { createUserIfNonExistent } from "./position";
+import { getCodexBalance, getDelegates } from "./utils";
 import { createVaultIfNonExistent } from "./vault/vaults";
 
 export function handleGrantDelegate(event: GrantDelegate): void {
-    let codexContract = event.address;
-    let delegator = event.params.delegator;
-    let delegatee = event.params.delegatee;
-    let hasDelegate = getDelegates(delegator, delegatee);
-
-    let delegates = createGrantDelegateIfNotExistent(delegator, delegatee);
-    delegates.hasDelegate = hasDelegate;
+    let delegates = createGrantDelegateIfNotExistent(event.params.delegator, event.params.delegatee);
+    delegates.hasDelegate = getDelegates(event.params.delegator, event.params.delegatee);
     delegates.save();
 
-    let codex = createCodexIfNonExistent(codexContract);
+    let codex = createCodexIfNonExistent(event.address);
     codex.delegates = delegates.id;
     codex.save();
 }
@@ -51,11 +47,10 @@ function createGrantDelegateIfNotExistent(delegator: Address, delegatee: Address
 
 function createCodexIfNonExistent(codexAddr: Address): Codex {
     let id = codexAddr.toHexString();
-    let codex = Codex.load(id);
 
+    let codex = Codex.load(id);
     if (codex == null) {
         codex = new Codex(id);
-        codex.isAlive = BIGINT_ONE;
         codex.save();
     }
 
@@ -63,93 +58,59 @@ function createCodexIfNonExistent(codexAddr: Address): Codex {
 }
 
 export function handleModifyBalance(event: ModifyBalance): void {
-    let codexContract = event.address;
-    let vaultAddress = event.params.vault;
-    let tokenId = event.params.tokenId;
-    let user = event.params.user;
+    // createCodexIfNonExistent(event.address);
 
-    let codex = createCodexIfNonExistent(codexContract);
-    codex.vault = vaultAddress.toHexString();
-    codex.save();
-
-    let balance = getCodexBalance(vaultAddress, tokenId, user);
-    let balanceEntity = createBalanceIfNotExistent(vaultAddress, tokenId, user);
-    balanceEntity.balance = balance;
+    let user = createUserIfNonExistent(event.params.user);
+    let balanceEntity = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, user);
+    balanceEntity.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.user);
     balanceEntity.save();
 }
 
 export function handleTransferBalance(event: TransferBalance): void {
-    let codexContract = event.address;
-    let vaultAddress = event.params.vault;
-    let tokenId = event.params.tokenId;
-    let source = event.params.src;
-    let destination = event.params.dst;
+    // createCodexIfNonExistent(event.address);
 
-    let codex = createCodexIfNonExistent(codexContract);
-    codex.vault = vaultAddress.toHexString();
-    codex.save();
+    let srcUser = createUserIfNonExistent(event.params.src);
+    let srcBalance = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, srcUser);
+    srcBalance.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.src);
+    srcBalance.save();
 
-    let balanceSrc = getCodexBalance(vaultAddress, tokenId, source);
-    let balanceDst = getCodexBalance(vaultAddress, tokenId, destination);
-
-    let balanceSrcEntity = createBalanceIfNotExistent(vaultAddress, tokenId, source);
-    balanceSrcEntity.balance = balanceSrc;
-
-    let balanceDstEntity = createBalanceIfNotExistent(vaultAddress, tokenId, destination);
-    balanceDstEntity.balance = balanceDst;
-
-    balanceSrcEntity.save();
-    balanceDstEntity.save();
+    let dstUser = createUserIfNonExistent(event.params.src);
+    let dstBalance = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, dstUser);
+    dstBalance.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.dst);
+    dstBalance.save();
 }
 
-export function createBalanceIfNotExistent(vaultAddress: Address, tokenId: BigInt, collateralizer: Address): Balance {
-    let id = vaultAddress.toHexString() + "-" + tokenId.toHexString() + "-" + collateralizer.toHexString();
-    let balanceEntity = Balance.load(id);
+export function createBalanceIfNotExistent(vaultAddress: Address, tokenId: BigInt, user: User): Balance {
+    let id = vaultAddress.toHexString() + "-" + tokenId.toHexString() + "-" + user.id.toString();
 
-    if (balanceEntity == null) {
-        balanceEntity = new Balance(id);
-        balanceEntity.owner = collateralizer;
-        balanceEntity.tokenId = tokenId;
-        balanceEntity.vault = vaultAddress;
-        balanceEntity.save();
+    let balance = Balance.load(id);
+    if (balance == null) {
+        balance = new Balance(id);
+        balance.owner = user.id;
+        balance.tokenId = tokenId;
+        balance.vault = vaultAddress;
+        balance.save();
     }
 
-    return balanceEntity as Balance;
+    return balance as Balance;
 }
 
 export function handleSetParam(event: SetParam): void {
-    let codexContract = event.address;
-    let vaultAddress = event.params.vault;
-    let param = event.params.param;
-    let data = event.params.data;
-
-    let codex = createCodexIfNonExistent(codexContract);
-    codex.vault = vaultAddress.toHexString();
-    codex.save();
-
     // workaround for wrongly emitted event in Codex
-    if (param.toString() == "globalDebtCeiling") {
-        codex.globalDebtCeiling = data;
+    if (event.params.param.toString() == "globalDebtCeiling") {
+        let codex = createCodexIfNonExistent(event.address);
+        codex.globalDebtCeiling = event.params.data;
         codex.save();
         return;
     }
 
-    let vault = createVaultIfNonExistent(vaultAddress.toHexString());
-
-    if (param.toString() == "debtCeiling") {
-        vault.debtCeiling = data;
+    let vault = createVaultIfNonExistent(event.params.vault.toHexString());
+    if (event.params.param.toString() == "debtCeiling") {
+        vault.debtCeiling = event.params.data;
     }
-    if (param.toString() == "debtFloor") {
-        vault.debtFloor = data;
+    if (event.params.param.toString() == "debtFloor") {
+        vault.debtFloor = event.params.data;
     }
 
     vault.save();
-}
-
-export function handleLock(event: Lock): void {
-    let contractAddr = event.address;
-
-    let codex = createCodexIfNonExistent(contractAddr);
-    codex.isAlive = BIGINT_ZERO;
-    codex.save();
 }
