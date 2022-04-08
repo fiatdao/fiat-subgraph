@@ -1,6 +1,6 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 // import { MarketsInitialized, Notional } from "../generated/Notional/Notional";
-// import { createNotionalCollateralIfNonExistent } from "./collateralType";
+// import { createNotionalCollateralTypeIfNonExistent } from "./collateralType";
 
 export const RATE_PRECISION = 1000000000;
 export const BASIS_POINTS = 100000;
@@ -51,6 +51,6 @@ function getMarketTenor(maturity: BigInt, blockTime: BigInt): BigInt {
 //     let assetType = 1;
 //     let tokenId = notional.encodeToId(currencyId, maturity, assetType);
 
-//     createNotionalCollateralIfNonExistent(notional, tokenId, currencyId, maturity, tenor);
+//     createNotionalCollateralTypeIfNonExistent(notional, tokenId, currencyId, maturity, tenor);
 //   }
 // }

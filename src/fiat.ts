@@ -1,5 +1,5 @@
-import { FIAT, FIATTokenBalance, FIATTokenAllowance } from "../generated/schema";
 import { Address, BigInt } from "@graphprotocol/graph-ts";
+import { FIAT, FIATTokenBalance, FIATTokenAllowance } from "../generated/schema";
 import { Transfer, Approval } from "../generated/FIAT/FIAT";
 import { BIGINT_ZERO, getTotalSupply, getBalance, ZERO_ADDRESS } from "./utils";
 

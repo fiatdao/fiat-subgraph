@@ -1,7 +1,17 @@
 import { Bytes, BigInt, Address } from "@graphprotocol/graph-ts";
-import { ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt } from "../generated/Codex/Codex";
-import { CollateralType, ConfiscateCollateralAndDebtAction, ModifyCollateralAndDebtAction, Position, TransferCollateralAndDebtAction, User, Vault } from "../generated/schema";
-import { createCollateralIfNonExistent, updateCollateral } from "./collateralType";
+import {
+  ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt
+} from "../generated/Codex/Codex";
+import {
+  CollateralType,
+  ConfiscateCollateralAndDebtAction,
+  ModifyCollateralAndDebtAction,
+  Position,
+  TransferCollateralAndDebtAction,
+  User,
+  Vault 
+} from "../generated/schema";
+import { createCollateralTypeIfNonExistent, updateCollateral } from "./collateralType";
 import { getMaturity, getCodexPosition, getCodexBalance } from "./utils";
 import { createVaultIfNonExistent } from "./vault/vaults";
 import { createBalanceIfNotExistent } from "./codex";
@@ -16,7 +26,7 @@ export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): v
   let deltaNormalDebt = event.params.deltaNormalDebt;
 
   let vault = createVaultIfNonExistent(vaultAddress.toHexString());
-  let collateralType = createCollateralIfNonExistent(vault, tokenId.toString());
+  let collateralType = createCollateralTypeIfNonExistent(vault, tokenId.toString());
   let userEntity = createUserIfNonExistent(user);
   let position = createPositionIfNonExistent(
     vault,
@@ -152,7 +162,7 @@ export function handleTransferCollateralAndDebt(event: TransferCollateralAndDebt
   let userDst = event.params.dst;
 
   let vault = createVaultIfNonExistent(vaultAddress.toHexString());
-  let collateralType = createCollateralIfNonExistent(vault, tokenId.toString());
+  let collateralType = createCollateralTypeIfNonExistent(vault, tokenId.toString());
   let userSrcEntity = createUserIfNonExistent(userSrc);
   let userDstEntity = createUserIfNonExistent(userDst);
   let positionSrc = createPositionIfNonExistent(
@@ -183,7 +193,7 @@ export function handleConfiscateCollateralAndDebt(event: ConfiscateCollateralAnd
   let collateralizer = event.params.collateralizer;
 
   let vault = createVaultIfNonExistent(vaultAddress.toHexString());
-  let collateralType = createCollateralIfNonExistent(vault, tokenId.toString());
+  let collateralType = createCollateralTypeIfNonExistent(vault, tokenId.toString());
   let userEntity = createUserIfNonExistent(user);
   let position = createPositionIfNonExistent(
     vault,

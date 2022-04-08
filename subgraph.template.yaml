@@ -5,26 +5,6 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: PRBProxyFactory
-    network: {{network}}
-    source:
-      address: '{{PRBProxyFactory}}'
-      abi: PRBProxyFactory
-      startBlock: {{startBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - UserProxy
-      abis:
-        - name: PRBProxyFactory
-          file: ./abis/PRBProxyFactory.json
-      eventHandlers:
-        - event: DeployProxy(indexed address,indexed address,indexed address,bytes32,bytes32,address)
-          handler: handleDeployProxy
-      file: ./src/mappings.ts
-  - kind: ethereum/contract
     name: Codex
     network: {{network}}
     source:
@@ -54,6 +34,8 @@ dataSources:
           file: ./abis/Fiat.json
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: IConvergentCurvePool
+          file: ./abis/IConvergentCurvePool.json
       eventHandlers:
         - event: ModifyCollateralAndDebt(indexed address,indexed uint256,indexed address,address,address,int256,int256)
           handler: handleModifyCollateralAndDebt
@@ -76,37 +58,6 @@ dataSources:
         - event: SetParam(indexed address,indexed bytes32,uint256)
           handler: handleSetParam
       file: ./src/mappings.ts
-  # {{#Notional}}
-  # - kind: ethereum/contract
-  #   name: Notional
-  #   network: {{network}}
-  #   source:
-  #     address: '{{Notional}}'
-  #     abi: Notional
-  #     startBlock: {{notionalStartBlock}}
-  #   mapping:
-  #     kind: ethereum/events
-  #     apiVersion: 0.0.5
-  #     language: wasm/assemblyscript
-  #     entities:
-  #       - Vault
-  #       - CollateralType
-  #     abis:
-  #       - name: Notional
-  #         file: ./abis/Notional.json
-  #       - name: ERC20
-  #         file: ./abis/ERC20.json
-  #       - name: Collybus
-  #         file: ./abis/Collybus.json
-  #       - name: IVault
-  #         file: ./abis/IVault.json
-  #       - name: VaultFC
-  #         file: ./abis/VaultFC.json
-  #     eventHandlers:
-  #       - event: MarketsInitialized(uint16)
-  #         handler: handleMarketsInitialized
-  #     file: ./src/mappings.ts
-  # {{/Notional}}
   - kind: ethereum/contract
     name: FIAT
     network: {{network}}
@@ -124,7 +75,7 @@ dataSources:
         - FIATTokenAllowance
       abis:
         - name: FIAT
-          file: ./abis/Fiat.json
+          file: ./abis/FIAT.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleFIATTransfer
@@ -217,7 +168,62 @@ dataSources:
       abis:
         - name: Publican
           file: ./abis/Publican.json
+        - name: IVault
+          file: ./abis/IVault.json
+        - name: Collybus
+          file: ./abis/Collybus.json
       eventHandlers:
         - event: SetParam(indexed address,indexed bytes32,uint256)
           handler: handlePublicanSetParam
       file: ./src/mappings.ts
+  - kind: ethereum/contract
+    name: PRBProxyFactory
+    network: {{network}}
+    source:
+      address: '{{PRBProxyFactory}}'
+      abi: PRBProxyFactory
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - UserProxy
+      abis:
+        - name: PRBProxyFactory
+          file: ./abis/PRBProxyFactory.json
+      eventHandlers:
+        - event: DeployProxy(indexed address,indexed address,indexed address,bytes32,bytes32,address)
+          handler: handleDeployProxy
+      file: ./src/mappings.ts
+  # {{#Notional}}
+  #   - kind: ethereum/contract
+  #     name: Notional
+  #     network: {{network}}
+  #     source:
+  #       address: '{{Notional}}'
+  #       abi: Notional
+  #       startBlock: {{notionalStartBlock}}
+  #     mapping:
+  #       kind: ethereum/events
+  #       apiVersion: 0.0.5
+  #       language: wasm/assemblyscript
+  #       entities:
+  #         - Vault
+  #         - CollateralType
+  #       abis:
+  #         - name: Notional
+  #           file: ./abis/Notional.json
+  #         - name: ERC20
+  #           file: ./abis/ERC20.json
+  #         - name: Collybus
+  #           file: ./abis/Collybus.json
+  #         - name: IVault
+  #           file: ./abis/IVault.json
+  #         - name: VaultFC
+  #           file: ./abis/VaultFC.json
+  #       eventHandlers:
+  #         - event: MarketsInitialized(uint16)
+  #           handler: handleMarketsInitialized
+  #       file: ./src/mappings.ts
+  #   {{/Notional}}

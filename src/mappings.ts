@@ -6,9 +6,15 @@ import {
 } from "./position"
 import { handleVaultInit, } from "./vault/vaults"
 import { handleCollybusSetParam, handleCollybusUpdateSpot, handleCollybusUpdateDiscountRate } from "./collybus"
-// import { handleMarketsInitialized } from "./notional"
 import { handleFIATTransfer, handleFIATApprovals } from "./fiat"
-import { handleStartAuction, handleTakeCollateral, handleStopAuction, handleRedoAuction, handleAuctionSetParam, handleUpdateAuctionDebtFloor } from "./auctions"
+import {
+  handleStartAuction,
+  handleTakeCollateral,
+  handleStopAuction,
+  handleRedoAuction,
+  handleAuctionSetParam,
+  handleUpdateAuctionDebtFloor
+} from "./auctions"
 import { handlePublicanSetParam } from "./publican"
 import {
   handleGrantDelegate,
@@ -18,6 +24,7 @@ import {
   handleTransferBalance,
   handleSetParam
 } from "./codex"
+// import { handleMarketsInitialized } from "./notional"
 
 export {
   handleDeployProxy,
@@ -25,7 +32,6 @@ export {
   handleTransferCollateralAndDebt,
   handleConfiscateCollateralAndDebt,
   handleVaultInit,
-  // handleMarketsInitialized,
   handleFIATTransfer,
   handleFIATApprovals,
   handleCollybusSetParam,
@@ -44,4 +50,5 @@ export {
   handleTransferBalance,
   handleSetParam,
   handleUpdateAuctionDebtFloor
+  // handleMarketsInitialized,
 }

@@ -1,5 +1,7 @@
 import { BigInt, Address } from "@graphprotocol/graph-ts";
-import { GrantDelegate, RevokeDelegate, Lock, ModifyBalance, TransferBalance, SetParam } from "../generated/Codex/Codex";
+import {
+    GrantDelegate, RevokeDelegate, Lock, ModifyBalance, TransferBalance, SetParam
+} from "../generated/Codex/Codex";
 import { Delegate, Balance, Codex } from "../generated/schema";
 import { BIGINT_ZERO, BIGINT_ONE, getCodexBalance, getDelegates } from "./utils";
 import { createVaultIfNonExistent } from "./vault/vaults";

@@ -1,7 +1,15 @@
 import { BigInt, Address, Bytes, ethereum } from '@graphprotocol/graph-ts';
-import { RedoAuction, StartAuction, StopAuction, TakeCollateral, SetParam, CollateralAuction as CollateralAuctionContract, UpdateAuctionDebtFloor } from "../generated/CollateralAuction/CollateralAuction";
+import {
+  RedoAuction,
+  StartAuction,
+  StopAuction,
+  TakeCollateral,
+  SetParam,
+  CollateralAuction as CollateralAuctionContract,
+  UpdateAuctionDebtFloor
+} from "../generated/CollateralAuction/CollateralAuction";
 import { CollateralType, CollateralAuction, Vault } from "../generated/schema";
-import { createCollateralIfNonExistent } from "./collateralType";
+import { createCollateralTypeIfNonExistent } from "./collateralType";
 import { createVaultIfNonExistent } from "./vault/vaults";
 import { isActiveAuction } from "./utils";
 
@@ -9,7 +17,7 @@ const VAULT_PARAMS = ['multiplier', 'maxAuctionDuration', 'maxDiscount'];
 
 export function handleStartAuction(event: StartAuction): void {
   let vault = createVaultIfNonExistent(event.params.vault.toHexString());
-  let collateralType = createCollateralIfNonExistent(vault, event.params.tokenId.toString());
+  let collateralType = createCollateralTypeIfNonExistent(vault, event.params.tokenId.toString());
   createCollateralAuctionIfNonExistent(
     vault,
     collateralType,
@@ -84,7 +92,7 @@ function setAuctionActive(auctionId: BigInt): void {
 // this events modifies the following properties: startsAt, startPrice, keeper, tip
 export function handleRedoAuction(event: RedoAuction): void {
   let vault = createVaultIfNonExistent(event.params.vault.toHexString());
-  let collateralType = createCollateralIfNonExistent(vault, event.params.tokenId.toString());
+  let collateralType = createCollateralTypeIfNonExistent(vault, event.params.tokenId.toString());
   let auction = createCollateralAuctionIfNonExistent(
     vault,
     collateralType,
@@ -117,7 +125,7 @@ export function handleAuctionSetParam(event: SetParam): void {
     if (!caVault.reverted) {
       vault.multiplier = caVault.value.value0;
       vault.maxAuctionDuration = caVault.value.value1;
-      // TODO - Uncomment this once using CollateralAuction instead of NonLossCollateralAuction
+      // not used by NoLossCollateralAuction
       // vault.maxDiscount = caVault.value.value2;
       vault.save();
     }
