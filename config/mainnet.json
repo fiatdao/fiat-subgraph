@@ -18,7 +18,7 @@
       "type": "ELEMENT"
     },
     {
-      "idx": 1,
+      "idx": 2,
       "name": "VaultEPT_ePyvDAI_29APR22",
       "address": "0xca1467e6bcfea869c40d2ac3ac53fd60c2ec6149",
       "_comment": "Vault address needs to be lower case ^",

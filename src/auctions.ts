@@ -1,4 +1,4 @@
-import { BigInt, Address, Bytes, ethereum } from '@graphprotocol/graph-ts';
+import { BigInt, Address, Bytes, ethereum, log } from '@graphprotocol/graph-ts';
 import {
   RedoAuction,
   StartAuction,
@@ -112,24 +112,25 @@ export function handleRedoAuction(event: RedoAuction): void {
   auction.save();
 }
 
+// TODO
 export function handleAuctionSetParam(event: SetParam): void {
-  let param = event.params.param.toString();
-  if (VAULT_PARAMS.includes(param)) {
-    // Skip the selector
-    let dataWithoutFunctionSelector = changetype<Bytes>(event.transaction.input.subarray(4));
-    let params = ethereum.decode('(address,bytes32,address)', dataWithoutFunctionSelector)!.toTuple();
-    let vault = createVaultIfNonExistent(params[0].toAddress().toHexString());
+  // let param = event.params.param.toString();
+  // if (VAULT_PARAMS.includes(param)) {
+  //   // Skip the selector
+  //   let dataWithoutFunctionSelector = changetype<Bytes>(event.transaction.input.subarray(4));
+  //   let params = ethereum.decode('(address,bytes32,address)', dataWithoutFunctionSelector)!.toTuple();
+  //   let vault = createVaultIfNonExistent(params[0].toAddress().toHexString());
 
-    let collateralAuction = CollateralAuctionContract.bind(event.address);
-    let caVault = collateralAuction.try_vaults(params[0].toAddress());
-    if (!caVault.reverted) {
-      vault.multiplier = caVault.value.value0;
-      vault.maxAuctionDuration = caVault.value.value1;
-      // not used by NoLossCollateralAuction
-      // vault.maxDiscount = caVault.value.value2;
-      vault.save();
-    }
-  }
+  //   let collateralAuction = CollateralAuctionContract.bind(event.address);
+  //   let caVault = collateralAuction.try_vaults(params[0].toAddress());
+  //   if (!caVault.reverted) {
+  //     vault.multiplier = caVault.value.value0;
+  //     vault.maxAuctionDuration = caVault.value.value1;
+  //     // not used by NoLossCollateralAuction
+  //     // vault.maxDiscount = caVault.value.value2;
+  //     vault.save();
+  //   }
+  // }
 }
 
 export function handleUpdateAuctionDebtFloor(event: UpdateAuctionDebtFloor): void {

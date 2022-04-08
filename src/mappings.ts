@@ -5,7 +5,7 @@ import {
   handleConfiscateCollateralAndDebt
 } from "./position"
 import { handleVaultInit, } from "./vault/vaults"
-import { handleCollybusSetParam, handleCollybusUpdateSpot, handleCollybusUpdateDiscountRate } from "./collybus"
+import { handleCollybusSetParam1, handleCollybusSetParam2, handleCollybusUpdateSpot, handleCollybusUpdateDiscountRate } from "./collybus"
 import { handleFIATTransfer, handleFIATApprovals } from "./fiat"
 import {
   handleStartAuction,
@@ -34,7 +34,8 @@ export {
   handleVaultInit,
   handleFIATTransfer,
   handleFIATApprovals,
-  handleCollybusSetParam,
+  handleCollybusSetParam1,
+  handleCollybusSetParam2,
   handleCollybusUpdateSpot,
   handleCollybusUpdateDiscountRate,
   handleStartAuction,

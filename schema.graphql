@@ -124,6 +124,7 @@ type Vault @entity {
   type: VaultType
   collateralizationRatio: BigInt
   interestPerSecond: BigInt
+  defaultRateId: BigInt
   debtFloor: BigInt
   debtCeiling: BigInt
 
@@ -137,9 +138,6 @@ type Vault @entity {
   # Cache (v.debtFloor * v.liquidationPenalty) to prevent excessive SLOADs [wad]
   auctionDebtFloor: BigInt
 
-  # One-to-many relation with Collybus
-  collybus: Collybus
-
   positions: [Position!] @derivedFrom(field: "vault")
   collateralTypes: [CollateralType!] @derivedFrom(field: "vault")
   codex: [Codex!] @derivedFrom(field: "vault")
@@ -148,9 +146,9 @@ type Vault @entity {
 type CollateralType @entity {
   id: ID!
   tokenId: BigInt
-  address: Bytes
-  symbol: String
-  maturity: BigInt
+  address: Bytes # rename to tokenAddress
+  symbol: String # rename to tokenSymbol
+  scale: BigInt # rename to tokenScale
   underlierSymbol: String
   underlierAddress: Bytes
   underlierScale: BigInt
@@ -158,6 +156,7 @@ type CollateralType @entity {
   vaultName: String
   faceValue: BigInt
   depositedCollateral: BigInt
+  maturity: BigInt
 
   # Only valid when collateral is a Element pToken
   eptData: EPTData
@@ -242,9 +241,6 @@ type Collybus @entity {
 
  # One-to-many reverse lookup with CollybusDiscountRate's `collybus` field
  rates: [CollybusDiscountRate!] @derivedFrom(field: "collybus")
-
- # One-to-many reverse lookup with Vault's `collybus` field
- vaults: [Vault!] @derivedFrom(field: "collybus")
 }
 
 type CollybusSpot @entity {

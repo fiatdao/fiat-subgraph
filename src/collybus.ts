@@ -1,19 +1,28 @@
-import { SetParam1, UpdateSpot, UpdateDiscountRate } from "../generated/Codex/Collybus";
+import { SetParam1, SetParam2, UpdateSpot, UpdateDiscountRate } from "../generated/Codex/Collybus";
 import { createVaultIfNonExistent } from "./vault/vaults";
-import { getCollateralizationRatio } from "./utils";
 import { CollybusSpot, Collybus, CollybusDiscountRate } from "../generated/schema";
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 
-
-export function handleCollybusSetParam(setParam: SetParam1): void {
-    let vaultAddress = setParam.params.vault;
-    let collybusAddress = setParam.address;
-
-    let collybus = createCollybusIfNonExistent(collybusAddress);
-    let vault = createVaultIfNonExistent(vaultAddress.toHexString());
-    vault.collateralizationRatio = getCollateralizationRatio(vaultAddress);
-    vault.collybus = collybus.id;
+export function handleCollybusSetParam1(event: SetParam1): void {
+    let collybus = createCollybusIfNonExistent(event.address);
+    let vault = createVaultIfNonExistent(event.params.vault.toHexString());
+    if (event.params.param.toString() == "liquidationRatio") {
+        vault.collateralizationRatio = event.params.data;
+    }
+    if (event.params.param.toString() == "defaultRateId") {
+        vault.defaultRateId = event.params.data;
+    }
     vault.save();
+}
+
+// TODO
+export function handleCollybusSetParam2(event: SetParam2): void {
+    // let collybus = createCollybusIfNonExistent(event.address);
+    // let vault = createVaultIfNonExistent(event.params.vault.toHexString());
+    // if (event.params.param.toString() == "rateId") {
+    //     // TODO
+    // }
+    // vault.save();
 }
 
 export function handleCollybusUpdateSpot(event: UpdateSpot): void {

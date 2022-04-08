@@ -1,24 +1,29 @@
 {
   "network": "local",
-  "description": "Subgraph for the FIAT smart contract system (local)",
-  "startBlock": 6651000,
-  "PRBProxyFactory": "0xaBe829031705bf022A21b3F94427E9A22183eBDE",
-  "Codex": "0x406ADF43ed603a39eae058975235d53d46138033",
-  "Collybus": "0xd419496FF8f66bdAfDeD859b439aa5807e835d7d",
-  "CollateralAuction": "0x57a5185692DEc513bFe6e5D5ed9ef9FC2f72e01D",
-  "FIAT": "0x391eCE49AD1019041FB6ab5424318e5001Ee55cc",
-  "Publican": "0xE56Ae3dDE8498c05f7aCE2DCf88c530A3FE2D983",
+  "description": "Subgraph for the FIAT smart contract system",
+  "startBlock": 14515000,
+  "PRBProxyFactory": "0x2E01742855D02aC41e5c954b0Af6be96af1d8975",
+  "Codex": "0xCE0e395cF61D0F836ddd4fC021f009C93DFe3a63",
+  "Collybus": "0x6B576f65DE4B8B171aEF412DEBc33dc53500cFdB",
+  "CollateralAuction": "0xa50D5B25E29a8FA7E94DA10698fE5100f0eb0cc5",
+  "FIAT": "0x2d9579552cD679943cbBc23BDdd9467840C98c75",
+  "Publican": "0x3C688e38f95810985608C18A6eeCA3694Af33BE4",
   "Vaults": [
     {
       "idx": 1,
-      "name": "vaultEPT_eP:eyUSDC:10-AUG-22-GMT",
-      "address": "0x1eef91a96a5e5e962b5b64a09611c1d51e7abde3",
+      "name": "vaultEPT_ePyvUSDC_29APR22",
+      "address": "0x23cc2492f079df1516db34f257bc1aa98131a085",
       "_comment": "Vault address needs to be lower case ^",
-      "ConvergentCurvePool": "0x4294005520c453eb8fa66f53042cfc79707855c4",
+      "ConvergentCurvePool": "0x7edde0cb05ed19e03a9a47cd5e53fc57fde1c80c",
+      "type": "ELEMENT"
+    },
+    {
+      "idx": 1,
+      "name": "VaultEPT_ePyvDAI_29APR22",
+      "address": "0xca1467e6bcfea869c40d2ac3ac53fd60c2ec6149",
+      "_comment": "Vault address needs to be lower case ^",
+      "ConvergentCurvePool": "0xedf085f65b4f6c155e13155502ef925c9a756003",
       "type": "ELEMENT"
     }
-  ],
-  "VaultNotional": "",
-  "Notional": "",
-  "notionalStartBlock": 6362131
+  ]
 }

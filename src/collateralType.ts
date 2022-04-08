@@ -1,9 +1,9 @@
-import { Address, BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigInt, log } from "@graphprotocol/graph-ts";
 import { CollateralType, Vault } from "../generated/schema";
 import { vaultsData } from "./vault/vaultsData";
 import { createEPTDataIfNonExistent } from "./element";
 import {
-  BIGINT_ZERO, getFaceValue, getMaturity, getSymbol, getToken, getUnderlierToken, getVaultType, getUnderlierScale
+  BIGINT_ZERO, getFaceValue, getMaturity, getSymbol, getToken, getUnderlierToken, getUnderlierScale, getTokenScale
 } from "./utils";
 // import { Notional, Notional__getCurrencyResult } from "../generated/Notional/Notional";
 // import { VaultFC } from "../generated/Notional/VaultFC";
@@ -14,6 +14,8 @@ import {
 // const VAULT_TYPE_ERC20 = "ERC20";
 
 export function createCollateralTypeIfNonExistent(vault: Vault, tokenId: string): CollateralType {
+  log.debug("createCollateralTypeIfNonExistent: vaultAddress: {}, {} ", [vault.id, vault.address!.toHexString()]);
+
   let id = vault.id + "-" + tokenId;
   let collateralType = CollateralType.load(id);
   if (!collateralType) {
@@ -23,7 +25,6 @@ export function createCollateralTypeIfNonExistent(vault: Vault, tokenId: string)
     collateralType.vault = vault.id;
     collateralType.vaultName = vault.name;
     collateralType.faceValue = getFaceValue();
-    collateralType.underlierScale = getUnderlierScale(changetype<Address>(vault.address!));
     collateralType.save();
   }
 
@@ -47,16 +48,19 @@ function createEPTCollateralTypeIfNonExistent(collateralType: CollateralType): C
 
   collateralType.address = tokenAddress;
   collateralType.symbol = getSymbol(tokenAddress);
+  collateralType.scale = getTokenScale(vaultAddress);
   collateralType.underlierAddress = underlierAddress;
   collateralType.underlierSymbol = getSymbol(underlierAddress);
+  collateralType.underlierScale = getUnderlierScale(vaultAddress);
+
   collateralType.maturity = getMaturity(vaultAddress, BigInt.fromString(tokenId));
   collateralType.eptData = createEPTDataIfNonExistent(collateralType.vault!).id;
   collateralType.save();
 
-
   return collateralType as CollateralType;
 }
 
+// TODO
 // export function createNotionalCollateralTypeIfNonExistent(notional: Notional, tokenId: BigInt, currencyId: i32, maturity: BigInt, tenor: BigInt): CollateralType {
 //   let id = tokenId.toString();
 

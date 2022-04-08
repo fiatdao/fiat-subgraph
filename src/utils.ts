@@ -73,8 +73,7 @@ export function getUnderlierToken(vault: Address): Address | null {
   return null;
 }
 
-// Max LTV or getLiquidationRatio or Collaterization Ratio
-export function getCollateralizationRatio(vault: Address): BigInt | null {
+export function getLiquidationRatio(vault: Address): BigInt | null {
   let vaultConfig = collybus.try_vaults(vault);
   if (!vaultConfig.reverted) {
     return vaultConfig.value.value0;
@@ -159,6 +158,16 @@ export function getUnderlierScale(address: Address): BigInt {
   let ivault = IVault.bind(address);
 
   let scale = ivault.try_underlierScale();
+  if (!scale.reverted) {
+    return scale.value;
+  }
+  return BIGINT_ZERO;
+}
+
+export function getTokenScale(address: Address): BigInt {
+  let ivault = IVault.bind(address);
+
+  let scale = ivault.try_tokenScale();
   if (!scale.reverted) {
     return scale.value;
   }

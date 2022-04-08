@@ -107,7 +107,9 @@ dataSources:
           file: ./abis/ERC20.json
       eventHandlers:
         - event: SetParam(indexed address,indexed bytes32,uint256)
-          handler: handleCollybusSetParam
+          handler: handleCollybusSetParam1
+        - event: SetParam(indexed address,indexed uint256,indexed bytes32,uint256)
+          handler: handleCollybusSetParam2
         - event: UpdateSpot(indexed address,uint256)
           handler: handleCollybusUpdateSpot
         - event: UpdateDiscountRate(indexed uint256,uint256)
