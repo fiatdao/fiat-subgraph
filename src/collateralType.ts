@@ -23,6 +23,7 @@ export function createCollateralTypeIfNonExistent(vault: Vault, tokenId: string)
     collateralType.tokenId = BigInt.fromString(tokenId);
     collateralType.depositedCollateral = BIGINT_ZERO;
     collateralType.vault = vault.id;
+    collateralType.vaultName = vault.name;
     collateralType.faceValue = getFaceValue();
     collateralType.save();
   }

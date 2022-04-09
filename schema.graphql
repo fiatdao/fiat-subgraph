@@ -8,6 +8,7 @@ interface PositionTransactionAction {
   id: ID!
   transactionHash: Bytes!
   vault: Vault
+  vaultName: String # same as vault.name (workaround)
   tokenId: BigInt!
   position: Position!
   user: Bytes!
@@ -22,6 +23,7 @@ type ModifyCollateralAndDebtAction implements PositionTransactionAction @entity 
   id: ID!
   transactionHash: Bytes!
   vault: Vault
+  vaultName: String # same as vault.name (workaround)
   tokenId: BigInt!
   position: Position!
   user: Bytes!
@@ -38,6 +40,7 @@ type TransferCollateralAndDebtAction implements PositionTransactionAction @entit
   id: ID!
   transactionHash: Bytes!
   vault: Vault
+  vaultName: String # same as vault.name (workaround)
   tokenId: BigInt!
   position: Position!
   user: Bytes!
@@ -54,6 +57,7 @@ type ConfiscateCollateralAndDebtAction implements PositionTransactionAction @ent
   id: ID!
   transactionHash: Bytes!
   vault: Vault
+  vaultName: String # same as vault.name (workaround)
   tokenId: BigInt!
   position: Position!
   user: Bytes!
@@ -69,6 +73,7 @@ type ConfiscateCollateralAndDebtAction implements PositionTransactionAction @ent
 type Position @entity {
   id: ID!
   vault: Vault
+  vaultName: String # same as vault.name (workaround)
   collateralType: CollateralType
   owner: Bytes!
   users: User!
@@ -103,8 +108,9 @@ type Delegate @entity {
 
 enum VaultType {
   ELEMENT,
+  NOTIONAL,
+  Yield,
   BARNBRIDGE,
-  NOTIONAL
 }
 
 type Vault @entity {
@@ -139,14 +145,15 @@ type CollateralType @entity {
   underlierAddress: Bytes
   underlierScale: BigInt
   vault: Vault
+  vaultName: String # same as vault.name (workaround)
   faceValue: BigInt
   depositedCollateral: BigInt
   maturity: BigInt
-  # Only valid when collateral is a Element pToken
+
+  # Only set for Element Finance pTokens
   eptData: EPTData
 }
 
-# Element pToken ConvergentPool data
 type EPTData @entity {
   id: ID!
   balancerVault: Bytes
@@ -190,6 +197,7 @@ type CollateralAuction @entity {
   debt: BigInt
   collateralToSell: BigInt
   vault: Vault
+  vaultName: String # same as vault.name (workaround)
   tokenId: BigInt
   collateralType: CollateralType
   user: Bytes
