@@ -69,3 +69,4 @@ subgraph.yaml
 src/vault/vaultsData.ts
 src/constants.ts
 *.wasm
+*.bin

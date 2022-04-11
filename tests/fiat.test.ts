@@ -45,7 +45,7 @@ test('FIAT_TEST - Transfer', () => {
     clearStore();
 })
 
-test('FIAT_TEST - Minting', () => {
+test('FIAT_TEST - Mint', () => {
     // Creating event with custom data fields, fromAddress is 0x0 - which is mint() operation
     // And we set amount which will mint 1000000000000000000 
     let transferEvent = createTransferEvent(ZERO_ADDRESS, TO, AMOUNT);
@@ -64,7 +64,7 @@ test('FIAT_TEST - Minting', () => {
     clearStore();
 })
 
-test('FIAT_TEST - Burning', () => {
+test('FIAT_TEST - Burn', () => {
     // Creating event with custom data fields, toAddress is 0x0 - which is burn() operation
     // And we set amount which will burn 1000000000000000000 
     let transferEvent = createTransferEvent(FROM, ZERO_ADDRESS, AMOUNT);
@@ -101,7 +101,7 @@ test('FIAT_TEST - TotalSupply', () => {
     clearStore();
 })
 
-test('FIAT_TEST - Approvals', () => {
+test('FIAT_TEST - Approval', () => {
     // Creating event with custom data fields
     let approvalEvent = createApprovalEvent(FROM, TO, AMOUNT);
 
