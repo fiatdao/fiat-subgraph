@@ -1,6 +1,6 @@
 import { BigInt, Address } from "@graphprotocol/graph-ts";
 import {
-    GrantDelegate, RevokeDelegate, ModifyBalance, TransferBalance, SetParam
+    GrantDelegate, RevokeDelegate, ModifyBalance, TransferBalance, SetParam, SetParam1
 } from "../generated/Codex/Codex";
 import { Delegate, Balance, Codex, User } from "../generated/schema";
 import { createUserIfNonExistent } from "./position";
@@ -95,15 +95,15 @@ export function createBalanceIfNotExistent(vaultAddress: Address, tokenId: BigIn
     return balance as Balance;
 }
 
-export function handleSetParam(event: SetParam): void {
-    // workaround for wrongly emitted event in Codex
+export function handleCodexSetParam(event: SetParam): void {
+    let codex = createCodexIfNonExistent(event.address);
     if (event.params.param.toString() == "globalDebtCeiling") {
-        let codex = createCodexIfNonExistent(event.address);
         codex.globalDebtCeiling = event.params.data;
-        codex.save();
-        return;
     }
+    codex.save();
+}
 
+export function handleCodexSetParam1(event: SetParam1): void {
     let vault = createVaultIfNonExistent(event.params.vault.toHexString());
     if (event.params.param.toString() == "debtCeiling") {
         vault.debtCeiling = event.params.data;
@@ -111,6 +111,5 @@ export function handleSetParam(event: SetParam): void {
     if (event.params.param.toString() == "debtFloor") {
         vault.debtFloor = event.params.data;
     }
-
     vault.save();
 }

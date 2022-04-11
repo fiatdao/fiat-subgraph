@@ -15,13 +15,14 @@ import {
   handleAuctionSetParam,
   handleUpdateAuctionDebtFloor
 } from "./auctions"
-import { handlePublicanSetParam } from "./publican"
+import { handlePublicanSetParam2 } from "./publican"
 import {
   handleGrantDelegate,
   handleRevokeDelegate,
   handleModifyBalance,
   handleTransferBalance,
-  handleSetParam
+  handleCodexSetParam,
+  handleCodexSetParam1
 } from "./codex"
 // import { handleMarketsInitialized } from "./notional"
 
@@ -42,12 +43,13 @@ export {
   handleStopAuction,
   handleRedoAuction,
   handleAuctionSetParam,
-  handlePublicanSetParam,
+  handlePublicanSetParam2,
   handleGrantDelegate,
   handleRevokeDelegate,
   handleModifyBalance,
   handleTransferBalance,
-  handleSetParam,
+  handleCodexSetParam,
+  handleCodexSetParam1,
   handleUpdateAuctionDebtFloor
   // handleMarketsInitialized,
 }

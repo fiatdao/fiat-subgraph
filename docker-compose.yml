@@ -19,8 +19,8 @@ services:
       postgres_db: graph-node
       ipfs: 'ipfs:5001'
       # Change next line if you want to connect to a different JSON-RPC endpoint
-      # ethereum: 'goerli:https://eth-goerli.alchemyapi.io/v2/fe2m2g2zR0VSdfeDvvTlFCVgNycVTybN'
-      ethereum: 'mainnet:https://eth-mainnet.alchemyapi.io/v2/fe2m2g2zR0VSdfeDvvTlFCVgNycVTybN'
+      ethereum: 'goerli:https://eth-goerli.alchemyapi.io/v2/fe2m2g2zR0VSdfeDvvTlFCVgNycVTybN'
+      # ethereum: 'mainnet:https://eth-mainnet.alchemyapi.io/v2/fe2m2g2zR0VSdfeDvvTlFCVgNycVTybN'
       GRAPH_LOG: debug
   ipfs:
     image: ipfs/go-ipfs:v0.4.23

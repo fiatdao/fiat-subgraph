@@ -1,5 +1,6 @@
 import { Address, log } from "@graphprotocol/graph-ts";
 import { Init } from "../../generated/Codex/Codex";
+import { IVault } from "../../generated/Codex/IVault";
 import { Vault } from "../../generated/schema";
 import { createCollateralTypeIfNonExistent } from "../collateralType";
 import { BIGINT_ZERO, WAD, getLiquidationRatio } from "../utils";
@@ -20,6 +21,7 @@ export function createVaultIfNonExistent(vaultAddress: string): Vault {
       vault.type = (config.get('type')) as string;
       vault.address = Address.fromString((config.get('address')) as string)
     }
+    vault.vaultType = IVault.bind(Address.fromString(vaultAddress)).vaultType();
     vault.collateralizationRatio = getLiquidationRatio(Address.fromString(vaultAddress));
     vault.multiplier = WAD;
     vault.interestPerSecond = WAD;

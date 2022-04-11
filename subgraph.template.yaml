@@ -53,8 +53,10 @@ dataSources:
           handler: handleModifyBalance
         - event: TransferBalance(indexed address,indexed uint256,indexed address,address,uint256,uint256,uint256)
           handler: handleTransferBalance
+        - event: SetParam(indexed bytes32,uint256)
+          handler: handleCodexSetParam
         - event: SetParam(indexed address,indexed bytes32,uint256)
-          handler: handleSetParam
+          handler: handleCodexSetParam1
       file: ./src/mappings.ts
   - kind: ethereum/contract
     name: FIAT
@@ -174,7 +176,7 @@ dataSources:
           file: ./abis/Collybus.json
       eventHandlers:
         - event: SetParam(indexed address,indexed bytes32,uint256)
-          handler: handlePublicanSetParam
+          handler: handlePublicanSetParam2
       file: ./src/mappings.ts
   - kind: ethereum/contract
     name: PRBProxyFactory

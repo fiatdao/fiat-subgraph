@@ -1,118 +1,54 @@
 [
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "codex_",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "codex_", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
+  { "inputs": [], "name": "Guarded__notGranted", "type": "error" },
+  { "inputs": [], "name": "Guarded__notRoot", "type": "error" },
   {
     "inputs": [
-      
-    ],
-    "name": "Guarded__notGranted",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      
-    ],
-    "name": "Guarded__notRoot",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "x",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "y",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "x", "type": "uint256" },
+      { "internalType": "uint256", "name": "y", "type": "uint256" }
     ],
     "name": "Math__add_overflow",
     "type": "error"
   },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "x",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "y",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "x", "type": "uint256" },
+      { "internalType": "uint256", "name": "y", "type": "uint256" }
     ],
     "name": "Math__diff_overflow",
     "type": "error"
   },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "x",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "y",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "x", "type": "uint256" },
+      { "internalType": "uint256", "name": "y", "type": "uint256" }
     ],
     "name": "Math__mul_overflow",
     "type": "error"
   },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "x",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "y",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "x", "type": "uint256" },
+      { "internalType": "uint256", "name": "y", "type": "uint256" }
     ],
     "name": "Math__sub_overflow",
     "type": "error"
   },
   {
-    "inputs": [
-      
-    ],
+    "inputs": [],
     "name": "Publican__collect_invalidBlockTimestamp",
     "type": "error"
   },
+  { "inputs": [], "name": "Publican__init_vaultAlreadyInit", "type": "error" },
+  { "inputs": [], "name": "Publican__setParam_notCollected", "type": "error" },
   {
-    "inputs": [
-      
-    ],
-    "name": "Publican__init_vaultAlreadyInit",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      
-    ],
-    "name": "Publican__setParam_notCollected",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      
-    ],
+    "inputs": [],
     "name": "Publican__setParam_unrecognizedParam",
     "type": "error"
   },
@@ -185,12 +121,6 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "address",
-        "name": "vault",
-        "type": "address"
-      },
-      {
-        "indexed": true,
         "internalType": "bytes32",
         "name": "param",
         "type": "bytes32"
@@ -198,7 +128,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "data",
+        "name": "",
         "type": "uint256"
       }
     ],
@@ -225,270 +155,163 @@
     "type": "event"
   },
   {
-    "inputs": [
-      
-    ],
-    "name": "ANY_CALLER",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      
-    ],
-    "name": "ANY_SIG",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      
-    ],
-    "name": "aer",
-    "outputs": [
-      {
-        "internalType": "contract IAer",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
+    "anonymous": false,
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "sig",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "who",
-        "type": "address"
-      }
-    ],
-    "name": "allowCaller",
-    "outputs": [
-      
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      
-    ],
-    "name": "baseInterest",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "sig",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "who",
-        "type": "address"
-      }
-    ],
-    "name": "blockCaller",
-    "outputs": [
-      
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "sig",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "who",
-        "type": "address"
-      }
-    ],
-    "name": "canCall",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      
-    ],
-    "name": "codex",
-    "outputs": [
-      {
-        "internalType": "contract ICodex",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
+        "indexed": true,
         "internalType": "address",
         "name": "vault",
         "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "param",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "data",
+        "type": "uint256"
       }
+    ],
+    "name": "SetParam",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "ANY_CALLER",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ANY_SIG",
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "aer",
+    "outputs": [
+      { "internalType": "contract IAer", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "sig", "type": "bytes32" },
+      { "internalType": "address", "name": "who", "type": "address" }
+    ],
+    "name": "allowCaller",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "baseInterest",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "sig", "type": "bytes32" },
+      { "internalType": "address", "name": "who", "type": "address" }
+    ],
+    "name": "blockCaller",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "sig", "type": "bytes32" },
+      { "internalType": "address", "name": "who", "type": "address" }
+    ],
+    "name": "canCall",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "codex",
+    "outputs": [
+      { "internalType": "contract ICodex", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "vault", "type": "address" }
     ],
     "name": "collect",
     "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "rate",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "rate", "type": "uint256" }
     ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "address[]",
-        "name": "vaults_",
-        "type": "address[]"
-      }
+      { "internalType": "address[]", "name": "vaults_", "type": "address[]" }
     ],
     "name": "collectMany",
     "outputs": [
-      {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
-      }
+      { "internalType": "uint256[]", "name": "", "type": "uint256[]" }
     ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "vault",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "vault", "type": "address" }
     ],
     "name": "init",
-    "outputs": [
-      
-    ],
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "param",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "data",
-        "type": "uint256"
-      }
+      { "internalType": "bytes32", "name": "param", "type": "bytes32" },
+      { "internalType": "uint256", "name": "data", "type": "uint256" }
     ],
     "name": "setParam",
-    "outputs": [
-      
-    ],
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "param",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "data",
-        "type": "address"
-      }
+      { "internalType": "bytes32", "name": "param", "type": "bytes32" },
+      { "internalType": "address", "name": "data", "type": "address" }
     ],
     "name": "setParam",
-    "outputs": [
-      
-    ],
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "vault",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "param",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "data",
-        "type": "uint256"
-      }
+      { "internalType": "address", "name": "vault", "type": "address" },
+      { "internalType": "bytes32", "name": "param", "type": "bytes32" },
+      { "internalType": "uint256", "name": "data", "type": "uint256" }
     ],
     "name": "setParam",
-    "outputs": [
-      
-    ],
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "name": "vaults",
     "outputs": [
       {
@@ -496,30 +319,18 @@
         "name": "interestPerSecond",
         "type": "uint256"
       },
-      {
-        "internalType": "uint256",
-        "name": "lastCollected",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "lastCollected", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "vault",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "vault", "type": "address" }
     ],
     "name": "virtualRate",
     "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "rate",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "rate", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"

@@ -86,7 +86,6 @@ type Position @entity {
 type Codex @entity {
   id: ID!
   delegates: Delegate
-  vault: Vault
   globalDebtCeiling: BigInt!
 }
 
@@ -118,6 +117,7 @@ type Vault @entity {
   address: Bytes
   name: String
   type: VaultType
+  vaultType: Bytes
   collateralizationRatio: BigInt
   interestPerSecond: BigInt
   defaultRateId: BigInt
@@ -132,7 +132,6 @@ type Vault @entity {
 
   positions: [Position!] @derivedFrom(field: "vault")
   collateralTypes: [CollateralType!] @derivedFrom(field: "vault")
-  codex: [Codex!] @derivedFrom(field: "vault")
 }
 
 type CollateralType @entity {
