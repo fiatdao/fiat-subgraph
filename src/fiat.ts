@@ -5,23 +5,26 @@ import { BIGINT_ZERO, getTotalSupply, ZERO_ADDRESS } from "./utils";
 
 export function handleFIATTransfer(event: Transfer): void {
   let fiat = createFIATIfNonExistent(event.address);
+  let value = event.params.value;
+  let fromAddress = event.params.from;
+  let toAddress = event.params.to;
 
   // Checking if the event that is coming is from mint() 
-  if (isMintOperation(event.params.from, event.params.to)) {
-    fiat.minted = fiat.minted!.plus(event.params.value);
+  if (isMintOperation(fromAddress, toAddress)) {
+    fiat.minted = fiat.minted!.plus(value);
   }
   // Checking if the even that is coming is from burn() 
-  else if (isBurnOperation(event.params.from, event.params.to)) {
-    fiat.burned = fiat.burned!.plus(event.params.value);
+  else if (isBurnOperation(fromAddress, toAddress)) {
+    fiat.burned = fiat.burned!.plus(value);
   }
 
   fiat.totalSupply = getTotalSupply();
   fiat.save();
 
   let fromObject = createFIATTokenBalanceIfNonExistent(fromAddress);
-  fromObject.balance = fromObject.balance!.minus(amount);
+  fromObject.balance = fromObject.balance!.minus(value);
   let toObject = createFIATTokenBalanceIfNonExistent(toAddress);
-  toObject.balance = toObject.balance!.plus(amount);
+  toObject.balance = toObject.balance!.plus(value);
 
   fromObject.save();
   toObject.save();

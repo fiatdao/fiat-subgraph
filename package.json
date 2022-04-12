@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "build": "NO_DEPLOY=true ./deploy.sh",
+    "test": "graph test -v 0.4.2",
     "deploy:local": "GRAPH=local ./deploy.sh",
     "deploy:goerli": "GRAPH=goerli ./deploy.sh",
     "deploy:mainnet": "GRAPH=mainnet ./deploy.sh",
