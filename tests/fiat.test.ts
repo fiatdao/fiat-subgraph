@@ -10,7 +10,7 @@ const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 const FIAT_TOKEN_ADDRESS = "0x7c9571148968d05608d324463E38F04a7eAAd53e"; // FIAT deployed on goerli
 const FROM = "0x0D3ff0A8672fcA127aA6DbE44BBcc935821Fdc7b";
 const TO = "0xF80fe9AC3FCA0b44288CBdA6D6F633aff4Da9A3C";
-const AMOUNT = BigInt.fromU64(ONE_ETH);
+const VALUE = BigInt.fromU64(ONE_ETH);
 
 // Mocking the total supply in order to use it
 createMockedFunction(Address.fromString(FIAT_TOKEN_ADDRESS), 'totalSupply', 'totalSupply():(uint256)')
@@ -19,7 +19,7 @@ createMockedFunction(Address.fromString(FIAT_TOKEN_ADDRESS), 'totalSupply', 'tot
 
 test('FIAT_TEST - Transfer', () => {
     // Creating event with custom data fields
-    let transferEvent = createTransferEvent(FROM, TO, AMOUNT);
+    let transferEvent = createTransferEvent(FROM, TO, VALUE);
 
     // Creating 'from' and 'to' example entities
     // attach to 'from' a balance of 1 ETH,
@@ -47,8 +47,8 @@ test('FIAT_TEST - Transfer', () => {
 
 test('FIAT_TEST - Mint', () => {
     // Creating event with custom data fields, fromAddress is 0x0 - which is mint() operation
-    // And we set amount which will mint 1000000000000000000 
-    let transferEvent = createTransferEvent(ZERO_ADDRESS, TO, AMOUNT);
+    // And we set value which will mint 1000000000000000000 
+    let transferEvent = createTransferEvent(ZERO_ADDRESS, TO, VALUE);
 
     // Creating example entity which we set minted to 0
     let mockedFiatEntity = createFIATIfNonExistent(transferEvent.address);
@@ -58,16 +58,16 @@ test('FIAT_TEST - Mint', () => {
     // Once created above ^ we will have that entity, so the handler loads it and updates its 'minted' field
     handleFIATTransfer(transferEvent);
 
-    // We check if the 'minted' value is equals to the 'AMOUNT' passed
-    assert.fieldEquals("FIAT", FIAT_TOKEN_ADDRESS.toLowerCase(), "minted", AMOUNT.toString());
+    // We check if the 'minted' value is equals to the 'VALUE' passed
+    assert.fieldEquals("FIAT", FIAT_TOKEN_ADDRESS.toLowerCase(), "minted", VALUE.toString());
 
     clearStore();
 })
 
 test('FIAT_TEST - Burn', () => {
     // Creating event with custom data fields, toAddress is 0x0 - which is burn() operation
-    // And we set amount which will burn 1000000000000000000 
-    let transferEvent = createTransferEvent(FROM, ZERO_ADDRESS, AMOUNT);
+    // And we set value which will burn 1000000000000000000 
+    let transferEvent = createTransferEvent(FROM, ZERO_ADDRESS, VALUE);
 
     // Creating example entity which we set minted to 0
     let mockedFiatEntity = createFIATIfNonExistent(transferEvent.address);
@@ -77,15 +77,15 @@ test('FIAT_TEST - Burn', () => {
     // Once created above ^ we will have that entity, so the handler loads it and updates its 'burned' field
     handleFIATTransfer(transferEvent);
 
-    // We check if the 'burned' value is equals to the 'AMOUNT' passed
-    assert.fieldEquals("FIAT", FIAT_TOKEN_ADDRESS.toLowerCase(), "burned", AMOUNT.toString());
+    // We check if the 'burned' value is equals to the 'VALUE' passed
+    assert.fieldEquals("FIAT", FIAT_TOKEN_ADDRESS.toLowerCase(), "burned", VALUE.toString());
 
     clearStore();
 })
 
 test('FIAT_TEST - TotalSupply', () => {
     // Creating event with custom data fields
-    let transferEvent = createTransferEvent(FROM, TO, AMOUNT);
+    let transferEvent = createTransferEvent(FROM, TO, VALUE);
 
     // Creating example entity which we set totalSupply to 0
     let mockedFiatEntity = createFIATIfNonExistent(transferEvent.address);
@@ -103,7 +103,7 @@ test('FIAT_TEST - TotalSupply', () => {
 
 test('FIAT_TEST - Approval', () => {
     // Creating event with custom data fields
-    let approvalEvent = createApprovalEvent(FROM, TO, AMOUNT);
+    let approvalEvent = createApprovalEvent(FROM, TO, VALUE);
 
     // Creating example entity which we set approved amount to 0
     createFIATTokenAllowanceIfNonExistent(Address.fromString(FROM), Address.fromString(TO), BIGINT_ZERO);
@@ -111,14 +111,14 @@ test('FIAT_TEST - Approval', () => {
     // Once created above ^ we will have that entity, so the handler loads it and updates its 'amount' field
     handleFIATApprovals(approvalEvent);
 
-    // We check if the approved 'amount' value is equals to the 'amount' field that we passed in the event creation - which needs to be ONE_ETH
+    // We check if the approved 'amount' value is equals to the 'VALUE' field that we passed in the event creation - which needs to be ONE_ETH
     const id = FROM + "-" + TO;
-    assert.fieldEquals("FIATTokenAllowance", id.toLowerCase(), "amount", AMOUNT.toString());
+    assert.fieldEquals("FIATTokenAllowance", id.toLowerCase(), "amount", VALUE.toString());
 
     clearStore();
 })
 
-function createTransferEvent(fromAddress: string, toAddress: string, amountTransferred: BigInt): Transfer {
+function createTransferEvent(fromAddress: string, toAddress: string, valueTransferred: BigInt): Transfer {
     let transferEvent = changetype<Transfer>(newMockEvent());
     transferEvent.parameters = new Array();
     transferEvent.address = Address.fromString(FIAT_TOKEN_ADDRESS);
@@ -126,12 +126,12 @@ function createTransferEvent(fromAddress: string, toAddress: string, amountTrans
     // Convert and init our params
     let from = new ethereum.EventParam("from", ethereum.Value.fromAddress(Address.fromString(fromAddress)));
     let to = new ethereum.EventParam("to", ethereum.Value.fromAddress(Address.fromString(toAddress)));
-    let amount = new ethereum.EventParam("amount", ethereum.Value.fromSignedBigInt(amountTransferred));
+    let value = new ethereum.EventParam("value", ethereum.Value.fromSignedBigInt(valueTransferred));
 
     // Attach the fields to the event's parameter
     transferEvent.parameters.push(from);
     transferEvent.parameters.push(to);
-    transferEvent.parameters.push(amount);
+    transferEvent.parameters.push(value);
 
     return transferEvent;
 }
