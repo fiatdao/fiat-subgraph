@@ -4,8 +4,9 @@ import { Collybus } from "../generated/Codex/Collybus";
 import { IVault } from "../generated/Codex/IVault";
 import { CollateralAuction } from "../generated/CollateralAuction/CollateralAuction";
 import { FIAT } from "../generated/FIAT/FIAT";
-import { ERC20 } from "../generated/Notional/ERC20";
+import { ERC20 } from "../generated/Codex/ERC20" // remove me when we deploy notional
 import { COLLYBUS_ADDRESS, CODEX_ADDRESS, FIAT_ADDRESS, COLLATERAL_AUCTION_ADDRESS } from "./constants";
+// import { ERC20 } from "../generated/Notional/ERC20";
 
 let codex = Codex.bind(Address.fromString(CODEX_ADDRESS));
 let collybus = Collybus.bind(Address.fromString(COLLYBUS_ADDRESS));
@@ -27,16 +28,6 @@ export function min(a: BigInt | null, b: BigInt): BigInt {
   return a < b ? a as BigInt : b;
 }
 
-// Get position from the Codex contract 
-export function getCodexPosition(vault: Address, tokenId: BigInt, owner: Address): Codex__positionsResult | null {
-  let position = codex.try_positions(vault, tokenId, owner);
-  if (!position.reverted) {
-    return position.value;
-  }
-  return null;
-}
-
-// Get delegate from the Codex contract 
 export function getDelegates(delegator: Address, delegatee: Address): BigInt {
   let hasDelegate = codex.try_delegates(delegator, delegatee);
   if (!hasDelegate.reverted) {
@@ -45,11 +36,49 @@ export function getDelegates(delegator: Address, delegatee: Address): BigInt {
   return BIGINT_ZERO;
 }
 
-// Get balance from the Codex contract 
-export function getCodexBalance(vault: Address, tokenId: BigInt, owner: Address): BigInt {
-  let balance = codex.try_balances(vault, tokenId, owner);
+export function getPositionCollateral(vault: Address, tokenId: BigInt, owner: Address): BigInt {
+  let collateral = BIGINT_ZERO;
+
+  let position = codex.try_positions(vault, tokenId, owner);
+  if (!position.reverted) {
+    collateral = position.value.value0;
+  }
+  
+  return collateral;
+}
+
+export function getPositionNormalDebt(vault: Address, tokenId: BigInt, owner: Address): BigInt {
+  let normalDebt = BIGINT_ZERO;
+
+  let position = codex.try_positions(vault, tokenId, owner);
+  if (!position.reverted) {
+    normalDebt = position.value.value1;
+  }
+  
+  return normalDebt;
+}
+
+
+export function getCodexBalance(vault: Address, tokenId: BigInt, account: Address): BigInt {
+  let balance = codex.try_balances(vault, tokenId, account);
   if (!balance.reverted) {
     return balance.value;
+  }
+  return BIGINT_ZERO;
+}
+
+export function getCredit(account: Address): BigInt {
+  let credit = codex.try_credit(account);
+  if (!credit.reverted) {
+    return credit.value;
+  }
+  return BIGINT_ZERO;
+}
+
+export function getUnbackedDebt(account: Address): BigInt {
+  let unbackedDebt = codex.try_unbackedDebt(account);
+  if (!unbackedDebt.reverted) {
+    return unbackedDebt.value;
   }
   return BIGINT_ZERO;
 }
@@ -72,8 +101,7 @@ export function getUnderlierToken(vault: Address): Address | null {
   return null;
 }
 
-// Max LTV or getLiquidationRatio or Collaterization Ratio
-export function getCollateralizationRatio(vault: Address): BigInt | null {
+export function getLiquidationRatio(vault: Address): BigInt | null {
   let vaultConfig = collybus.try_vaults(vault);
   if (!vaultConfig.reverted) {
     return vaultConfig.value.value0;
@@ -158,6 +186,16 @@ export function getUnderlierScale(address: Address): BigInt {
   let ivault = IVault.bind(address);
 
   let scale = ivault.try_underlierScale();
+  if (!scale.reverted) {
+    return scale.value;
+  }
+  return BIGINT_ZERO;
+}
+
+export function getTokenScale(address: Address): BigInt {
+  let ivault = IVault.bind(address);
+
+  let scale = ivault.try_tokenScale();
   if (!scale.reverted) {
     return scale.value;
   }

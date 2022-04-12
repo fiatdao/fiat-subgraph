@@ -1,12 +1,37 @@
 {
   "network": "mainnet",
   "description": "Subgraph for the FIAT smart contract system",
-  "startBlock": 13542270,
-  "PRBProxyFactory": "",
-  "Codex": "",
-  "Collybus": "",
-  "FIAT": "",
-  "Vaults": [],
-  "VaultNotional": "",
-  "Notional": ""
+  "startBlock": 14515000,
+  "PRBProxyFactory": "0x7Ee06e44C4764A49346290CD9a2267DB6daD7214",
+  "Codex": "0x6bF5EB06201e4ea7C315b1C23BfE79fAE30541F9",
+  "Collybus": "0xD503383fFABbec8Eb85eAED448fE1fFEc0a8148A",
+  "CollateralAuction": "0x69E65740a4db91e7e18c69A2180251Cf929E035E",
+  "FIAT": "0x586Aa273F262909EEF8fA02d90Ab65F5015e0516",
+  "Publican": "0x3fF548c77A82B377258b5220164E7Ae267eD8978",
+  "Vaults": [
+    {
+      "idx": 1,
+      "name": "vaultEPT_ePyvUSDC_29APR22",
+      "address": "0xd9080bac070cf47cbdb7223d2440cf8e978e6b45",
+      "_comment": "Vault address needs to be lower case ^",
+      "ConvergentCurvePool": "0x7edde0cb05ed19e03a9a47cd5e53fc57fde1c80c",
+      "type": "ELEMENT"
+    },
+    {
+      "idx": 2,
+      "name": "VaultEPT_ePyvDAI_29APR22",
+      "address": "0xea016f6a5eaac396baa3aa712e8d3f20764cbb1f",
+      "_comment": "Vault address needs to be lower case ^",
+      "ConvergentCurvePool": "0xedf085f65b4f6c155e13155502ef925c9a756003",
+      "type": "ELEMENT"
+    },
+    {
+      "idx": 3,
+      "name": "VaultEPT_ePyvLUSD3CRV_29APR22",
+      "address": "0x222dee6192f946040f97aadb386fafa4e6310cdc",
+      "_comment": "Vault address needs to be lower case ^",
+      "ConvergentCurvePool": "0x56F30398d13F111401d6e7ffE758254a0946687d",
+      "type": "ELEMENT"
+    }
+  ]
 }

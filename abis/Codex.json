@@ -1,24 +1,149 @@
 [
+  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
+  { "inputs": [], "name": "Codex__init_vaultAlreadyInit", "type": "error" },
   {
     "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    "name": "Codex__modifyCollateralAndDebt_ceilingExceeded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Codex__modifyCollateralAndDebt_debtFloor",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Codex__modifyCollateralAndDebt_notAllowedCollateralizer",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Codex__modifyCollateralAndDebt_notAllowedDebtor",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Codex__modifyCollateralAndDebt_notAllowedSender",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Codex__modifyCollateralAndDebt_notLive",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Codex__modifyCollateralAndDebt_notSafe",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Codex__modifyCollateralAndDebt_vaultNotInit",
+    "type": "error"
+  },
+  { "inputs": [], "name": "Codex__modifyRate_notLive", "type": "error" },
+  { "inputs": [], "name": "Codex__setParam_notLive", "type": "error" },
+  {
+    "inputs": [],
+    "name": "Codex__setParam_unrecognizedParam",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Codex__transferBalance_notAllowed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Codex__transferCollateralAndDebt_debtFloorDst",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Codex__transferCollateralAndDebt_debtFloorSrc",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Codex__transferCollateralAndDebt_notAllowed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Codex__transferCollateralAndDebt_notSafeDst",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Codex__transferCollateralAndDebt_notSafeSrc",
+    "type": "error"
+  },
+  { "inputs": [], "name": "Codex__transferCredit_notAllowed", "type": "error" },
+  { "inputs": [], "name": "Guarded__notGranted", "type": "error" },
+  { "inputs": [], "name": "Guarded__notRoot", "type": "error" },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "x", "type": "uint256" },
+      { "internalType": "uint256", "name": "y", "type": "uint256" }
+    ],
+    "name": "Math__add_overflow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "x", "type": "uint256" },
+      { "internalType": "int256", "name": "y", "type": "int256" }
+    ],
+    "name": "Math__add_overflow_signed",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "x", "type": "uint256" },
+      { "internalType": "uint256", "name": "y", "type": "uint256" }
+    ],
+    "name": "Math__mul_overflow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "x", "type": "uint256" },
+      { "internalType": "int256", "name": "y", "type": "int256" }
+    ],
+    "name": "Math__mul_overflow_signed",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "x", "type": "uint256" },
+      { "internalType": "uint256", "name": "y", "type": "uint256" }
+    ],
+    "name": "Math__sub_overflow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "x", "type": "uint256" },
+      { "internalType": "int256", "name": "y", "type": "int256" }
+    ],
+    "name": "Math__sub_overflow_signed",
+    "type": "error"
   },
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": false,
-      "internalType": "bytes32",
-      "name": "sig",
-      "type": "bytes32"
-    },
-    {
-      "indexed": false,
-      "internalType": "address",
-      "name": "who",
-      "type": "address"
-    }
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "sig",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "who",
+        "type": "address"
+      }
     ],
     "name": "AllowCaller",
     "type": "event"
@@ -26,18 +151,18 @@
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": false,
-      "internalType": "bytes32",
-      "name": "sig",
-      "type": "bytes32"
-    },
-    {
-      "indexed": false,
-      "internalType": "address",
-      "name": "who",
-      "type": "address"
-    }
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "sig",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "who",
+        "type": "address"
+      }
     ],
     "name": "BlockCaller",
     "type": "event"
@@ -45,48 +170,48 @@
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    },
-    {
-      "indexed": true,
-      "internalType": "uint256",
-      "name": "tokenId",
-      "type": "uint256"
-    },
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "user",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "address",
-      "name": "collateralizer",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "address",
-      "name": "debtor",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "int256",
-      "name": "deltaCollateral",
-      "type": "int256"
-    },
-    {
-      "indexed": false,
-      "internalType": "int256",
-      "name": "deltaNormalDebt",
-      "type": "int256"
-    }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "collateralizer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "debtor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "deltaCollateral",
+        "type": "int256"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "deltaNormalDebt",
+        "type": "int256"
+      }
     ],
     "name": "ConfiscateCollateralAndDebt",
     "type": "event"
@@ -94,24 +219,24 @@
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "debtor",
-      "type": "address"
-    },
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "creditor",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "uint256",
-      "name": "debt",
-      "type": "uint256"
-    }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "debtor",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "creditor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "debt",
+        "type": "uint256"
+      }
     ],
     "name": "CreateUnbackedDebt",
     "type": "event"
@@ -119,18 +244,18 @@
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "delegator",
-      "type": "address"
-    },
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "delegatee",
-      "type": "address"
-    }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "delegator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "delegatee",
+        "type": "address"
+      }
     ],
     "name": "GrantDelegate",
     "type": "event"
@@ -138,55 +263,50 @@
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      }
     ],
     "name": "Init",
     "type": "event"
   },
-  {
-    "anonymous": false,
-    "inputs": [],
-    "name": "Lock",
-    "type": "event"
-  },
+  { "anonymous": false, "inputs": [], "name": "Lock", "type": "event" },
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    },
-    {
-      "indexed": true,
-      "internalType": "uint256",
-      "name": "tokenId",
-      "type": "uint256"
-    },
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "user",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "int256",
-      "name": "amount",
-      "type": "int256"
-    },
-    {
-      "indexed": false,
-      "internalType": "uint256",
-      "name": "balance",
-      "type": "uint256"
-    }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "amount",
+        "type": "int256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "balance",
+        "type": "uint256"
+      }
     ],
     "name": "ModifyBalance",
     "type": "event"
@@ -194,48 +314,48 @@
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    },
-    {
-      "indexed": true,
-      "internalType": "uint256",
-      "name": "tokenId",
-      "type": "uint256"
-    },
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "user",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "address",
-      "name": "collateralizer",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "address",
-      "name": "creditor",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "int256",
-      "name": "deltaCollateral",
-      "type": "int256"
-    },
-    {
-      "indexed": false,
-      "internalType": "int256",
-      "name": "deltaNormalDebt",
-      "type": "int256"
-    }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "collateralizer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "creditor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "deltaCollateral",
+        "type": "int256"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "deltaNormalDebt",
+        "type": "int256"
+      }
     ],
     "name": "ModifyCollateralAndDebt",
     "type": "event"
@@ -243,24 +363,24 @@
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    },
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "creditor",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "int256",
-      "name": "deltaRate",
-      "type": "int256"
-    }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "creditor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "deltaRate",
+        "type": "int256"
+      }
     ],
     "name": "ModifyRate",
     "type": "event"
@@ -268,18 +388,18 @@
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "delegator",
-      "type": "address"
-    },
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "delegatee",
-      "type": "address"
-    }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "delegator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "delegatee",
+        "type": "address"
+      }
     ],
     "name": "RevokeDelegate",
     "type": "event"
@@ -287,24 +407,18 @@
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    },
-    {
-      "indexed": true,
-      "internalType": "bytes32",
-      "name": "param",
-      "type": "bytes32"
-    },
-    {
-      "indexed": false,
-      "internalType": "uint256",
-      "name": "data",
-      "type": "uint256"
-    }
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "param",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "data",
+        "type": "uint256"
+      }
     ],
     "name": "SetParam",
     "type": "event"
@@ -312,18 +426,43 @@
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "debtor",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "uint256",
-      "name": "debt",
-      "type": "uint256"
-    }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "param",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "data",
+        "type": "uint256"
+      }
+    ],
+    "name": "SetParam",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "debtor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "debt",
+        "type": "uint256"
+      }
     ],
     "name": "SettleUnbackedDebt",
     "type": "event"
@@ -331,48 +470,48 @@
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    },
-    {
-      "indexed": true,
-      "internalType": "uint256",
-      "name": "tokenId",
-      "type": "uint256"
-    },
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "src",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "address",
-      "name": "dst",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "uint256",
-      "name": "amount",
-      "type": "uint256"
-    },
-    {
-      "indexed": false,
-      "internalType": "uint256",
-      "name": "srcBalance",
-      "type": "uint256"
-    },
-    {
-      "indexed": false,
-      "internalType": "uint256",
-      "name": "dstBalance",
-      "type": "uint256"
-    }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "src",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "dst",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "srcBalance",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "dstBalance",
+        "type": "uint256"
+      }
     ],
     "name": "TransferBalance",
     "type": "event"
@@ -380,42 +519,42 @@
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    },
-    {
-      "indexed": true,
-      "internalType": "uint256",
-      "name": "tokenId",
-      "type": "uint256"
-    },
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "src",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "address",
-      "name": "dst",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "int256",
-      "name": "deltaCollateral",
-      "type": "int256"
-    },
-    {
-      "indexed": false,
-      "internalType": "int256",
-      "name": "deltaNormalDebt",
-      "type": "int256"
-    }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "src",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "dst",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "deltaCollateral",
+        "type": "int256"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "deltaNormalDebt",
+        "type": "int256"
+      }
     ],
     "name": "TransferCollateralAndDebt",
     "type": "event"
@@ -423,36 +562,36 @@
   {
     "anonymous": false,
     "inputs": [
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "src",
-      "type": "address"
-    },
-    {
-      "indexed": true,
-      "internalType": "address",
-      "name": "dst",
-      "type": "address"
-    },
-    {
-      "indexed": false,
-      "internalType": "uint256",
-      "name": "amount",
-      "type": "uint256"
-    },
-    {
-      "indexed": false,
-      "internalType": "uint256",
-      "name": "srcCredit",
-      "type": "uint256"
-    },
-    {
-      "indexed": false,
-      "internalType": "uint256",
-      "name": "dstCredit",
-      "type": "uint256"
-    }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "src",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "dst",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "srcCredit",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "dstCredit",
+        "type": "uint256"
+      }
     ],
     "name": "TransferCredit",
     "type": "event"
@@ -460,41 +599,21 @@
   {
     "inputs": [],
     "name": "ANY_CALLER",
-    "outputs": [
-    {
-      "internalType": "address",
-      "name": "",
-      "type": "address"
-    }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "ANY_SIG",
-    "outputs": [
-    {
-      "internalType": "bytes32",
-      "name": "",
-      "type": "bytes32"
-    }
-    ],
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-    {
-      "internalType": "bytes32",
-      "name": "sig",
-      "type": "bytes32"
-    },
-    {
-      "internalType": "address",
-      "name": "who",
-      "type": "address"
-    }
+      { "internalType": "bytes32", "name": "sig", "type": "bytes32" },
+      { "internalType": "address", "name": "who", "type": "address" }
     ],
     "name": "allowCaller",
     "outputs": [],
@@ -503,45 +622,19 @@
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "",
-      "type": "address"
-    },
-    {
-      "internalType": "uint256",
-      "name": "",
-      "type": "uint256"
-    },
-    {
-      "internalType": "address",
-      "name": "",
-      "type": "address"
-    }
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "uint256", "name": "", "type": "uint256" },
+      { "internalType": "address", "name": "", "type": "address" }
     ],
     "name": "balances",
-    "outputs": [
-    {
-      "internalType": "uint256",
-      "name": "",
-      "type": "uint256"
-    }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-    {
-      "internalType": "bytes32",
-      "name": "sig",
-      "type": "bytes32"
-    },
-    {
-      "internalType": "address",
-      "name": "who",
-      "type": "address"
-    }
+      { "internalType": "bytes32", "name": "sig", "type": "bytes32" },
+      { "internalType": "address", "name": "who", "type": "address" }
     ],
     "name": "blockCaller",
     "outputs": [],
@@ -550,65 +643,27 @@
   },
   {
     "inputs": [
-    {
-      "internalType": "bytes32",
-      "name": "sig",
-      "type": "bytes32"
-    },
-    {
-      "internalType": "address",
-      "name": "who",
-      "type": "address"
-    }
+      { "internalType": "bytes32", "name": "sig", "type": "bytes32" },
+      { "internalType": "address", "name": "who", "type": "address" }
     ],
     "name": "canCall",
-    "outputs": [
-    {
-      "internalType": "bool",
-      "name": "",
-      "type": "bool"
-    }
-    ],
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    },
-    {
-      "internalType": "uint256",
-      "name": "tokenId",
-      "type": "uint256"
-    },
-    {
-      "internalType": "address",
-      "name": "user",
-      "type": "address"
-    },
-    {
-      "internalType": "address",
-      "name": "collateralizer",
-      "type": "address"
-    },
-    {
-      "internalType": "address",
-      "name": "debtor",
-      "type": "address"
-    },
-    {
-      "internalType": "int256",
-      "name": "deltaCollateral",
-      "type": "int256"
-    },
-    {
-      "internalType": "int256",
-      "name": "deltaNormalDebt",
-      "type": "int256"
-    }
+      { "internalType": "address", "name": "vault", "type": "address" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+      { "internalType": "address", "name": "user", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "collateralizer",
+        "type": "address"
+      },
+      { "internalType": "address", "name": "debtor", "type": "address" },
+      { "internalType": "int256", "name": "deltaCollateral", "type": "int256" },
+      { "internalType": "int256", "name": "deltaNormalDebt", "type": "int256" }
     ],
     "name": "confiscateCollateralAndDebt",
     "outputs": [],
@@ -617,21 +672,9 @@
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "debtor",
-      "type": "address"
-    },
-    {
-      "internalType": "address",
-      "name": "creditor",
-      "type": "address"
-    },
-    {
-      "internalType": "uint256",
-      "name": "debt",
-      "type": "uint256"
-    }
+      { "internalType": "address", "name": "debtor", "type": "address" },
+      { "internalType": "address", "name": "creditor", "type": "address" },
+      { "internalType": "uint256", "name": "debt", "type": "uint256" }
     ],
     "name": "createUnbackedDebt",
     "outputs": [],
@@ -639,94 +682,46 @@
     "type": "function"
   },
   {
-    "inputs": [
-    {
-      "internalType": "address",
-      "name": "",
-      "type": "address"
-    }
-    ],
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "name": "credit",
-    "outputs": [
-    {
-      "internalType": "uint256",
-      "name": "",
-      "type": "uint256"
-    }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "",
-      "type": "address"
-    },
-    {
-      "internalType": "address",
-      "name": "",
-      "type": "address"
-    }
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "address", "name": "", "type": "address" }
     ],
     "name": "delegates",
-    "outputs": [
-    {
-      "internalType": "uint256",
-      "name": "",
-      "type": "uint256"
-    }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "globalDebt",
-    "outputs": [
-    {
-      "internalType": "uint256",
-      "name": "",
-      "type": "uint256"
-    }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "globalDebtCeiling",
-    "outputs": [
-    {
-      "internalType": "uint256",
-      "name": "",
-      "type": "uint256"
-    }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "globalUnbackedDebt",
-    "outputs": [
-    {
-      "internalType": "uint256",
-      "name": "",
-      "type": "uint256"
-    }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "delegatee",
-      "type": "address"
-    }
+      { "internalType": "address", "name": "delegatee", "type": "address" }
     ],
     "name": "grantDelegate",
     "outputs": [],
@@ -735,11 +730,7 @@
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    }
+      { "internalType": "address", "name": "vault", "type": "address" }
     ],
     "name": "init",
     "outputs": [],
@@ -749,13 +740,7 @@
   {
     "inputs": [],
     "name": "live",
-    "outputs": [
-    {
-      "internalType": "uint256",
-      "name": "",
-      "type": "uint256"
-    }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -768,26 +753,10 @@
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    },
-    {
-      "internalType": "uint256",
-      "name": "tokenId",
-      "type": "uint256"
-    },
-    {
-      "internalType": "address",
-      "name": "user",
-      "type": "address"
-    },
-    {
-      "internalType": "int256",
-      "name": "amount",
-      "type": "int256"
-    }
+      { "internalType": "address", "name": "vault", "type": "address" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "int256", "name": "amount", "type": "int256" }
     ],
     "name": "modifyBalance",
     "outputs": [],
@@ -796,41 +765,17 @@
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    },
-    {
-      "internalType": "uint256",
-      "name": "tokenId",
-      "type": "uint256"
-    },
-    {
-      "internalType": "address",
-      "name": "user",
-      "type": "address"
-    },
-    {
-      "internalType": "address",
-      "name": "collateralizer",
-      "type": "address"
-    },
-    {
-      "internalType": "address",
-      "name": "creditor",
-      "type": "address"
-    },
-    {
-      "internalType": "int256",
-      "name": "deltaCollateral",
-      "type": "int256"
-    },
-    {
-      "internalType": "int256",
-      "name": "deltaNormalDebt",
-      "type": "int256"
-    }
+      { "internalType": "address", "name": "vault", "type": "address" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+      { "internalType": "address", "name": "user", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "collateralizer",
+        "type": "address"
+      },
+      { "internalType": "address", "name": "creditor", "type": "address" },
+      { "internalType": "int256", "name": "deltaCollateral", "type": "int256" },
+      { "internalType": "int256", "name": "deltaNormalDebt", "type": "int256" }
     ],
     "name": "modifyCollateralAndDebt",
     "outputs": [],
@@ -839,21 +784,9 @@
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    },
-    {
-      "internalType": "address",
-      "name": "creditor",
-      "type": "address"
-    },
-    {
-      "internalType": "int256",
-      "name": "deltaRate",
-      "type": "int256"
-    }
+      { "internalType": "address", "name": "vault", "type": "address" },
+      { "internalType": "address", "name": "creditor", "type": "address" },
+      { "internalType": "int256", "name": "deltaRate", "type": "int256" }
     ],
     "name": "modifyRate",
     "outputs": [],
@@ -862,45 +795,21 @@
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "",
-      "type": "address"
-    },
-    {
-      "internalType": "uint256",
-      "name": "",
-      "type": "uint256"
-    },
-    {
-      "internalType": "address",
-      "name": "",
-      "type": "address"
-    }
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "uint256", "name": "", "type": "uint256" },
+      { "internalType": "address", "name": "", "type": "address" }
     ],
     "name": "positions",
     "outputs": [
-    {
-      "internalType": "uint256",
-      "name": "collateral",
-      "type": "uint256"
-    },
-    {
-      "internalType": "uint256",
-      "name": "normalDebt",
-      "type": "uint256"
-    }
+      { "internalType": "uint256", "name": "collateral", "type": "uint256" },
+      { "internalType": "uint256", "name": "normalDebt", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "delegatee",
-      "type": "address"
-    }
+      { "internalType": "address", "name": "delegatee", "type": "address" }
     ],
     "name": "revokeDelegate",
     "outputs": [],
@@ -909,16 +818,8 @@
   },
   {
     "inputs": [
-    {
-      "internalType": "bytes32",
-      "name": "param",
-      "type": "bytes32"
-    },
-    {
-      "internalType": "uint256",
-      "name": "data",
-      "type": "uint256"
-    }
+      { "internalType": "bytes32", "name": "param", "type": "bytes32" },
+      { "internalType": "uint256", "name": "data", "type": "uint256" }
     ],
     "name": "setParam",
     "outputs": [],
@@ -927,21 +828,9 @@
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    },
-    {
-      "internalType": "bytes32",
-      "name": "param",
-      "type": "bytes32"
-    },
-    {
-      "internalType": "uint256",
-      "name": "data",
-      "type": "uint256"
-    }
+      { "internalType": "address", "name": "vault", "type": "address" },
+      { "internalType": "bytes32", "name": "param", "type": "bytes32" },
+      { "internalType": "uint256", "name": "data", "type": "uint256" }
     ],
     "name": "setParam",
     "outputs": [],
@@ -950,11 +839,7 @@
   },
   {
     "inputs": [
-    {
-      "internalType": "uint256",
-      "name": "debt",
-      "type": "uint256"
-    }
+      { "internalType": "uint256", "name": "debt", "type": "uint256" }
     ],
     "name": "settleUnbackedDebt",
     "outputs": [],
@@ -963,31 +848,11 @@
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    },
-    {
-      "internalType": "uint256",
-      "name": "tokenId",
-      "type": "uint256"
-    },
-    {
-      "internalType": "address",
-      "name": "src",
-      "type": "address"
-    },
-    {
-      "internalType": "address",
-      "name": "dst",
-      "type": "address"
-    },
-    {
-      "internalType": "uint256",
-      "name": "amount",
-      "type": "uint256"
-    }
+      { "internalType": "address", "name": "vault", "type": "address" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+      { "internalType": "address", "name": "src", "type": "address" },
+      { "internalType": "address", "name": "dst", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
     ],
     "name": "transferBalance",
     "outputs": [],
@@ -996,36 +861,12 @@
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "vault",
-      "type": "address"
-    },
-    {
-      "internalType": "uint256",
-      "name": "tokenId",
-      "type": "uint256"
-    },
-    {
-      "internalType": "address",
-      "name": "src",
-      "type": "address"
-    },
-    {
-      "internalType": "address",
-      "name": "dst",
-      "type": "address"
-    },
-    {
-      "internalType": "int256",
-      "name": "deltaCollateral",
-      "type": "int256"
-    },
-    {
-      "internalType": "int256",
-      "name": "deltaNormalDebt",
-      "type": "int256"
-    }
+      { "internalType": "address", "name": "vault", "type": "address" },
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+      { "internalType": "address", "name": "src", "type": "address" },
+      { "internalType": "address", "name": "dst", "type": "address" },
+      { "internalType": "int256", "name": "deltaCollateral", "type": "int256" },
+      { "internalType": "int256", "name": "deltaNormalDebt", "type": "int256" }
     ],
     "name": "transferCollateralAndDebt",
     "outputs": [],
@@ -1034,21 +875,9 @@
   },
   {
     "inputs": [
-    {
-      "internalType": "address",
-      "name": "src",
-      "type": "address"
-    },
-    {
-      "internalType": "address",
-      "name": "dst",
-      "type": "address"
-    },
-    {
-      "internalType": "uint256",
-      "name": "amount",
-      "type": "uint256"
-    }
+      { "internalType": "address", "name": "src", "type": "address" },
+      { "internalType": "address", "name": "dst", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
     ],
     "name": "transferCredit",
     "outputs": [],
@@ -1056,54 +885,24 @@
     "type": "function"
   },
   {
-    "inputs": [
-    {
-      "internalType": "address",
-      "name": "",
-      "type": "address"
-    }
-    ],
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "name": "unbackedDebt",
-    "outputs": [
-    {
-      "internalType": "uint256",
-      "name": "",
-      "type": "uint256"
-    }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [
-    {
-      "internalType": "address",
-      "name": "",
-      "type": "address"
-    }
-    ],
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "name": "vaults",
     "outputs": [
-    {
-      "internalType": "uint256",
-      "name": "totalNormalDebt",
-      "type": "uint256"
-    },
-    {
-      "internalType": "uint256",
-      "name": "rate",
-      "type": "uint256"
-    },
-    {
-      "internalType": "uint256",
-      "name": "debtCeiling",
-      "type": "uint256"
-    },
-    {
-      "internalType": "uint256",
-      "name": "debtFloor",
-      "type": "uint256"
-    }
+      {
+        "internalType": "uint256",
+        "name": "totalNormalDebt",
+        "type": "uint256"
+      },
+      { "internalType": "uint256", "name": "rate", "type": "uint256" },
+      { "internalType": "uint256", "name": "debtCeiling", "type": "uint256" },
+      { "internalType": "uint256", "name": "debtFloor", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"

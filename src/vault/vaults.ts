@@ -1,8 +1,9 @@
-import { Address } from "@graphprotocol/graph-ts";
+import { Address, log } from "@graphprotocol/graph-ts";
 import { Init } from "../../generated/Codex/Codex";
+import { IVault } from "../../generated/Codex/IVault";
 import { Vault } from "../../generated/schema";
-import { createCollateralIfNecessary } from "../collateralType";
-import { BIGINT_ZERO, WAD, getCollateralizationRatio } from "../utils";
+import { createCollateralTypeIfNonExistent } from "../collateralType";
+import { BIGINT_ZERO, WAD, getLiquidationRatio } from "../utils";
 import { vaultsData } from "./vaultsData";
 
 export function handleVaultInit(event: Init): void {
@@ -14,24 +15,29 @@ export function createVaultIfNonExistent(vaultAddress: string): Vault {
   let vault = Vault.load(vaultAddress);
   if (vault == null) {
     vault = new Vault(vaultAddress);
-    let address = Address.fromString(vaultAddress);
-
     let config = vaultsData.get(vaultAddress);
     if (config) {
       vault.name = (config.get('name')) as string;
       vault.type = (config.get('type')) as string;
+      vault.address = Address.fromString((config.get('address')) as string)
     }
-    vault.address = address;
-    vault.collateralizationRatio = getCollateralizationRatio(address);
+    vault.vaultType = IVault.bind(Address.fromString(vaultAddress)).vaultType();
+    vault.collateralizationRatio = getLiquidationRatio(Address.fromString(vaultAddress));
     vault.multiplier = WAD;
     vault.interestPerSecond = WAD;
+    
+    // set via SetParam
     vault.maxAuctionDuration = BIGINT_ZERO;
     vault.maxDiscount = BIGINT_ZERO;
     vault.auctionDebtFloor = BIGINT_ZERO;
     vault.debtCeiling = BIGINT_ZERO;
     vault.debtFloor = BIGINT_ZERO;
-    createCollateralIfNecessary(vault);
+    vault.defaultRateId = BIGINT_ZERO;
     vault.save();
+
+    log.debug("CreateVaultIfNonExistent: vaultAddress: {}", [vaultAddress]);
+    createCollateralTypeIfNonExistent(vault, '0');
   }
+
   return vault as Vault;
 }

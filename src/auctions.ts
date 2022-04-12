@@ -1,15 +1,21 @@
-import { BigInt, Address, Bytes, ethereum } from '@graphprotocol/graph-ts';
-import { RedoAuction, StartAuction, StopAuction, TakeCollateral, SetParam, CollateralAuction as CollateralAuctionContract, UpdateAuctionDebtFloor } from "../generated/CollateralAuction/CollateralAuction";
+import { BigInt, Address, Bytes, ethereum, log } from '@graphprotocol/graph-ts';
+import {
+  RedoAuction,
+  StartAuction,
+  StopAuction,
+  TakeCollateral,
+  SetParam,
+  CollateralAuction as CollateralAuctionContract,
+  UpdateAuctionDebtFloor
+} from "../generated/CollateralAuction/CollateralAuction";
 import { CollateralType, CollateralAuction, Vault } from "../generated/schema";
-import { createCollateralIfNonExistent } from "./collateralType";
+import { createCollateralTypeIfNonExistent } from "./collateralType";
 import { createVaultIfNonExistent } from "./vault/vaults";
 import { isActiveAuction } from "./utils";
 
-const VAULT_PARAMS = ['multiplier', 'maxAuctionDuration', 'maxDiscount'];
-
 export function handleStartAuction(event: StartAuction): void {
   let vault = createVaultIfNonExistent(event.params.vault.toHexString());
-  let collateralType = createCollateralIfNonExistent(vault, event.params.tokenId.toString());
+  let collateralType = createCollateralTypeIfNonExistent(vault, event.params.tokenId.toString());
   createCollateralAuctionIfNonExistent(
     vault,
     collateralType,
@@ -84,7 +90,7 @@ function setAuctionActive(auctionId: BigInt): void {
 // this events modifies the following properties: startsAt, startPrice, keeper, tip
 export function handleRedoAuction(event: RedoAuction): void {
   let vault = createVaultIfNonExistent(event.params.vault.toHexString());
-  let collateralType = createCollateralIfNonExistent(vault, event.params.tokenId.toString());
+  let collateralType = createCollateralTypeIfNonExistent(vault, event.params.tokenId.toString());
   let auction = createCollateralAuctionIfNonExistent(
     vault,
     collateralType,
@@ -104,24 +110,26 @@ export function handleRedoAuction(event: RedoAuction): void {
   auction.save();
 }
 
+// TODO
 export function handleAuctionSetParam(event: SetParam): void {
-  let param = event.params.param.toString();
-  if (VAULT_PARAMS.includes(param)) {
-    // Skip the selector
-    let dataWithoutFunctionSelector = changetype<Bytes>(event.transaction.input.subarray(4));
-    let params = ethereum.decode('(address,bytes32,address)', dataWithoutFunctionSelector)!.toTuple();
-    let vault = createVaultIfNonExistent(params[0].toAddress().toHexString());
+  // const VAULT_PARAMS = ['multiplier', 'maxAuctionDuration', 'maxDiscount'];
+  // let param = event.params.param.toString();
+  // if (VAULT_PARAMS.includes(param)) {
+  //   // Skip the selector
+  //   let dataWithoutFunctionSelector = changetype<Bytes>(event.transaction.input.subarray(4));
+  //   let params = ethereum.decode('(address,bytes32,address)', dataWithoutFunctionSelector)!.toTuple();
+  //   let vault = createVaultIfNonExistent(params[0].toAddress().toHexString());
 
-    let collateralAuction = CollateralAuctionContract.bind(event.address);
-    let caVault = collateralAuction.try_vaults(params[0].toAddress());
-    if (!caVault.reverted) {
-      vault.multiplier = caVault.value.value0;
-      vault.maxAuctionDuration = caVault.value.value1;
-      // TODO - Uncomment this once using CollateralAuction instead of NonLossCollateralAuction
-      // vault.maxDiscount = caVault.value.value2;
-      vault.save();
-    }
-  }
+  //   let collateralAuction = CollateralAuctionContract.bind(event.address);
+  //   let caVault = collateralAuction.try_vaults(params[0].toAddress());
+  //   if (!caVault.reverted) {
+  //     vault.multiplier = caVault.value.value0;
+  //     vault.maxAuctionDuration = caVault.value.value1;
+  //     // not used by NoLossCollateralAuction
+  //     // vault.maxDiscount = caVault.value.value2;
+  //     vault.save();
+  //   }
+  // }
 }
 
 export function handleUpdateAuctionDebtFloor(event: UpdateAuctionDebtFloor): void {

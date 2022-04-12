@@ -1,21 +1,18 @@
-import { FIAT, FIATTokenBalance, FIATTokenAllowance } from "../generated/schema";
 import { Address, BigInt } from "@graphprotocol/graph-ts";
+import { FIAT, FIATTokenBalance, FIATTokenAllowance } from "../generated/schema";
 import { Transfer, Approval } from "../generated/FIAT/FIAT";
 import { BIGINT_ZERO, getTotalSupply, ZERO_ADDRESS } from "./utils";
 
 export function handleFIATTransfer(event: Transfer): void {
-  let fromAddress = event.params.from;
-  let toAddress = event.params.to;
-  let amount = event.params.amount;
   let fiat = createFIATIfNonExistent(event.address);
 
   // Checking if the event that is coming is from mint() 
-  if (isMintOperation(fromAddress, toAddress)) {
-    fiat.minted = fiat.minted!.plus(amount);
+  if (isMintOperation(event.params.from, event.params.to)) {
+    fiat.minted = fiat.minted!.plus(event.params.value);
   }
   // Checking if the even that is coming is from burn() 
-  else if (isBurnOperation(fromAddress, toAddress)) {
-    fiat.burned = fiat.burned!.plus(amount);
+  else if (isBurnOperation(event.params.from, event.params.to)) {
+    fiat.burned = fiat.burned!.plus(event.params.value);
   }
 
   fiat.totalSupply = getTotalSupply();
@@ -32,9 +29,9 @@ export function handleFIATTransfer(event: Transfer): void {
 
 export function createFIATIfNonExistent(address: Address): FIAT {
   let id = address.toHexString();
-  let fiat = FIAT.load(id);
 
-  if (!fiat) {
+  let fiat = FIAT.load(id);
+  if (fiat == null) {
     fiat = new FIAT(id);
     fiat.address = address;
     fiat.burned = BIGINT_ZERO;
@@ -68,19 +65,15 @@ export function isBurnOperation(from: Address, to: Address): boolean {
 }
 
 export function handleFIATApprovals(event: Approval): void {
-  const owner = event.params.owner;
-  const spender = event.params.spender;
-  const amount = event.params.amount;
-
-  createFIATTokenAllowanceIfNonExistent(owner, spender, amount);
+  createFIATTokenAllowanceIfNonExistent(event.params.owner, event.params.spender, event.params.value);
 }
 
 export function createFIATTokenAllowanceIfNonExistent(owner: Address, spender: Address, amount: BigInt): void {
   if (owner.notEqual(ZERO_ADDRESS) && spender.notEqual(ZERO_ADDRESS)) {
     let id = owner.toHexString() + "-" + spender.toHexString();
+    
     let allowanceData = FIATTokenAllowance.load(id);
-
-    if (!allowanceData) {
+    if (allowanceData == null) {
       allowanceData = new FIATTokenAllowance(id);
       allowanceData.owner = owner;
       allowanceData.spender = spender;

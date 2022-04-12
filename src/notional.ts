@@ -1,6 +1,6 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { MarketsInitialized, Notional } from "../generated/Notional/Notional";
-import { createNotionalCollateralIfNonExistent } from "./collateralType";
+// import { MarketsInitialized, Notional } from "../generated/Notional/Notional";
+// import { createNotionalCollateralTypeIfNonExistent } from "./collateralType";
 
 export const RATE_PRECISION = 1000000000;
 export const BASIS_POINTS = 100000;
@@ -39,18 +39,18 @@ function getMarketTenor(maturity: BigInt, blockTime: BigInt): BigInt {
   return BigInt.fromI32(0)
 }
 
-export function handleMarketsInitialized(event: MarketsInitialized): void {
-  let currencyId = event.params.currencyId;
-  let tRef = getTimeRef(event.block.timestamp.toI32());
-  let notional = Notional.bind(event.address);
-  let marketsResult = notional.getActiveMarketsAtBlockTime(currencyId, BigInt.fromI32(tRef));
+// export function handleMarketsInitialized(event: MarketsInitialized): void {
+//   let currencyId = event.params.currencyId;
+//   let tRef = getTimeRef(event.block.timestamp.toI32());
+//   let notional = Notional.bind(event.address);
+//   let marketsResult = notional.getActiveMarketsAtBlockTime(currencyId, BigInt.fromI32(tRef));
 
-  for (let i: i32 = 0; i < marketsResult.length; i++) {
-    let maturity = marketsResult[i].maturity;
-    let tenor = getMarketTenor(maturity, event.block.timestamp);
-    let assetType = 1;
-    let tokenId = notional.encodeToId(currencyId, maturity, assetType);
+//   for (let i: i32 = 0; i < marketsResult.length; i++) {
+//     let maturity = marketsResult[i].maturity;
+//     let tenor = getMarketTenor(maturity, event.block.timestamp);
+//     let assetType = 1;
+//     let tokenId = notional.encodeToId(currencyId, maturity, assetType);
 
-    createNotionalCollateralIfNonExistent(notional, tokenId, currencyId, maturity, tenor);
-  }
-}
+//     createNotionalCollateralTypeIfNonExistent(notional, tokenId, currencyId, maturity, tenor);
+//   }
+// }
