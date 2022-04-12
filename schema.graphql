@@ -9,7 +9,7 @@ interface PositionTransactionAction {
   transactionHash: Bytes!
   vault: Vault
   vaultName: String # same as vault.name (workaround)
-  tokenId: BigInt!
+  tokenId: BigInt! # replace with collateralType
   position: Position!
   user: Bytes!
   collateral: BigInt!
@@ -24,7 +24,7 @@ type ModifyCollateralAndDebtAction implements PositionTransactionAction @entity 
   transactionHash: Bytes!
   vault: Vault
   vaultName: String # same as vault.name (workaround)
-  tokenId: BigInt!
+  tokenId: BigInt! # replace with collateralType
   position: Position!
   user: Bytes!
   collateral: BigInt!
@@ -41,7 +41,7 @@ type TransferCollateralAndDebtAction implements PositionTransactionAction @entit
   transactionHash: Bytes!
   vault: Vault
   vaultName: String # same as vault.name (workaround)
-  tokenId: BigInt!
+  tokenId: BigInt! # replace with collateralType
   position: Position!
   user: Bytes!
   userSrc: Bytes!
@@ -58,7 +58,7 @@ type ConfiscateCollateralAndDebtAction implements PositionTransactionAction @ent
   transactionHash: Bytes!
   vault: Vault
   vaultName: String # same as vault.name (workaround)
-  tokenId: BigInt!
+  tokenId: BigInt! # replace with collateralType
   position: Position!
   user: Bytes!
   collateralizer: Bytes!
@@ -85,7 +85,6 @@ type Position @entity {
 
 type Codex @entity {
   id: ID!
-  delegates: Delegate
   globalDebtCeiling: BigInt!
 }
 
@@ -99,10 +98,9 @@ type Balance @entity {
 
 type Delegate @entity {
   id: ID!
-  delegator: Bytes!
-  delegatee: Bytes!
+  delegator: User!
+  delegatee: User!
   hasDelegate: BigInt
-  codex: [Codex!] @derivedFrom(field: "delegates")
 }
 
 enum VaultType {
@@ -118,13 +116,15 @@ type Vault @entity {
   name: String
   type: VaultType
   vaultType: Bytes
+
+  # Collybus related config
   collateralizationRatio: BigInt
   interestPerSecond: BigInt
   defaultRateId: BigInt
   debtFloor: BigInt
   debtCeiling: BigInt
 
-  # Auction related data
+  # CollateralAuction related config
   multiplier: BigInt
   maxAuctionDuration: BigInt
   maxDiscount: BigInt
@@ -137,17 +137,23 @@ type Vault @entity {
 type CollateralType @entity {
   id: ID!
   tokenId: BigInt
+  
   address: Bytes # rename to tokenAddress
   symbol: String # rename to tokenSymbol
   scale: BigInt # rename to tokenScale
+  
   underlierSymbol: String
   underlierAddress: Bytes
   underlierScale: BigInt
+
   vault: Vault
   vaultName: String # same as vault.name (workaround)
+  
+  maturity: BigInt
   faceValue: BigInt
   depositedCollateral: BigInt
-  maturity: BigInt
+
+  discountRate: CollybusDiscountRate
 
   # Only set for Element Finance pTokens
   eptData: EPTData
@@ -167,6 +173,8 @@ type User @entity {
   credit: BigInt
   balances: [Balance!] @derivedFrom(field: "owner")
   positions: [Position!] @derivedFrom(field: "users")
+  delegated: [Delegate!] @derivedFrom(field: "delegator")
+  delegates: [Delegate!] @derivedFrom(field: "delegatee")
 }
 
 type FIAT @entity {
@@ -193,36 +201,27 @@ type FIATTokenBalance @entity {
 type CollateralAuction @entity {
   id: ID!
   auctionId: BigInt
-  debt: BigInt
-  collateralToSell: BigInt
   vault: Vault
   vaultName: String # same as vault.name (workaround)
-  tokenId: BigInt
+  tokenId: BigInt # remove in favour of collateralType
   collateralType: CollateralType
   user: Bytes
+  debt: BigInt
+  collateralToSell: BigInt
   startsAt: BigInt
   startPrice: BigInt
-  keeper: Bytes
-  tip: BigInt
   isActive: Boolean
-}
-
-type Collybus @entity {
- id: ID!
- spots: [CollybusSpot!] @derivedFrom(field: "collybus")
- rates: [CollybusDiscountRate!] @derivedFrom(field: "collybus")
 }
 
 type CollybusSpot @entity {
   id: ID!
   token: Bytes
   spot: BigInt
-  collybus: Collybus
 }
 
 type CollybusDiscountRate @entity {
   id: ID!
   rateId: BigInt
   discountRate: BigInt
-  collybus: Collybus
+  collateralTypes: [CollateralType!] @derivedFrom(field: "discountRate")
 }

@@ -1,11 +1,11 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
-import { Codex, Codex__positionsResult } from "../generated/Codex/Codex";
+import { Codex } from "../generated/Codex/Codex";
 import { Collybus } from "../generated/Codex/Collybus";
 import { IVault } from "../generated/Codex/IVault";
 import { CollateralAuction } from "../generated/CollateralAuction/CollateralAuction";
 import { FIAT } from "../generated/FIAT/FIAT";
 import { ERC20 } from "../generated/Codex/ERC20" // remove me when we deploy notional
-import { COLLYBUS_ADDRESS, CODEX_ADDRESS, FIAT_ADDRESS, COLLATERAL_AUCTION_ADDRESS } from "./constants";
+import { COLLYBUS_ADDRESS, CODEX_ADDRESS, FIAT_ADDRESS, COLLATERAL_AUCTION_ADDRESS } from "./generated/constants";
 // import { ERC20 } from "../generated/Notional/ERC20";
 
 let codex = Codex.bind(Address.fromString(CODEX_ADDRESS));
@@ -26,14 +26,6 @@ export function max(a: BigInt | null, b: BigInt): BigInt {
 export function min(a: BigInt | null, b: BigInt): BigInt {
   if (a == null) return b;
   return a < b ? a as BigInt : b;
-}
-
-export function getDelegates(delegator: Address, delegatee: Address): BigInt {
-  let hasDelegate = codex.try_delegates(delegator, delegatee);
-  if (!hasDelegate.reverted) {
-    return hasDelegate.value;
-  }
-  return BIGINT_ZERO;
 }
 
 export function getPositionCollateral(vault: Address, tokenId: BigInt, owner: Address): BigInt {

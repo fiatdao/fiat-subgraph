@@ -31,7 +31,7 @@ dataSources:
         - name: IVault
           file: ./abis/IVault.json
         - name: FIAT
-          file: ./abis/Fiat.json
+          file: ./abis/FIAT.json
         - name: ERC20
           file: ./abis/ERC20.json
         - name: IConvergentCurvePool
@@ -94,7 +94,6 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - Collybus
         - CollybusSpot
         - CollybusDiscountRate
         - Vault
@@ -149,8 +148,8 @@ dataSources:
           handler: handleTakeCollateral
         - event: StopAuction(uint256)
           handler: handleStopAuction
-        - event: SetParam(indexed bytes32,uint256)
-          handler: handleAuctionSetParam
+        - event: SetParam(indexed address,indexed bytes32,uint256)
+          handler: handleCollateralAuctionSetParam
         - event: UpdateAuctionDebtFloor(indexed address,uint256)
           handler: handleUpdateAuctionDebtFloor
       file: ./src/mappings.ts

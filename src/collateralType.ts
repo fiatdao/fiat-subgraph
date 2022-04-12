@@ -1,6 +1,6 @@
 import { Address, BigInt, log } from "@graphprotocol/graph-ts";
 import { CollateralType, Vault } from "../generated/schema";
-import { vaultsData } from "./vault/vaultsData";
+import { VAULT_CONFIG } from "./generated/config";
 import { createEPTDataIfNonExistent } from "./element";
 import {
   BIGINT_ZERO, getFaceValue, getMaturity, getSymbol, getToken, getUnderlierToken, getUnderlierScale, getTokenScale
@@ -13,14 +13,12 @@ import {
 // const NOTIONAL_COLLATERAL_TYPE = "fCash";
 // const VAULT_TYPE_ERC20 = "ERC20";
 
-export function createCollateralTypeIfNonExistent(vault: Vault, tokenId: string): CollateralType {
-  log.debug("createCollateralTypeIfNonExistent: vaultAddress: {}, {} ", [vault.id, vault.address!.toHexString()]);
-
-  let id = vault.id + "-" + tokenId;
+export function createCollateralTypeIfNonExistent(vault: Vault, tokenId: BigInt): CollateralType {
+  let id = vault.id + "-" + tokenId.toString();
   let collateralType = CollateralType.load(id);
   if (!collateralType) {
     collateralType = new CollateralType(id);
-    collateralType.tokenId = BigInt.fromString(tokenId);
+    collateralType.tokenId = tokenId;
     collateralType.depositedCollateral = BIGINT_ZERO;
     collateralType.vault = vault.id;
     collateralType.vaultName = vault.name;
@@ -28,7 +26,7 @@ export function createCollateralTypeIfNonExistent(vault: Vault, tokenId: string)
     collateralType.save();
   }
 
-  let config = vaultsData.get(vault.address!.toHexString());
+  let config = VAULT_CONFIG.get(vault.address!.toHexString());
   if (config) {
     if (((config.get('type')) as string) == "ELEMENT") {
       createEPTCollateralTypeIfNonExistent(collateralType);
@@ -68,22 +66,22 @@ function createEPTCollateralTypeIfNonExistent(collateralType: CollateralType): C
 //   let currency: Notional__getCurrencyResult;
 
 //   // look for corresponding vault
-//   for (let i: i32 = 0; i < vaultsData.entries.length; i++) {
-//     let vData = vaultsData.get(vaultsData.entries[i].key);
+//   for (let i: i32 = 0; i < VAULT_CONFIG.entries.length; i++) {
+//     let vData = VAULT_CONFIG.get(VAULT_CONFIG.entries[i].key);
 
 //     // only notional vaults
 //     let vaultType = vData!.get('type');
-//     if (vaultsData.entries[i].key !== "" && vaultType !== null && vaultType === NOTIONAL) {
+//     if (VAULT_CONFIG.entries[i].key !== "" && vaultType !== null && vaultType === NOTIONAL) {
 //       currency = notional.getCurrency(currencyId);
 //       let marketUnderlierAddress = currency.value1.tokenAddress;
 
-//       let vaultFC = VaultFC.bind(changetype<Address>(Address.fromHexString(vaultsData.entries[i].key)))
+//       let vaultFC = VaultFC.bind(changetype<Address>(Address.fromHexString(VAULT_CONFIG.entries[i].key)))
 //       let vaultUnderlier = vaultFC.underlierToken()
 //       let vaultTenor = vaultFC.tenor()
 
 //       // same underlier and tenor
 //       if (vaultUnderlier.equals(marketUnderlierAddress) && vaultTenor.equals(tenor)) {
-//         vault = createVaultIfNonExistent(vaultsData.entries[i].key);
+//         vault = createVaultIfNonExistent(VAULT_CONFIG.entries[i].key);
 //         let collateralType = createCollateralTypeIfNonExistent(vault, id);
 //         if (!collateralType.address) {
 //           collateralType.maturity = maturity;

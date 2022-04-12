@@ -1,6 +1,6 @@
 import { Bytes } from "@graphprotocol/graph-ts";
-import { DeployProxy } from "../generated/PRBProxyFactory/PRBProxyFactory";
 import { UserProxy } from "../generated/schema";
+import { DeployProxy } from "../generated/PRBProxyFactory/PRBProxyFactory";
 
 export function handleDeployProxy(event: DeployProxy): void {
   let owner = event.params.owner;
