@@ -66,7 +66,7 @@ typings/
 
 # Generated Files
 subgraph.yaml
-src/vault/vaultsData.ts
-src/constants.ts
+src/generated/config.ts
+src/generated/constants.ts
 *.wasm
 *.bin
