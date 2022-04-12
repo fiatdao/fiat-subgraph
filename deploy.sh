@@ -21,7 +21,8 @@ graph build
 # Using only to build the app
 if [[ "$NO_DEPLOY" = true ]]
 then
-  rm subgraph.yaml
+  # Comment the line below in order to have the file, in order to run tests
+  # rm subgraph.yaml
   exit 0
 fi
 
