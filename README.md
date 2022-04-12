@@ -1,4 +1,4 @@
-# Subgraph for the FIAT smart contract system indexing the following entities
+# FIAT Subgraph
 
 ## Getting started: 
 
@@ -7,8 +7,8 @@ Run `yarn install` - make sure you have installed `yarn` globally (`npm i -g yar
 
 ### Hosted Subgraphs:
 
-- [Mainnet](https://thegraph.com/hosted-service/subgraph/fiatdao/protocol-subgraph)
-- [Goerli Testnet](https://thegraph.com/hosted-service/subgraph/fiatdao/protocol-subgraph-goerli)
+- [Mainnet](https://thegraph.com/hosted-service/subgraph/fiatdao/fiat-subgraph)
+- [Goerli Testnet](https://thegraph.com/hosted-service/subgraph/fiatdao/fiat-subgraph-goerli)
 
 ### Commands:
 
@@ -38,42 +38,38 @@ For more info see [deploy.sh](/deploy.sh)
 > In every way remember to create an .env file before you start the `docker-compose`, see [.env.example](/.env.example) for example
 > Local development only requires the `NETWORK_CONFIG` and `SUBGRAPH_NAME`.
 > Remote development requires the `ACCESS_TOKEN` of the created Subgraph.
-> FYI if you want to deploy locally the mainnet config, edit env `NETWORK_CONFIG=mainnet.json` and execute: `yarn run deploy:local`
+> if you want to deploy locally the mainnet config, edit env `NETWORK_CONFIG=mainnet.json` and execute: `yarn run deploy:local`
 
-# Supported API's - implemented events from contracts:
+## Supported API's - implemented events from contracts:
 
-- ## [Auction](https://github.com/fiatdao/fiat/blob/main/src/auctions/NoLossCollateralAuction.sol):
+### [Auction](https://github.com/fiatdao/fiat/blob/main/src/auctions/NoLossCollateralAuction.sol):
 
 `StartAuction, RedoAuction, TakeCollateral, StopAuction, UpdateAuctionDebtFloor, SetParam`
 
-- ## [Codex](https://github.com/fiatdao/fiat/blob/main/src/Codex.sol):
+### [Codex](https://github.com/fiatdao/fiat/blob/main/src/Codex.sol):
 
 `GrantDelegate, RevokeDelegate, Lock, ModifyBalance, TransferBalance, SetParam`
 
-- ## [Codex Positions](https://github.com/fiatdao/fiat/blob/main/src/Codex.sol):
+### [Codex Positions](https://github.com/fiatdao/fiat/blob/main/src/Codex.sol):
 
 `ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt`
 
-- ## [FIAT](https://github.com/fiatdao/fiat/blob/main/src/FIAT.sol):
+### [FIAT](https://github.com/fiatdao/fiat/blob/main/src/FIAT.sol):
 
 `FIATTransfer, FIATApprovals`
 
-- ## [Collybus](https://github.com/fiatdao/fiat/blob/main/src/Collybus.sol):
+### [Collybus](https://github.com/fiatdao/fiat/blob/main/src/Collybus.sol):
 
 `CollybusUpdateSpot, CollybusUpdateDiscountRate, CollybusSetParam`
 
-- ## [Vault](https://github.com/fiatdao/fiat/blob/main/src/Vault.sol):
+### [Vault](https://github.com/fiatdao/fiat/blob/main/src/Vault.sol):
 
 `VaultInit`
 
-- ## [Publican](https://github.com/fiatdao/fiat/blob/main/src/Publican.sol):
+### [Publican](https://github.com/fiatdao/fiat/blob/main/src/Publican.sol):
 
 `PublicanSetParam`
 
-- ## Notional:
-
-`MarketsInitialized`
-
-- ## UserProxy:
+### [PRBProxy](https://github.com/fiatdao/proxy/blob/main/contracts/PRBProxy.sol):
 
 `DeployProxy`
