@@ -9,15 +9,16 @@ import {
   Vault 
 } from "../generated/schema";
 import {
-  ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt
+  Codex as CodexContract, ModifyCollateralAndDebt, TransferCollateralAndDebt, ConfiscateCollateralAndDebt
 } from "../generated/Codex/Codex";
+import { IVault as IVaultContract } from "../generated/Codex/IVault";
 import { createCollateralTypeIfNonExistent } from "./collateralType";
-import { getMaturity, getPositionCollateral, getPositionNormalDebt, getCodexBalance, getCredit } from "./utils";
 import { createVaultIfNonExistent } from "./vault";
 import { createBalanceIfNotExistent } from "./codex";
 import { createUserIfNonExistent } from "./user";
 
 export function createPositionIfNonExistent(
+  codex: CodexContract,
   vault: Vault,
   collateralType: CollateralType,
   user: User,
@@ -30,39 +31,46 @@ export function createPositionIfNonExistent(
     position.vault = vault.id;
     position.vaultName = vault.name;
     position.collateralType = collateralType.id;
-    position.users = user.id;
+    position.user = user.id;
     position.owner = Address.fromString(user.id);
   }
-  position.maturity = getMaturity(Address.fromBytes(vault.address!), collateralType.tokenId!);
-  position.collateral = getPositionCollateral(Address.fromBytes(vault.address!), collateralType.tokenId!, Address.fromString(user.id));
-  position.normalDebt = getPositionNormalDebt(Address.fromBytes(vault.address!), collateralType.tokenId!, Address.fromString(user.id));
+
+  let iVault = IVaultContract.bind(Address.fromBytes(vault.address!));
+  position.maturity = iVault.maturity(collateralType.tokenId!);
+
+  let collateralAndNormalDebt = codex.positions(
+    Address.fromBytes(vault.address!), collateralType.tokenId!, Address.fromString(user.id)
+  );
+  position.collateral = collateralAndNormalDebt.value0;
+  position.normalDebt = collateralAndNormalDebt.value1;
   position.save();
 
   return position as Position;
 }
 
 export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): void {
+  let codex = CodexContract.bind(event.address);
   let vault = createVaultIfNonExistent(event.params.vault);
   let collateralType = createCollateralTypeIfNonExistent(vault, event.params.tokenId);
 
   let positionUser = createUserIfNonExistent(event.params.user);
-  positionUser.credit = getCredit(event.params.user);
+  positionUser.credit = codex.credit(event.params.user);
   positionUser.save();
 
   let creditorUser = createUserIfNonExistent(event.params.creditor);
-  creditorUser.credit = getCredit(event.params.creditor);
+  creditorUser.credit = codex.credit(event.params.creditor);
   creditorUser.save();
 
   let positionBalance = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, positionUser);
-  positionBalance.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.user);
+  positionBalance.balance = codex.balances(event.params.vault, event.params.tokenId, event.params.user);
   positionBalance.save();
 
   let collateralizerUser = createUserIfNonExistent(event.params.creditor);
   let collateralizerBalance = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, collateralizerUser);
-  collateralizerBalance.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.collateralizer);
+  collateralizerBalance.balance = codex.balances(event.params.vault, event.params.tokenId, event.params.collateralizer);
   collateralizerBalance.save();
 
-  let position = createPositionIfNonExistent(vault, collateralType, positionUser);
+  let position = createPositionIfNonExistent(codex, vault, collateralType, positionUser);
   createModifyAction(position, event);
 
   collateralType.depositedCollateral = collateralType.depositedCollateral!.plus(event.params.deltaCollateral);
@@ -70,19 +78,20 @@ export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): v
 }
 
 export function handleTransferCollateralAndDebt(event: TransferCollateralAndDebt): void {
+  let codex = CodexContract.bind(event.address);
   let vault = createVaultIfNonExistent(event.params.vault);
   let collateralType = createCollateralTypeIfNonExistent(vault, event.params.tokenId);
   
   let srcUser = createUserIfNonExistent(event.params.src);
-  let positionSrc = createPositionIfNonExistent(vault, collateralType, srcUser);
+  let positionSrc = createPositionIfNonExistent(codex, vault, collateralType, srcUser);
   let srcBalance = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, srcUser);
-  srcBalance.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.src);
+  srcBalance.balance = codex.balances(event.params.vault, event.params.tokenId, event.params.src);
   srcBalance.save()
 
   let dstUser = createUserIfNonExistent(event.params.dst);
-  let positionDst = createPositionIfNonExistent(vault, collateralType, dstUser);
+  let positionDst = createPositionIfNonExistent(codex, vault, collateralType, dstUser);
   let dstBalance = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, dstUser);
-  dstBalance.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.dst);
+  dstBalance.balance = codex.balances(event.params.vault, event.params.tokenId, event.params.dst);
   dstBalance.save()
   
   createTransferEvent(positionSrc, event);
@@ -90,19 +99,20 @@ export function handleTransferCollateralAndDebt(event: TransferCollateralAndDebt
 }
 
 export function handleConfiscateCollateralAndDebt(event: ConfiscateCollateralAndDebt): void {
+  let codex = CodexContract.bind(event.address);
   let positionUser = createUserIfNonExistent(event.params.user);
   let positionBalance = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, positionUser);
-  positionBalance.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.user);
+  positionBalance.balance = codex.balances(event.params.vault, event.params.tokenId, event.params.user);
   positionBalance.save();
 
   let collateralizerUser = createUserIfNonExistent(event.params.collateralizer);
   let collateralizerBalance = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, collateralizerUser);
-  collateralizerBalance.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.collateralizer);
+  collateralizerBalance.balance = codex.balances(event.params.vault, event.params.tokenId, event.params.collateralizer);
   collateralizerBalance.save();
 
   let vault = createVaultIfNonExistent(event.params.vault);
   let collateralType = createCollateralTypeIfNonExistent(vault, event.params.tokenId);
-  let position = createPositionIfNonExistent(vault, collateralType, positionUser);
+  let position = createPositionIfNonExistent(codex, vault, collateralType, positionUser);
 
   createConfiscateEvent(position, event);
 }
@@ -113,7 +123,7 @@ export function createModifyAction(position: Position, event: ModifyCollateralAn
   modifyAction.vault = position.vault;
   modifyAction.vaultName = position.vaultName;
   modifyAction.tokenId = event.params.tokenId;
-  modifyAction.user = event.params.user;
+  modifyAction.user = createUserIfNonExistent(event.params.user).id;
   modifyAction.collateralizer = event.params.collateralizer;
   modifyAction.creditor = event.params.creditor;
   modifyAction.deltaCollateral = event.params.deltaCollateral;
@@ -132,9 +142,9 @@ export function createTransferEvent(position: Position, event: TransferCollatera
   transferAction.vault = position.vault;
   transferAction.vaultName = position.vaultName;
   transferAction.tokenId = event.params.tokenId;
-  transferAction.user = event.params.src;
-  transferAction.userSrc = event.params.src;
-  transferAction.userDst = event.params.dst;
+  transferAction.user = createUserIfNonExistent(event.params.src).id;
+  transferAction.userSrc = createUserIfNonExistent(event.params.src).id;
+  transferAction.userDst = createUserIfNonExistent(event.params.dst).id
   transferAction.deltaCollateral = event.params.deltaCollateral;
   transferAction.deltaNormalDebt = event.params.deltaNormalDebt;
   transferAction.normalDebt = position.normalDebt;
@@ -151,9 +161,9 @@ export function createConfiscateEvent(position: Position, event: ConfiscateColla
   confiscateAction.vault = position.vault;
   confiscateAction.vaultName = position.vaultName;
   confiscateAction.tokenId = event.params.tokenId;
-  confiscateAction.user = event.params.user;
-  confiscateAction.collateralizer = event.params.collateralizer;
-  confiscateAction.debtor = event.params.debtor;
+  confiscateAction.user = createUserIfNonExistent(event.params.user).id;
+  confiscateAction.collateralizer = createUserIfNonExistent(event.params.collateralizer).id;
+  confiscateAction.debtor = createUserIfNonExistent(event.params.debtor).id;
   confiscateAction.deltaCollateral = event.params.deltaCollateral;
   confiscateAction.deltaNormalDebt = event.params.deltaNormalDebt;
   confiscateAction.normalDebt = position.normalDebt;

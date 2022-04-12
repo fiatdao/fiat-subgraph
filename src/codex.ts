@@ -1,8 +1,7 @@
 import { BigInt, Address } from "@graphprotocol/graph-ts";
-import { ModifyBalance, TransferBalance, SetParam, SetParam1 } from "../generated/Codex/Codex";
+import { Codex as CodexContract, ModifyBalance, TransferBalance, SetParam, SetParam1 } from "../generated/Codex/Codex";
 import { Balance, Codex, User } from "../generated/schema";
 import { createUserIfNonExistent } from "./user";
-import { getCodexBalance } from "./utils";
 import { createVaultIfNonExistent } from "./vault";
 
 function createCodexIfNonExistent(codexAddress: Address): Codex {
@@ -15,21 +14,23 @@ function createCodexIfNonExistent(codexAddress: Address): Codex {
 }
 
 export function handleModifyBalance(event: ModifyBalance): void {
+  let codex = CodexContract.bind(event.address);
   let user = createUserIfNonExistent(event.params.user);
   let balanceEntity = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, user);
-  balanceEntity.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.user);
+  balanceEntity.balance = codex.balances(event.params.vault, event.params.tokenId, event.params.user);
   balanceEntity.save();
 }
 
 export function handleTransferBalance(event: TransferBalance): void {
+  let codex = CodexContract.bind(event.address);
   let srcUser = createUserIfNonExistent(event.params.src);
   let srcBalance = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, srcUser);
-  srcBalance.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.src);
+  srcBalance.balance = codex.balances(event.params.vault, event.params.tokenId, event.params.src);
   srcBalance.save();
 
   let dstUser = createUserIfNonExistent(event.params.src);
   let dstBalance = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, dstUser);
-  dstBalance.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.dst);
+  dstBalance.balance = codex.balances(event.params.vault, event.params.tokenId, event.params.dst);
   dstBalance.save();
 }
 

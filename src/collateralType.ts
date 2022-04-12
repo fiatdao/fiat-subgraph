@@ -1,10 +1,10 @@
-import { Address, BigInt, log } from "@graphprotocol/graph-ts";
+import { BigInt, Address } from "@graphprotocol/graph-ts";
 import { CollateralType, Vault } from "../generated/schema";
+import { IVault as IVaultContract } from "../generated/Codex/IVault";
+import { ERC20 as ERC20Contract } from "../generated/Codex/ERC20";
 import { VAULT_CONFIG } from "./generated/config";
 import { createEPTDataIfNonExistent } from "./element";
-import {
-  BIGINT_ZERO, getFaceValue, getMaturity, getSymbol, getToken, getUnderlierToken, getUnderlierScale, getTokenScale
-} from "./utils";
+import { BIGINT_ZERO, WAD } from "./utils";
 // import { Notional, Notional__getCurrencyResult } from "../generated/Notional/Notional";
 // import { VaultFC } from "../generated/Notional/VaultFC";
 // import { createVaultIfNonExistent } from "./vault/vaults";
@@ -22,7 +22,20 @@ export function createCollateralTypeIfNonExistent(vault: Vault, tokenId: BigInt)
     collateralType.depositedCollateral = BIGINT_ZERO;
     collateralType.vault = vault.id;
     collateralType.vaultName = vault.name;
-    collateralType.faceValue = getFaceValue();
+    collateralType.faceValue = WAD;
+
+    let iVault = IVaultContract.bind(Address.fromBytes(vault.address!));
+    let token = ERC20Contract.bind(iVault.token());
+    let underlier = ERC20Contract.bind(iVault.underlierToken());
+
+    collateralType.address = token._address;
+    collateralType.symbol = token.symbol();
+    collateralType.scale = iVault.tokenScale();
+    collateralType.underlierAddress = underlier._address;
+    collateralType.underlierSymbol = underlier.symbol();
+    collateralType.underlierScale = iVault.underlierScale();
+    collateralType.maturity = iVault.maturity(tokenId);
+
     collateralType.save();
   }
 
@@ -39,18 +52,6 @@ export function createCollateralTypeIfNonExistent(vault: Vault, tokenId: BigInt)
 }
 
 function createEPTCollateralTypeIfNonExistent(collateralType: CollateralType): CollateralType {
-  let vaultAddress = Address.fromString(collateralType.vault!);
-  let tokenAddress = getToken(vaultAddress);
-  let underlierAddress = getUnderlierToken(vaultAddress);
-
-  collateralType.address = tokenAddress;
-  collateralType.symbol = getSymbol(tokenAddress);
-  collateralType.scale = getTokenScale(vaultAddress);
-  collateralType.underlierAddress = underlierAddress;
-  collateralType.underlierSymbol = getSymbol(underlierAddress);
-  collateralType.underlierScale = getUnderlierScale(vaultAddress);
-
-  collateralType.maturity = getMaturity(vaultAddress, BigInt.fromString("0"));
   collateralType.eptData = createEPTDataIfNonExistent(collateralType.vault!).id;
   collateralType.save();
 

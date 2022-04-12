@@ -1,47 +1,52 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { FIAT, FIATTokenBalance, FIATTokenAllowance } from "../generated/schema";
-import { Transfer, Approval } from "../generated/FIAT/FIAT";
-import { BIGINT_ZERO, getTotalSupply, ZERO_ADDRESS } from "./utils";
+import { FIAT as FIATContract, Transfer, Approval } from "../generated/FIAT/FIAT";
+import { BIGINT_ZERO, ZERO_ADDRESS } from "./utils";
+
+export function isMintOperation(from: Address, to: Address): boolean {
+  return from.equals(ZERO_ADDRESS) && !to.equals(ZERO_ADDRESS);
+}
+
+export function isBurnOperation(from: Address, to: Address): boolean {
+  return from.notEqual(ZERO_ADDRESS) && to.equals(ZERO_ADDRESS);
+}
 
 export function handleFIATTransfer(event: Transfer): void {
   let fiat = createFIATIfNonExistent(event.address);
-  let value = event.params.value;
-  let fromAddress = event.params.from;
-  let toAddress = event.params.to;
 
   // Checking if the event that is coming is from mint() 
-  if (isMintOperation(fromAddress, toAddress)) {
-    fiat.minted = fiat.minted!.plus(value);
+  if (isMintOperation(event.params.from, event.params.to)) {
+    fiat.minted = fiat.minted!.plus(event.params.value);
   }
   // Checking if the even that is coming is from burn() 
-  else if (isBurnOperation(fromAddress, toAddress)) {
-    fiat.burned = fiat.burned!.plus(value);
+  else if (isBurnOperation(event.params.from, event.params.to)) {
+    fiat.burned = fiat.burned!.plus(event.params.value);
   }
 
-  fiat.totalSupply = getTotalSupply();
   fiat.save();
 
-  let fromObject = createFIATTokenBalanceIfNonExistent(fromAddress);
-  fromObject.balance = fromObject.balance!.minus(value);
-  let toObject = createFIATTokenBalanceIfNonExistent(toAddress);
-  toObject.balance = toObject.balance!.plus(value);
-
+  let fromObject = createFIATTokenBalanceIfNonExistent(event.params.from);
+  fromObject.balance = fromObject.balance!.minus(event.params.value);
   fromObject.save();
+
+  let toObject = createFIATTokenBalanceIfNonExistent(event.params.to);
+  toObject.balance = toObject.balance!.plus(event.params.value);
   toObject.save();
 }
 
 export function createFIATIfNonExistent(address: Address): FIAT {
-  let id = address.toHexString();
+  let fiatContract = FIATContract.bind(address);
 
-  let fiat = FIAT.load(id);
+  let fiat = FIAT.load(address.toHexString());
   if (fiat == null) {
-    fiat = new FIAT(id);
+    fiat = new FIAT(address.toHexString());
     fiat.address = address;
     fiat.burned = BIGINT_ZERO;
     fiat.minted = BIGINT_ZERO;
-    fiat.totalSupply = BIGINT_ZERO;
+    fiat.totalSupply = fiatContract.totalSupply();
     fiat.save();
   }
+
   return fiat as FIAT;
 }
 
@@ -59,19 +64,11 @@ export function createFIATTokenBalanceIfNonExistent(address: Address): FIATToken
   return fiatTokenBalance;
 }
 
-export function isMintOperation(from: Address, to: Address): boolean {
-  return from.equals(ZERO_ADDRESS) && !to.equals(ZERO_ADDRESS);
-}
-
-export function isBurnOperation(from: Address, to: Address): boolean {
-  return from.notEqual(ZERO_ADDRESS) && to.equals(ZERO_ADDRESS);
-}
-
 export function handleFIATApprovals(event: Approval): void {
-  createFIATTokenAllowanceIfNonExistent(event.params.owner, event.params.spender, event.params.value);
+  createFIATAllowanceIfNonExistent(event.params.owner, event.params.spender, event.params.value);
 }
 
-export function createFIATTokenAllowanceIfNonExistent(owner: Address, spender: Address, amount: BigInt): void {
+export function createFIATAllowanceIfNonExistent(owner: Address, spender: Address, amount: BigInt): void {
   if (owner.notEqual(ZERO_ADDRESS) && spender.notEqual(ZERO_ADDRESS)) {
     let id = owner.toHexString() + "-" + spender.toHexString();
     

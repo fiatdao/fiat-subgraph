@@ -1,6 +1,6 @@
 import { Address } from "@graphprotocol/graph-ts";
 import { EPTData } from "../generated/schema";
-import { IConvergentCurvePool } from "../generated/Codex/IConvergentCurvePool";
+import { IConvergentCurvePool as IConvergentCurvePoolContract } from "../generated/Codex/IConvergentCurvePool";
 import { VAULT_CONFIG } from "./generated/config";
 
 export function createEPTDataIfNonExistent(vaultAddress: string): EPTData {
@@ -9,7 +9,7 @@ export function createEPTDataIfNonExistent(vaultAddress: string): EPTData {
     eptData = new EPTData(vaultAddress);
     let config = VAULT_CONFIG.get(vaultAddress);
     if (config) {
-      let pool = IConvergentCurvePool.bind(Address.fromString(config.get('ConvergentCurvePool')!));
+      let pool = IConvergentCurvePoolContract.bind(Address.fromString(config.get('ConvergentCurvePool')!));
       eptData.convergentCurvePool = pool._address;
       eptData.balancerVault = pool.getVault();
       eptData.poolId = pool.getPoolId();

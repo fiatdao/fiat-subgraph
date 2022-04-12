@@ -14,7 +14,7 @@ import {
   handleRedoAuction,
   handleCollateralAuctionSetParam,
   handleUpdateAuctionDebtFloor
-} from "./auctions"
+} from "./collateralAuction"
 import { handlePublicanSetParam2 } from "./publican"
 import {
   handleModifyBalance,

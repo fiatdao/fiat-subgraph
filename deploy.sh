@@ -8,7 +8,6 @@ set -a
 source .env
 set +a
 
-mustache config/$NETWORK_CONFIG ./src/generated/constants.template.txt > ./src/generated/constants.ts
 mustache config/$NETWORK_CONFIG ./src/generated/config.template.txt > ./src/generated/config.ts
 
 mustache config/$NETWORK_CONFIG subgraph.template.yaml > subgraph.yaml

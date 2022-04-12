@@ -11,7 +11,7 @@ interface PositionTransactionAction {
   vaultName: String # same as vault.name (workaround)
   tokenId: BigInt! # replace with collateralType
   position: Position!
-  user: Bytes!
+  user: User!
   collateral: BigInt!
   normalDebt: BigInt!
   deltaCollateral: BigInt!
@@ -26,7 +26,7 @@ type ModifyCollateralAndDebtAction implements PositionTransactionAction @entity 
   vaultName: String # same as vault.name (workaround)
   tokenId: BigInt! # replace with collateralType
   position: Position!
-  user: Bytes!
+  user: User!
   collateral: BigInt!
   normalDebt: BigInt!
   collateralizer: Bytes!
@@ -43,9 +43,9 @@ type TransferCollateralAndDebtAction implements PositionTransactionAction @entit
   vaultName: String # same as vault.name (workaround)
   tokenId: BigInt! # replace with collateralType
   position: Position!
-  user: Bytes!
-  userSrc: Bytes!
-  userDst: Bytes!
+  user: User!
+  userSrc: User!
+  userDst: User!
   collateral: BigInt!
   normalDebt: BigInt!
   deltaCollateral: BigInt!
@@ -60,9 +60,9 @@ type ConfiscateCollateralAndDebtAction implements PositionTransactionAction @ent
   vaultName: String # same as vault.name (workaround)
   tokenId: BigInt! # replace with collateralType
   position: Position!
-  user: Bytes!
-  collateralizer: Bytes!
-  debtor: Bytes!
+  user: User!
+  collateralizer: User!
+  debtor: User!
   collateral: BigInt!
   normalDebt: BigInt!
   deltaCollateral: BigInt!
@@ -76,7 +76,7 @@ type Position @entity {
   vaultName: String # same as vault.name (workaround)
   collateralType: CollateralType
   owner: Bytes!
-  users: User!
+  user: User!
   collateral: BigInt!
   normalDebt: BigInt!
   maturity: BigInt
@@ -172,7 +172,8 @@ type User @entity {
   address: Bytes
   credit: BigInt
   balances: [Balance!] @derivedFrom(field: "owner")
-  positions: [Position!] @derivedFrom(field: "users")
+  positions: [Position!] @derivedFrom(field: "user")
+  collateralAuctions: [CollateralAuction!] @derivedFrom(field: "user")
   delegated: [Delegate!] @derivedFrom(field: "delegator")
   delegates: [Delegate!] @derivedFrom(field: "delegatee")
 }
@@ -205,7 +206,7 @@ type CollateralAuction @entity {
   vaultName: String # same as vault.name (workaround)
   tokenId: BigInt # remove in favour of collateralType
   collateralType: CollateralType
-  user: Bytes
+  user: User
   debt: BigInt
   collateralToSell: BigInt
   startsAt: BigInt

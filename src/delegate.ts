@@ -1,17 +1,17 @@
 import { Address } from "@graphprotocol/graph-ts";
 import { Delegate } from "../generated/schema";
-import { Codex, GrantDelegate, RevokeDelegate } from "../generated/Codex/Codex";
+import { Codex as CodexContract, GrantDelegate, RevokeDelegate } from "../generated/Codex/Codex";
 import { createUserIfNonExistent } from "./user";
 
 export function handleGrantDelegate(event: GrantDelegate): void {
   let delegates = createDelegateIfNotExistent(event.params.delegator, event.params.delegatee);
-  let codex = Codex.bind(event.address);
+  let codex = CodexContract.bind(event.address);
   delegates.hasDelegate = codex.delegates(event.params.delegator, event.params.delegatee);
   delegates.save();
 }
 
 export function handleRevokeDelegate(event: RevokeDelegate): void {
-  let codex = Codex.bind(event.address);
+  let codex = CodexContract.bind(event.address);
   let delegates = createDelegateIfNotExistent(event.params.delegator, event.params.delegator);
   delegates.hasDelegate = codex.delegates(event.params.delegator, event.params.delegatee);
   delegates.save();

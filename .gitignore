@@ -67,6 +67,5 @@ typings/
 # Generated Files
 subgraph.yaml
 src/generated/config.ts
-src/generated/constants.ts
 *.wasm
 *.bin
