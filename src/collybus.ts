@@ -41,7 +41,7 @@ export function handleCollybusUpdateDiscountRate(event: UpdateDiscountRate): voi
     collybusRate.save();
 }
 
-function createCollybusSpotIfNonExistent(token: Address, collybusAddress: Address): CollybusSpot {
+export function createCollybusSpotIfNonExistent(token: Address, collybusAddress: Address): CollybusSpot {
     let id = collybusAddress.toHexString() + "-" + token.toHexString();
 
     let collybusSpot = CollybusSpot.load(id);
@@ -54,7 +54,7 @@ function createCollybusSpotIfNonExistent(token: Address, collybusAddress: Addres
     return collybusSpot as CollybusSpot;
 }
 
-function createCollybusRateIfNonExistent(collybusAddress: Address, rateId: BigInt): CollybusDiscountRate {
+export function createCollybusRateIfNonExistent(collybusAddress: Address, rateId: BigInt): CollybusDiscountRate {
     let id = collybusAddress.toHexString() + "-" + rateId.toHexString();
 
     let collybusRate = CollybusDiscountRate.load(id);
@@ -66,7 +66,7 @@ function createCollybusRateIfNonExistent(collybusAddress: Address, rateId: BigIn
     return collybusRate as CollybusDiscountRate;
 }
 
-function createCollybusIfNonExistent(address: Address): Collybus {
+export function createCollybusIfNonExistent(address: Address): Collybus {
     let id = address.toHexString();
 
     let collybus = Collybus.load(id);
