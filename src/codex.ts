@@ -32,7 +32,7 @@ export function handleRevokeDelegate(event: RevokeDelegate): void {
     codex.save();
 }
 
-function createGrantDelegateIfNotExistent(delegator: Address, delegatee: Address): Delegate {
+export function createGrantDelegateIfNotExistent(delegator: Address, delegatee: Address): Delegate {
     let id = delegator.toHexString() + "-" + delegatee.toHexString();
     let delegates = Delegate.load(id);
 
@@ -45,7 +45,7 @@ function createGrantDelegateIfNotExistent(delegator: Address, delegatee: Address
     return delegates as Delegate;
 }
 
-function createCodexIfNonExistent(codexAddr: Address): Codex {
+export function createCodexIfNonExistent(codexAddr: Address): Codex {
     let id = codexAddr.toHexString();
 
     let codex = Codex.load(id);
@@ -62,7 +62,7 @@ export function handleModifyBalance(event: ModifyBalance): void {
 
     let user = createUserIfNonExistent(event.params.user);
     let balanceEntity = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, user);
-    balanceEntity.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.user);
+    balanceEntity.balance = event.params.balance;
     balanceEntity.save();
 }
 
@@ -71,12 +71,12 @@ export function handleTransferBalance(event: TransferBalance): void {
 
     let srcUser = createUserIfNonExistent(event.params.src);
     let srcBalance = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, srcUser);
-    srcBalance.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.src);
+    srcBalance.balance = event.params.srcBalance;
     srcBalance.save();
 
-    let dstUser = createUserIfNonExistent(event.params.src);
+    let dstUser = createUserIfNonExistent(event.params.dst);
     let dstBalance = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, dstUser);
-    dstBalance.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.dst);
+    dstBalance.balance = event.params.dstBalance;
     dstBalance.save();
 }
 

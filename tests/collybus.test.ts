@@ -53,6 +53,9 @@ test('COLLYBUS_TEST - Update Discount Rate', () => {
     clearStore();
 })
 
+// TODO ADD SET PARAM-1 TEST
+// Rename the create events and test names
+
 function createUpdateSpotEvent(tokenAddr: string, spotAmount: BigInt): UpdateSpot {
     let updateSpotEvent = changetype<UpdateSpot>(newMockEvent());
     updateSpotEvent.parameters = new Array();
