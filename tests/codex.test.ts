@@ -1,10 +1,10 @@
 import {
     GrantDelegate, RevokeDelegate, ModifyBalance, TransferBalance, SetParam, SetParam1,
 } from "../generated/Codex/Codex";
-import { BigInt, Address, ethereum } from '@graphprotocol/graph-ts'
+import { BigInt, Address, ethereum, Bytes } from '@graphprotocol/graph-ts'
 import { clearStore, test, assert, newMockEvent, createMockedFunction } from 'matchstick-as/assembly/index'
 import { createUserIfNonExistent } from "../src/position";
-import { handleGrantDelegate, createGrantDelegateIfNotExistent, createCodexIfNonExistent, handleRevokeDelegate, handleTransferBalance, createBalanceIfNotExistent, handleModifyBalance } from "../src/codex";
+import { handleGrantDelegate, createGrantDelegateIfNotExistent, createCodexIfNonExistent, handleRevokeDelegate, handleTransferBalance, createBalanceIfNotExistent, handleModifyBalance, handleCodexSetParam, handleCodexSetParam1 } from "../src/codex";
 
 const GRANT_DELEGATE_RESULT = 1;
 const REVOKE_DELEGATE_RESULT = 0;
@@ -15,16 +15,16 @@ const VAULT = "0xa11DCf4E9df10901af2A115E6347A2f9AF2E40d4";
 const TOKEN_ID = BigInt.fromU32(1);
 const USER = "0x7f8721E0049A49261E3Ae64454442477279325A0";
 const ZERO_BALANCE = 0;
-const BALANCE = 1000;
+const AMOUNT = 1000;
 
-test('CODEX_TEST - Grant Delegate', () => {
+test('CODEX - Grant Delegate', () => {
     // Mocking the get delegate in order to use it
     createMockedFunction(Address.fromString(CODEX_ADDRESS), 'delegates', 'delegates(address,address):(uint256)')
         .withArgs([ethereum.Value.fromAddress(Address.fromString(DELEGATOR)), ethereum.Value.fromAddress(Address.fromString(DELEGATEE))])
         .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(GRANT_DELEGATE_RESULT))]) // We say that the delegate result will return 1, since this is what we expect from grantDelegate event
 
     // Creating event with custom data fields
-    let grantDeleEvent = grantDelegateEvent(DELEGATOR, DELEGATEE);
+    let grantDeleEvent = createGrantDelegateEvent(DELEGATOR, DELEGATEE);
 
     // Create an entity with delegator and delegatee, and the rest props are empty
     createGrantDelegateIfNotExistent(Address.fromString(DELEGATOR), Address.fromString(DELEGATEE));
@@ -47,14 +47,14 @@ test('CODEX_TEST - Grant Delegate', () => {
     clearStore();
 })
 
-test('CODEX_TEST - Revoke Delegate', () => {
+test('CODEX - Revoke Delegate', () => {
     // Mocking the get delegate in order to use it
     createMockedFunction(Address.fromString(CODEX_ADDRESS), 'delegates', 'delegates(address,address):(uint256)')
         .withArgs([ethereum.Value.fromAddress(Address.fromString(DELEGATOR)), ethereum.Value.fromAddress(Address.fromString(DELEGATEE))])
         .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(REVOKE_DELEGATE_RESULT))]) // We say that the delegate result will return 0, since this is what we expect from revokeDelegate event
 
     // Creating event with custom data fields
-    let revokeDeleEvent = revokeDelegateEvent(DELEGATOR, DELEGATEE);
+    let revokeDeleEvent = createRevokeDelegateEvent(DELEGATOR, DELEGATEE);
 
     // Create an entity with delegator and delegatee, and the rest props are empty
     let delegate = createGrantDelegateIfNotExistent(Address.fromString(DELEGATOR), Address.fromString(DELEGATEE));
@@ -79,9 +79,9 @@ test('CODEX_TEST - Revoke Delegate', () => {
     clearStore();
 })
 
-test('CODEX_TEST - Modify Balance', () => {
+test('CODEX - Modify Balance', () => {
     // Creating event with custom data fields
-    let modifyBalEvent = modifyBalanceEvent(USER, VAULT, TOKEN_ID, BigInt.fromI64(BALANCE));
+    let modifyBalEvent = createModifyBalanceEvent(USER, VAULT, TOKEN_ID, BigInt.fromI64(AMOUNT));
 
     // Create an User entity
     let user = createUserIfNonExistent(Address.fromString(USER));
@@ -96,19 +96,19 @@ test('CODEX_TEST - Modify Balance', () => {
     const id = VAULT.toLowerCase() + "-" + TOKEN_ID.toHexString() + "-" + USER.toLowerCase();
 
     // Finally asserting that 'balance' is 1000, because we created the entity with 0 (default) and when we executed the handler, it modifies it to  1000
-    assert.fieldEquals("Balance", id, "balance", BALANCE.toString());
+    assert.fieldEquals("Balance", id, "balance", AMOUNT.toString());
 
     clearStore();
 })
 
-test('CODEX_TEST - Transfer Balance', () => {
+test('CODEX - Transfer Balance', () => {
     // Creating event with custom data fields
-    let transBalanceEvent = transferBalanceEvent(VAULT, TOKEN_ID, DELEGATOR, DELEGATEE);
+    let transBalanceEvent = createTransferBalanceEvent(VAULT, TOKEN_ID, DELEGATOR, DELEGATEE);
 
     // Creating src User entity which will make transfer to dst User and setting its balance to 1000 initially
     let srcUser = createUserIfNonExistent(Address.fromString(DELEGATOR));
     let srcBalance = createBalanceIfNotExistent(Address.fromString(VAULT), TOKEN_ID, srcUser);
-    srcBalance.balance = BigInt.fromI64(BALANCE);
+    srcBalance.balance = BigInt.fromI64(AMOUNT);
     srcBalance.save();
 
     // Creating dst User entity which will receive a transfer from src User and setting its balance to 0 initially
@@ -128,12 +128,69 @@ test('CODEX_TEST - Transfer Balance', () => {
     // Finally asserting that 'balance' of srcUser is 0, because we created the entity with 1000 and when we executed the handler, it modifies it to 0
     // And the same thing we assert for 'balance' of dstUser to be 100, because we created the entity with 0 and when we executed the handler, it modifies it to 1000
     assert.fieldEquals("Balance", srcId, "balance", ZERO_BALANCE.toString());
-    assert.fieldEquals("Balance", dstId, "balance", BALANCE.toString());
+    assert.fieldEquals("Balance", dstId, "balance", AMOUNT.toString());
 
     clearStore();
 })
 
-function grantDelegateEvent(delegatorAddress: string, delegateeAddress: string): GrantDelegate {
+test('CODEX - Set Param - Global Debt Ceiling', () => {
+    // Creating event with custom data fields
+    let setParam = createSetParamEvent(BigInt.fromI64(AMOUNT), "globalDebtCeiling");
+
+    // Creating empty Codex entity, which we will use for assertion
+    createCodexIfNonExistent(Address.fromString(CODEX_ADDRESS));
+
+    // Once we have our entity saved in the store, when executing the event below
+    // it is going to find by 'id' this entity, and it's going to update it's 'globalDebtCeiling' prop
+    handleCodexSetParam(setParam);
+
+    // Our handler updates the 'globalDebtCeiling' field of the Codex, so we check if that update happend
+    assert.fieldEquals("Codex", CODEX_ADDRESS.toLowerCase(), "globalDebtCeiling", AMOUNT.toString());
+
+    clearStore();
+})
+
+// TODO: Too much mock functions needs to be done - commenting out for now, till better solution
+// Creating only 1 mock function
+// test('CODEX - Set Param1 - Debt Ceiling', () => {
+//     createMockedFunction(Address.fromString(VAULT), 'vaultType', 'vaultType():(bytes32)')
+//         .withArgs([])
+//         .returns([ethereum.Value.fromBytes(Bytes.fromUTF8("test"))]) // We say that the delegate result will return 1, since this is what we expect from grantDelegate event
+
+//     // Creating event with custom data fields
+//     let setParam1Event = createSetParamEvent1(BigInt.fromI64(AMOUNT), "debtCeiling", VAULT);
+
+//     // Creating Vault entity, which we will use for assertion
+//     createVaultIfNonExistent(VAULT);
+
+//     // Once we have our entity saved in the store, when executing the event below
+//     // it is going to find by 'id' this entity, and it's going to update it's 'debtCeiling' prop
+//     handleCodexSetParam1(setParam1Event);
+
+//     // Our handler updates the 'debtCeiling' field of the Vault, so we check if that update happend
+//     assert.fieldEquals("Vault", VAULT.toLowerCase(), "debtCeiling", AMOUNT.toString());
+
+//     clearStore();
+// })
+
+// test('CODEX - Set Param1 - Debt Floor', () => {
+//     // Creating event with custom data fields
+//     let setParam1Event = createSetParamEvent1(BigInt.fromI64(AMOUNT), "debtFloor", VAULT);
+
+//     // Creating Vault entity, which we will use for assertion
+//     createVaultIfNonExistent(VAULT);
+
+//     // Once we have our entity saved in the store, when executing the event below
+//     // it is going to find by 'id' this entity, and it's going to update it's 'debtFloor' prop
+//     handleCodexSetParam1(setParam1Event);
+
+//     // Our handler updates the 'debtFloor' field of the Vault, so we check if that update happend
+//     assert.fieldEquals("Vault", VAULT.toLowerCase(), "debtFloor", AMOUNT.toString());
+
+//     clearStore();
+// })
+
+function createGrantDelegateEvent(delegatorAddress: string, delegateeAddress: string): GrantDelegate {
     let grantDelegateEvent = changetype<GrantDelegate>(newMockEvent());
     grantDelegateEvent.parameters = new Array();
     grantDelegateEvent.address = Address.fromString(CODEX_ADDRESS);
@@ -149,7 +206,7 @@ function grantDelegateEvent(delegatorAddress: string, delegateeAddress: string):
     return grantDelegateEvent;
 }
 
-function revokeDelegateEvent(delegatorAddress: string, delegateeAddress: string): RevokeDelegate {
+function createRevokeDelegateEvent(delegatorAddress: string, delegateeAddress: string): RevokeDelegate {
     let revokeDelegateEvent = changetype<RevokeDelegate>(newMockEvent());
     revokeDelegateEvent.parameters = new Array();
     revokeDelegateEvent.address = Address.fromString(CODEX_ADDRESS);
@@ -165,7 +222,7 @@ function revokeDelegateEvent(delegatorAddress: string, delegateeAddress: string)
     return revokeDelegateEvent;
 }
 
-function modifyBalanceEvent(userAddr: string, vaultAddr: string, tokenIdentifier: BigInt, balanceNum: BigInt): ModifyBalance {
+function createModifyBalanceEvent(userAddr: string, vaultAddr: string, tokenIdentifier: BigInt, balanceNum: BigInt): ModifyBalance {
     let modifyBalanceEvent = changetype<ModifyBalance>(newMockEvent());
     modifyBalanceEvent.parameters = new Array();
     modifyBalanceEvent.address = Address.fromString(CODEX_ADDRESS);
@@ -187,7 +244,7 @@ function modifyBalanceEvent(userAddr: string, vaultAddr: string, tokenIdentifier
     return modifyBalanceEvent;
 }
 
-function transferBalanceEvent(vaultAddr: string, tokenIdentifier: BigInt, srcAddr: string, dstAddr: string): TransferBalance {
+function createTransferBalanceEvent(vaultAddr: string, tokenIdentifier: BigInt, srcAddr: string, dstAddr: string): TransferBalance {
     let transferBalanceEvent = changetype<TransferBalance>(newMockEvent());
     transferBalanceEvent.parameters = new Array();
     transferBalanceEvent.address = Address.fromString(CODEX_ADDRESS);
@@ -199,7 +256,7 @@ function transferBalanceEvent(vaultAddr: string, tokenIdentifier: BigInt, srcAdd
     let dst = new ethereum.EventParam("dst", ethereum.Value.fromAddress(Address.fromString(dstAddr)));
     let amount = new ethereum.EventParam("amount", ethereum.Value.fromSignedBigInt(BigInt.fromI32(ZERO_BALANCE)));
     let srcBalance = new ethereum.EventParam("srcBalance", ethereum.Value.fromSignedBigInt(BigInt.fromI64(ZERO_BALANCE)));
-    let dstBalance = new ethereum.EventParam("dstBalance", ethereum.Value.fromSignedBigInt(BigInt.fromI64(BALANCE)));
+    let dstBalance = new ethereum.EventParam("dstBalance", ethereum.Value.fromSignedBigInt(BigInt.fromI64(AMOUNT)));
 
     // Attach the fields to the event's parameter
     transferBalanceEvent.parameters.push(vault);
@@ -213,13 +270,13 @@ function transferBalanceEvent(vaultAddr: string, tokenIdentifier: BigInt, srcAdd
     return transferBalanceEvent;
 }
 
-function setParamEvent(paramData: BigInt, parameter: string): SetParam {
+function createSetParamEvent(paramData: BigInt, parameter: string): SetParam {
     let setParamEvent = changetype<SetParam>(newMockEvent());
     setParamEvent.parameters = new Array();
     setParamEvent.address = Address.fromString(CODEX_ADDRESS);
 
     // Convert and init our params
-    let param = new ethereum.EventParam("param", ethereum.Value.fromBytes(Bytes.fromHexString(parameter)));
+    let param = new ethereum.EventParam("param", ethereum.Value.fromBytes(Bytes.fromUTF8(parameter)));
     let data = new ethereum.EventParam("data", ethereum.Value.fromSignedBigInt(paramData));
 
     // Attach the fields to the event's parameter
@@ -229,17 +286,18 @@ function setParamEvent(paramData: BigInt, parameter: string): SetParam {
     return setParamEvent;
 }
 
-function setParamEvent1(paramData: BigInt, parameter: string, vaultAddr: string): SetParam1 {
+function createSetParamEvent1(paramData: BigInt, parameter: string, vaultAddr: string): SetParam1 {
     let setParamEvent1 = changetype<SetParam1>(newMockEvent());
     setParamEvent1.parameters = new Array();
     setParamEvent1.address = Address.fromString(CODEX_ADDRESS);
 
     // Convert and init our params
     let vault = new ethereum.EventParam("vault", ethereum.Value.fromAddress(Address.fromString(vaultAddr)));
-    let param = new ethereum.EventParam("param", ethereum.Value.fromBytes(Bytes.fromHexString(parameter)));
+    let param = new ethereum.EventParam("param", ethereum.Value.fromBytes(Bytes.fromUTF8(parameter)));
     let data = new ethereum.EventParam("data", ethereum.Value.fromSignedBigInt(paramData));
 
     // Attach the fields to the event's parameter
+    setParamEvent1.parameters.push(vault);
     setParamEvent1.parameters.push(param);
     setParamEvent1.parameters.push(data);
 
