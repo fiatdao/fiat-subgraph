@@ -7,7 +7,7 @@ const PRB_PROXY_FACTORY_ADDRESS = "0xf0d4B8b15bF511E7c7071a5EFEfD85a5a4B86Db5"; 
 const OWNER = "0x0D3ff0A8672fcA127aA6DbE44BBcc935821Fdc7b";
 const PROXY_ADDRESS = "0xF80fe9AC3FCA0b44288CBdA6D6F633aff4Da9A3C";
 
-test('USER-PROXY_TEST - Deploy Proxy', () => {
+test('USER-PROXY - Deploy Proxy', () => {
     // Creating event with custom data fields
     let deployProxyEvent: DeployProxy = createDeployProxyEvent(OWNER, PROXY_ADDRESS);
 

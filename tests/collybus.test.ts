@@ -10,7 +10,7 @@ const SPOT = BigInt.fromU64(ONE_ETH);
 const DISCOUNT_RATE = BigInt.fromU64(100);
 const RATE_ID = BigInt.fromU64(1);
 
-test('COLLYBUS_TEST - Update Spot', () => {
+test('COLLYBUS - Update Spot', () => {
     // Creating event with custom data fields
     let updateSpotEvent = createUpdateSpotEvent(TOKEN, SPOT);
 
@@ -31,7 +31,7 @@ test('COLLYBUS_TEST - Update Spot', () => {
     clearStore();
 })
 
-test('COLLYBUS_TEST - Update Discount Rate', () => {
+test('COLLYBUS - Update Discount Rate', () => {
     // Creating event with custom data fields
     let updateDiscountRate = createUpdateDiscountRateEvent(DISCOUNT_RATE, RATE_ID);
 
@@ -52,9 +52,6 @@ test('COLLYBUS_TEST - Update Discount Rate', () => {
 
     clearStore();
 })
-
-// TODO ADD SET PARAM-1 TEST
-// Rename the create events and test names
 
 function createUpdateSpotEvent(tokenAddr: string, spotAmount: BigInt): UpdateSpot {
     let updateSpotEvent = changetype<UpdateSpot>(newMockEvent());

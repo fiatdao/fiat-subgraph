@@ -17,7 +17,7 @@ createMockedFunction(Address.fromString(FIAT_TOKEN_ADDRESS), 'totalSupply', 'tot
     .withArgs([])
     .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(TOTAL_SUPPLY))]) // We say that the total supply is 100
 
-test('FIAT_TEST - Transfer', () => {
+test('FIAT - Transfer', () => {
     // Creating event with custom data fields
     let transferEvent = createTransferEvent(FROM, TO, VALUE);
 
@@ -45,7 +45,7 @@ test('FIAT_TEST - Transfer', () => {
     clearStore();
 })
 
-test('FIAT_TEST - Mint', () => {
+test('FIAT - Mint', () => {
     // Creating event with custom data fields, fromAddress is 0x0 - which is mint() operation
     // And we set value which will mint 1000000000000000000 
     let transferEvent = createTransferEvent(ZERO_ADDRESS, TO, VALUE);
@@ -64,7 +64,7 @@ test('FIAT_TEST - Mint', () => {
     clearStore();
 })
 
-test('FIAT_TEST - Burn', () => {
+test('FIAT - Burn', () => {
     // Creating event with custom data fields, toAddress is 0x0 - which is burn() operation
     // And we set value which will burn 1000000000000000000 
     let transferEvent = createTransferEvent(FROM, ZERO_ADDRESS, VALUE);
@@ -83,7 +83,7 @@ test('FIAT_TEST - Burn', () => {
     clearStore();
 })
 
-test('FIAT_TEST - TotalSupply', () => {
+test('FIAT - TotalSupply', () => {
     // Creating event with custom data fields
     let transferEvent = createTransferEvent(FROM, TO, VALUE);
 
@@ -101,7 +101,7 @@ test('FIAT_TEST - TotalSupply', () => {
     clearStore();
 })
 
-test('FIAT_TEST - Approval', () => {
+test('FIAT - Approval', () => {
     // Creating event with custom data fields
     let approvalEvent = createApprovalEvent(FROM, TO, VALUE);
 
