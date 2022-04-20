@@ -25,7 +25,7 @@ test('CODEX - Grant Delegate', () => {
     // Mocking the get delegate in order to use it
     createMockedFunction(Address.fromString(CODEX_ADDRESS), 'delegates', 'delegates(address,address):(uint256)')
         .withArgs([ethereum.Value.fromAddress(Address.fromString(DELEGATOR)), ethereum.Value.fromAddress(Address.fromString(DELEGATEE))])
-        .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(GRANT_DELEGATE_RESULT))]) // We say that the delegate result will return 1, since this is what we expect from grantDelegate event
+        .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(GRANT_DELEGATE_RESULT))]); // We say that the delegate result will return 1, since this is what we expect from grantDelegate event
 
     // Creating event with custom data fields
     let grantDeleEvent = createGrantDelegateEvent(DELEGATOR, DELEGATEE);
@@ -55,7 +55,7 @@ test('CODEX - Revoke Delegate', () => {
     // Mocking the get delegate in order to use it
     createMockedFunction(Address.fromString(CODEX_ADDRESS), 'delegates', 'delegates(address,address):(uint256)')
         .withArgs([ethereum.Value.fromAddress(Address.fromString(DELEGATOR)), ethereum.Value.fromAddress(Address.fromString(DELEGATEE))])
-        .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(REVOKE_DELEGATE_RESULT))]) // We say that the delegate result will return 0, since this is what we expect from revokeDelegate event
+        .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(REVOKE_DELEGATE_RESULT))]); // We say that the delegate result will return 0, since this is what we expect from revokeDelegate event
 
     // Creating event with custom data fields
     let revokeDeleEvent = createRevokeDelegateEvent(DELEGATOR, DELEGATEE);
@@ -160,7 +160,7 @@ test('CODEX - Set Param - Global Debt Ceiling', () => {
 test('CODEX - Set Param1 - Debt Ceiling - Not Implemented - Should throw', () => {
     // createMockedFunction(Address.fromString(VAULT), 'vaultType', 'vaultType():(bytes32)')
     //     .withArgs([])
-    //     .returns([ethereum.Value.fromBytes(Bytes.fromUTF8("test"))]) // We say that the delegate result will return 1, since this is what we expect from grantDelegate event
+    //     .returns([ethereum.Value.fromBytes(Bytes.fromUTF8("test"))]); // We say that the delegate result will return 1, since this is what we expect from grantDelegate event
 
     // Creating event with custom data fields
     let setParam1Event = createSetParamEvent1(BigInt.fromI32(AMOUNT), "debtCeiling", VAULT);

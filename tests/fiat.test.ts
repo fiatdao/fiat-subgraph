@@ -15,7 +15,7 @@ const VALUE = BigInt.fromU64(ONE_ETH);
 // Mocking the total supply in order to use it
 createMockedFunction(Address.fromString(FIAT_TOKEN_ADDRESS), 'totalSupply', 'totalSupply():(uint256)')
     .withArgs([])
-    .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(TOTAL_SUPPLY))]) // We say that the total supply is 100
+    .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(TOTAL_SUPPLY))]); // We say that the total supply is 100
 
 test('FIAT - Transfer', () => {
     // Creating event with custom data fields
