@@ -2,7 +2,7 @@ import {
     GrantDelegate, RevokeDelegate, ModifyBalance, TransferBalance, SetParam, SetParam1,
 } from "../generated/Codex/Codex";
 import { BigInt, Address, ethereum, Bytes } from '@graphprotocol/graph-ts'
-import { clearStore, test, assert, newMockEvent, createMockedFunction } from 'matchstick-as/assembly/index'
+import { clearStore, test, assert, newMockEvent, createMockedFunction, afterEach } from 'matchstick-as/assembly/index'
 import { createUserIfNonExistent } from "../src/position";
 import {
     handleGrantDelegate, createGrantDelegateIfNotExistent, createCodexIfNonExistent, handleRevokeDelegate,
@@ -20,6 +20,10 @@ const TOKEN_ID = BigInt.fromU32(1);
 const USER = "0x7f8721E0049A49261E3Ae64454442477279325A0";
 const ZERO_BALANCE = 0;
 const AMOUNT = 1000;
+
+afterEach(() => {
+    clearStore();
+});
 
 test('CODEX - Grant Delegate', () => {
     // Mocking the get delegate in order to use it
@@ -47,8 +51,6 @@ test('CODEX - Grant Delegate', () => {
     assert.fieldEquals("Delegate", delegateId, "hasDelegate", GRANT_DELEGATE_RESULT.toString());
     // Our handler also updates the 'delegates' field of the Codex, so we check if that update happend
     assert.fieldEquals("Codex", CODEX_ADDRESS.toLowerCase(), "delegates", delegateId);
-
-    clearStore();
 })
 
 test('CODEX - Revoke Delegate', () => {
@@ -79,8 +81,6 @@ test('CODEX - Revoke Delegate', () => {
     assert.fieldEquals("Delegate", delegateId, "hasDelegate", REVOKE_DELEGATE_RESULT.toString());
     // Our handler also updates the 'delegates' field of the Codex, so we check if that update happend
     assert.fieldEquals("Codex", CODEX_ADDRESS.toLowerCase(), "delegates", delegateId);
-
-    clearStore();
 })
 
 test('CODEX - Modify Balance', () => {
@@ -101,8 +101,6 @@ test('CODEX - Modify Balance', () => {
 
     // Finally asserting that 'balance' is 1000, because we created the entity with 0 (default) and when we executed the handler, it modifies it to  1000
     assert.fieldEquals("Balance", id, "balance", AMOUNT.toString());
-
-    clearStore();
 })
 
 test('CODEX - Transfer Balance', () => {
@@ -133,11 +131,9 @@ test('CODEX - Transfer Balance', () => {
     // And the same thing we assert for 'balance' of dstUser to be 100, because we created the entity with 0 and when we executed the handler, it modifies it to 1000
     assert.fieldEquals("Balance", srcId, "balance", ZERO_BALANCE.toString());
     assert.fieldEquals("Balance", dstId, "balance", AMOUNT.toString());
-
-    clearStore();
 })
 
-test('CODEX - Set Param - Global Debt Ceiling', () => {
+test('CODEX - SetParam - Global Debt Ceiling', () => {
     // Creating event with custom data fields
     let setParam = createSetParamEvent(BigInt.fromI64(AMOUNT), "globalDebtCeiling");
 
@@ -150,29 +146,23 @@ test('CODEX - Set Param - Global Debt Ceiling', () => {
 
     // Our handler updates the 'globalDebtCeiling' field of the Codex, so we check if that update happend
     assert.fieldEquals("Codex", CODEX_ADDRESS.toLowerCase(), "globalDebtCeiling", AMOUNT.toString());
-
-    clearStore();
 })
 
 // TODO: SetParam1 - Too much mock functions needs to be done - commenting out for now, until better solution
 
 // For reference creating only 1 mock function
-test('CODEX - Set Param1 - Debt Ceiling - Not Implemented - Should throw', () => {
+test('CODEX - SetParam1 - Debt Ceiling - Not Implemented - Should throw', () => {
     // createMockedFunction(Address.fromString(VAULT), 'vaultType', 'vaultType():(bytes32)')
     //     .withArgs([])
     //     .returns([ethereum.Value.fromBytes(Bytes.fromUTF8("test"))]); // We say that the delegate result will return 1, since this is what we expect from grantDelegate event
 
     // Creating event with custom data fields
     let setParam1Event = createSetParamEvent1(BigInt.fromI32(AMOUNT), "debtCeiling", VAULT);
-
-    clearStore();
 }, true)
 
-test('CODEX - Set Param1 - Debt Floor - Not Implemented - Should throw', () => {
+test('CODEX - SetParam1 - Debt Floor - Not Implemented - Should throw', () => {
     // Creating event with custom data fields
     let setParam1Event = createSetParamEvent1(BigInt.fromI32(AMOUNT), "debtFloor", VAULT);
-
-    clearStore();
 }, true)
 
 function createGrantDelegateEvent(delegatorAddress: string, delegateeAddress: string): GrantDelegate {

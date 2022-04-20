@@ -1,5 +1,5 @@
 import { BigInt, Address, ethereum } from '@graphprotocol/graph-ts'
-import { clearStore, test, assert, newMockEvent } from 'matchstick-as/assembly/index'
+import { clearStore, test, assert, newMockEvent, afterEach } from 'matchstick-as/assembly/index'
 import { handleCollybusUpdateSpot, createCollybusSpotIfNonExistent, createCollybusRateIfNonExistent, createCollybusIfNonExistent, handleCollybusUpdateDiscountRate } from "../src/collybus";
 import { SetParam1, SetParam2, UpdateSpot, UpdateDiscountRate, } from "../generated/Codex/Collybus";
 
@@ -12,6 +12,10 @@ const TOKEN = "0x0D3ff0A8672fcA127aA6DbE44BBcc935821Fdc7b";
 const SPOT = BigInt.fromU64(ONE_ETH);
 const DISCOUNT_RATE = BigInt.fromU64(100);
 const RATE_ID = BigInt.fromU64(1);
+
+afterEach(() => {
+    clearStore();
+});
 
 test('COLLYBUS - Update Spot', () => {
     // Creating event with custom data fields
@@ -30,8 +34,6 @@ test('COLLYBUS - Update Spot', () => {
     // Checking if the 'spot' and 'collybus' fields are updated with the data when 'handleCollybusUpdateSpot' was executed
     assert.fieldEquals("CollybusSpot", id, "spot", SPOT.toString());
     assert.fieldEquals("CollybusSpot", id, "collybus", COLLYBUS_TOKEN_ADDRESS.toLowerCase());
-
-    clearStore();
 })
 
 test('COLLYBUS - Update Discount Rate', () => {
@@ -52,9 +54,15 @@ test('COLLYBUS - Update Discount Rate', () => {
     assert.fieldEquals("CollybusDiscountRate", id, "rateId", RATE_ID.toString());
     assert.fieldEquals("CollybusDiscountRate", id, "discountRate", DISCOUNT_RATE.toString());
     assert.fieldEquals("CollybusDiscountRate", id, "collybus", COLLYBUS_TOKEN_ADDRESS.toLowerCase());
-
-    clearStore();
 })
+
+test('COLLYBUS - SetParam1 - Not Implemented - Should throw', () => {
+    // TODO: This test will be completed when it's decided what we do with mocking and contract calls
+}, true)
+
+test('COLLYBUS - SetParam2 - Not Implemented - Should throw', () => {
+    // TODO: This test will be completed when it's implemented in the code and decided what we do with mocking and contract calls
+}, true)
 
 function createUpdateSpotEvent(tokenAddr: string, spotAmount: BigInt): UpdateSpot {
     let updateSpotEvent = changetype<UpdateSpot>(newMockEvent());

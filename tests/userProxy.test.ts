@@ -1,11 +1,15 @@
 import { DeployProxy } from "../generated/PRBProxyFactory/PRBProxyFactory";
 import { handleDeployProxy } from "../src/userProxy";
 import { Address, ethereum } from '@graphprotocol/graph-ts'
-import { test, assert, newMockEvent } from 'matchstick-as/assembly/index'
+import { test, assert, newMockEvent, afterEach, clearStore } from 'matchstick-as/assembly/index'
 
 const PRB_PROXY_FACTORY_ADDRESS = "0xf0d4B8b15bF511E7c7071a5EFEfD85a5a4B86Db5"; // PRB_PROXY_FACTORY deployed on goerli
 const OWNER = "0x0D3ff0A8672fcA127aA6DbE44BBcc935821Fdc7b";
 const PROXY_ADDRESS = "0xF80fe9AC3FCA0b44288CBdA6D6F633aff4Da9A3C";
+
+afterEach(() => {
+    clearStore();
+});
 
 test('USER-PROXY - Deploy Proxy', () => {
     // Creating event with custom data fields

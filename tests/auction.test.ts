@@ -1,5 +1,5 @@
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts';
-import { test, clearStore, createMockedFunction, assert, newMockEvent } from 'matchstick-as/assembly'
+import { test, clearStore, createMockedFunction, assert, newMockEvent, afterEach } from 'matchstick-as/assembly'
 import {
     StopAuction,
     TakeCollateral,
@@ -13,9 +13,12 @@ const AUCTION_ID = BigInt.fromI32(1);
 const DEBT = BigInt.fromI32(1000);
 const COLLATERAL_TO_SELL = BigInt.fromI32(100);
 
+afterEach(() => {
+    clearStore();
+});
+
 test('AUCTION - Start Auction - Not Implemented - Should throw', () => {
     // TODO: Will be completed when it's decided what we do with mocking and contract calls
-    clearStore();
 }, true)
 
 test('AUCTION - Take Collateral', () => {
@@ -38,8 +41,6 @@ test('AUCTION - Take Collateral', () => {
     // We check if the 'debt' and 'collateralToSell' fields values are updated after the handler execution
     assert.fieldEquals("CollateralAuction", AUCTION_ID.toString(), "debt", DEBT.toString());
     assert.fieldEquals("CollateralAuction", AUCTION_ID.toString(), "collateralToSell", COLLATERAL_TO_SELL.toString());
-
-    clearStore();
 })
 
 test('AUCTION - Stop Auction', () => {
@@ -60,23 +61,18 @@ test('AUCTION - Stop Auction', () => {
 
     // We check if the 'isActive' value is equals to the 'false' from the mocked func
     assert.fieldEquals("CollateralAuction", AUCTION_ID.toString(), "isActive", "false");
-
-    clearStore();
 })
 
 test('AUCTION - Redo Auction - Not Implemented - Should throw', () => {
     // TODO: Will be completed when it's decided what we do with mocking and contract calls
-    clearStore();
 }, true)
 
-test('AUCTION - Set Param - Not Implemented - Should throw', () => {
+test('AUCTION - SetParam - Not Implemented - Should throw', () => {
     // TODO: Will be completed when it's uncommented + decided what we do with mocking and contract calls
-    clearStore();
 }, true)
 
 test('AUCTION - Update Auction Debt Floor - Not Implemented - Should throw', () => {
     // TODO: Will be completed when it's decided what we do with mocking and contract calls
-    clearStore();
 }, true)
 
 function createTakeCollateralEvent(auctionIdentification: BigInt, debtAmount: BigInt, collateralToSellAmount: BigInt): TakeCollateral {

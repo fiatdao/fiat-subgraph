@@ -1,5 +1,5 @@
 import { BigInt, Address, ethereum } from '@graphprotocol/graph-ts'
-import { clearStore, test, assert, newMockEvent, createMockedFunction } from 'matchstick-as/assembly/index'
+import { clearStore, test, assert, newMockEvent, createMockedFunction, beforeAll, afterEach } from 'matchstick-as/assembly/'
 import { Transfer, Approval } from "../generated/FIAT/FIAT";
 import { createFIATIfNonExistent, handleFIATTransfer, createFIATTokenBalanceIfNonExistent, createFIATTokenAllowanceIfNonExistent, handleFIATApprovals } from "../src/fiat";
 import { BIGINT_ZERO } from '../src/utils';
@@ -12,10 +12,16 @@ const FROM = "0x0D3ff0A8672fcA127aA6DbE44BBcc935821Fdc7b";
 const TO = "0xF80fe9AC3FCA0b44288CBdA6D6F633aff4Da9A3C";
 const VALUE = BigInt.fromU64(ONE_ETH);
 
-// Mocking the total supply in order to use it
-createMockedFunction(Address.fromString(FIAT_TOKEN_ADDRESS), 'totalSupply', 'totalSupply():(uint256)')
-    .withArgs([])
-    .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(TOTAL_SUPPLY))]); // We say that the total supply is 100
+beforeAll(() => {
+    // Mocking the total supply in order to use it
+    createMockedFunction(Address.fromString(FIAT_TOKEN_ADDRESS), 'totalSupply', 'totalSupply():(uint256)')
+        .withArgs([])
+        .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(TOTAL_SUPPLY))]); // We say that the total supply is 100
+});
+
+afterEach(() => {
+    clearStore();
+});
 
 test('FIAT - Transfer', () => {
     // Creating event with custom data fields
@@ -41,8 +47,6 @@ test('FIAT - Transfer', () => {
     assert.fieldEquals("FIATTokenBalance", FROM.toLowerCase(), "balance", BIGINT_ZERO.toString());
     // Address 'TO' now have 1 ETH from address 'FROM'
     assert.fieldEquals("FIATTokenBalance", TO.toLowerCase(), "balance", ONE_ETH.toString());
-
-    clearStore();
 })
 
 test('FIAT - Mint', () => {
@@ -60,8 +64,6 @@ test('FIAT - Mint', () => {
 
     // We check if the 'minted' value is equals to the 'VALUE' passed
     assert.fieldEquals("FIAT", FIAT_TOKEN_ADDRESS.toLowerCase(), "minted", VALUE.toString());
-
-    clearStore();
 })
 
 test('FIAT - Burn', () => {
@@ -79,8 +81,6 @@ test('FIAT - Burn', () => {
 
     // We check if the 'burned' value is equals to the 'VALUE' passed
     assert.fieldEquals("FIAT", FIAT_TOKEN_ADDRESS.toLowerCase(), "burned", VALUE.toString());
-
-    clearStore();
 })
 
 test('FIAT - TotalSupply', () => {
@@ -97,8 +97,6 @@ test('FIAT - TotalSupply', () => {
 
     // We check if the 'totalSupply' value is equals to the mocked total supply - which is 100
     assert.fieldEquals("FIAT", FIAT_TOKEN_ADDRESS.toLowerCase(), "totalSupply", TOTAL_SUPPLY.toString());
-
-    clearStore();
 })
 
 test('FIAT - Approval', () => {
@@ -114,8 +112,6 @@ test('FIAT - Approval', () => {
     // We check if the approved 'amount' value is equals to the 'VALUE' field that we passed in the event creation - which needs to be ONE_ETH
     const id = FROM + "-" + TO;
     assert.fieldEquals("FIATTokenAllowance", id.toLowerCase(), "amount", VALUE.toString());
-
-    clearStore();
 })
 
 function createTransferEvent(fromAddress: string, toAddress: string, valueTransferred: BigInt): Transfer {
