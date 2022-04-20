@@ -74,7 +74,7 @@ export function handleFIATApprovals(event: Approval): void {
 export function createFIATTokenAllowanceIfNonExistent(owner: Address, spender: Address, amount: BigInt): void {
   if (owner.notEqual(ZERO_ADDRESS) && spender.notEqual(ZERO_ADDRESS)) {
     let id = owner.toHexString() + "-" + spender.toHexString();
-    
+
     let allowanceData = FIATTokenAllowance.load(id);
     if (allowanceData == null) {
       allowanceData = new FIATTokenAllowance(id);

@@ -43,7 +43,7 @@ export function getPositionCollateral(vault: Address, tokenId: BigInt, owner: Ad
   if (!position.reverted) {
     collateral = position.value.value0;
   }
-  
+
   return collateral;
 }
 
@@ -54,10 +54,9 @@ export function getPositionNormalDebt(vault: Address, tokenId: BigInt, owner: Ad
   if (!position.reverted) {
     normalDebt = position.value.value1;
   }
-  
+
   return normalDebt;
 }
-
 
 export function getCodexBalance(vault: Address, tokenId: BigInt, account: Address): BigInt {
   let balance = codex.try_balances(vault, tokenId, account);

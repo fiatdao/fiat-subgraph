@@ -4,7 +4,7 @@ import {
 } from "../generated/Codex/Codex";
 import { Delegate, Balance, Codex, User } from "../generated/schema";
 import { createUserIfNonExistent } from "./position";
-import { getCodexBalance, getDelegates } from "./utils";
+import { getDelegates } from "./utils";
 import { createVaultIfNonExistent } from "./vault/vaults";
 
 export function handleGrantDelegate(event: GrantDelegate): void {

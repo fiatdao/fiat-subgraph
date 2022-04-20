@@ -15,7 +15,7 @@ export function getTimeRef(timestamp: i32): i32 {
   return timestamp - (timestamp % QUARTER);
 }
 
-function getTradedMarket(index: i32) : i32 {
+function getTradedMarket(index: i32): i32 {
   if (index == 1) return QUARTER;
   if (index == 2) return 2 * QUARTER;
   if (index == 3) return YEAR;
@@ -31,9 +31,9 @@ function getMarketTenor(maturity: BigInt, blockTime: BigInt): BigInt {
   let tRef = BigInt.fromI32(getTimeRef(blockTime.toI32()));
 
   for (let i = 1; i <= MAX_TRADED_MARKET_INDEX; i++) {
-      let tadeMarket = getTradedMarket(i);
-      let marketMaturity = tRef.plus(BigInt.fromI32(tadeMarket));
-      if (marketMaturity.equals(maturity)) return BigInt.fromI32(tadeMarket);
+    let tadeMarket = getTradedMarket(i);
+    let marketMaturity = tRef.plus(BigInt.fromI32(tadeMarket));
+    if (marketMaturity.equals(maturity)) return BigInt.fromI32(tadeMarket);
   }
 
   return BigInt.fromI32(0)

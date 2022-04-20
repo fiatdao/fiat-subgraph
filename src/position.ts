@@ -9,7 +9,7 @@ import {
   Position,
   TransferCollateralAndDebtAction,
   User,
-  Vault 
+  Vault
 } from "../generated/schema";
 import { createCollateralTypeIfNonExistent } from "./collateralType";
 import { getMaturity, getPositionCollateral, getPositionNormalDebt, getCodexBalance, getCredit } from "./utils";
@@ -85,7 +85,7 @@ export function handleModifyCollateralAndDebt(event: ModifyCollateralAndDebt): v
 export function handleTransferCollateralAndDebt(event: TransferCollateralAndDebt): void {
   let vault = createVaultIfNonExistent(event.params.vault.toHexString());
   let collateralType = createCollateralTypeIfNonExistent(vault, event.params.tokenId.toString());
-  
+
   let srcUser = createUserIfNonExistent(event.params.src);
   let positionSrc = createPositionIfNonExistent(vault, collateralType, srcUser);
   let srcBalance = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, srcUser);
@@ -97,7 +97,7 @@ export function handleTransferCollateralAndDebt(event: TransferCollateralAndDebt
   let dstBalance = createBalanceIfNotExistent(event.params.vault, event.params.tokenId, dstUser);
   dstBalance.balance = getCodexBalance(event.params.vault, event.params.tokenId, event.params.dst);
   dstBalance.save()
-  
+
   createTransferEvent(positionSrc, event);
   createTransferEvent(positionDst, event);
 }

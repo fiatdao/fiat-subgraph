@@ -1,5 +1,5 @@
 import { Address } from "@graphprotocol/graph-ts";
-import { Vault, EPTData } from "../generated/schema";
+import { EPTData } from "../generated/schema";
 import { IConvergentCurvePool } from "../generated/Codex/IConvergentCurvePool";
 import { vaultsData } from "./vault/vaultsData";
 
