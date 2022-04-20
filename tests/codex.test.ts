@@ -4,7 +4,11 @@ import {
 import { BigInt, Address, ethereum, Bytes } from '@graphprotocol/graph-ts'
 import { clearStore, test, assert, newMockEvent, createMockedFunction } from 'matchstick-as/assembly/index'
 import { createUserIfNonExistent } from "../src/position";
-import { handleGrantDelegate, createGrantDelegateIfNotExistent, createCodexIfNonExistent, handleRevokeDelegate, handleTransferBalance, createBalanceIfNotExistent, handleModifyBalance, handleCodexSetParam, handleCodexSetParam1 } from "../src/codex";
+import {
+    handleGrantDelegate, createGrantDelegateIfNotExistent, createCodexIfNonExistent, handleRevokeDelegate,
+    handleTransferBalance, createBalanceIfNotExistent, handleModifyBalance, handleCodexSetParam,
+    handleCodexSetParam1
+} from "../src/codex";
 
 const GRANT_DELEGATE_RESULT = 1;
 const REVOKE_DELEGATE_RESULT = 0;
@@ -150,45 +154,26 @@ test('CODEX - Set Param - Global Debt Ceiling', () => {
     clearStore();
 })
 
-// TODO: Too much mock functions needs to be done - commenting out for now, till better solution
-// Creating only 1 mock function
-// test('CODEX - Set Param1 - Debt Ceiling', () => {
-//     createMockedFunction(Address.fromString(VAULT), 'vaultType', 'vaultType():(bytes32)')
-//         .withArgs([])
-//         .returns([ethereum.Value.fromBytes(Bytes.fromUTF8("test"))]) // We say that the delegate result will return 1, since this is what we expect from grantDelegate event
+// TODO: SetParam1 - Too much mock functions needs to be done - commenting out for now, until better solution
 
-//     // Creating event with custom data fields
-//     let setParam1Event = createSetParamEvent1(BigInt.fromI64(AMOUNT), "debtCeiling", VAULT);
+// For reference creating only 1 mock function
+test('CODEX - Set Param1 - Debt Ceiling - Not Implemented - Should throw', () => {
+    // createMockedFunction(Address.fromString(VAULT), 'vaultType', 'vaultType():(bytes32)')
+    //     .withArgs([])
+    //     .returns([ethereum.Value.fromBytes(Bytes.fromUTF8("test"))]) // We say that the delegate result will return 1, since this is what we expect from grantDelegate event
 
-//     // Creating Vault entity, which we will use for assertion
-//     createVaultIfNonExistent(VAULT);
+    // Creating event with custom data fields
+    let setParam1Event = createSetParamEvent1(BigInt.fromI32(AMOUNT), "debtCeiling", VAULT);
 
-//     // Once we have our entity saved in the store, when executing the event below
-//     // it is going to find by 'id' this entity, and it's going to update it's 'debtCeiling' prop
-//     handleCodexSetParam1(setParam1Event);
+    clearStore();
+}, true)
 
-//     // Our handler updates the 'debtCeiling' field of the Vault, so we check if that update happend
-//     assert.fieldEquals("Vault", VAULT.toLowerCase(), "debtCeiling", AMOUNT.toString());
+test('CODEX - Set Param1 - Debt Floor - Not Implemented - Should throw', () => {
+    // Creating event with custom data fields
+    let setParam1Event = createSetParamEvent1(BigInt.fromI32(AMOUNT), "debtFloor", VAULT);
 
-//     clearStore();
-// })
-
-// test('CODEX - Set Param1 - Debt Floor', () => {
-//     // Creating event with custom data fields
-//     let setParam1Event = createSetParamEvent1(BigInt.fromI64(AMOUNT), "debtFloor", VAULT);
-
-//     // Creating Vault entity, which we will use for assertion
-//     createVaultIfNonExistent(VAULT);
-
-//     // Once we have our entity saved in the store, when executing the event below
-//     // it is going to find by 'id' this entity, and it's going to update it's 'debtFloor' prop
-//     handleCodexSetParam1(setParam1Event);
-
-//     // Our handler updates the 'debtFloor' field of the Vault, so we check if that update happend
-//     assert.fieldEquals("Vault", VAULT.toLowerCase(), "debtFloor", AMOUNT.toString());
-
-//     clearStore();
-// })
+    clearStore();
+}, true)
 
 function createGrantDelegateEvent(delegatorAddress: string, delegateeAddress: string): GrantDelegate {
     let grantDelegateEvent = changetype<GrantDelegate>(newMockEvent());

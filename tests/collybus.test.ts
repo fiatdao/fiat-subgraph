@@ -3,6 +3,9 @@ import { clearStore, test, assert, newMockEvent } from 'matchstick-as/assembly/i
 import { handleCollybusUpdateSpot, createCollybusSpotIfNonExistent, createCollybusRateIfNonExistent, createCollybusIfNonExistent, handleCollybusUpdateDiscountRate } from "../src/collybus";
 import { SetParam1, SetParam2, UpdateSpot, UpdateDiscountRate, } from "../generated/Codex/Collybus";
 
+// TODO: SetParam1 - test will be completed when it's decided what we do with mocking and contract calls
+// TODO: SetParam2 - not implemented yet in the code
+
 const ONE_ETH = 1000000000000000000;
 const COLLYBUS_TOKEN_ADDRESS = "0xB894853D5771B588530394065D44A33BcB314aC5"; // FIAT deployed on goerli
 const TOKEN = "0x0D3ff0A8672fcA127aA6DbE44BBcc935821Fdc7b";
