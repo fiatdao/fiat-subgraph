@@ -40,6 +40,15 @@ For more info see [deploy.sh](/deploy.sh)
 > Remote development requires the `ACCESS_TOKEN` of the created Subgraph.
 > FYI if you want to deploy locally the mainnet config, edit env `NETWORK_CONFIG=mainnet.json` and execute: `yarn run deploy:local`
 
+### Running tests:
+#### For installation please see: [matchstick](https://github.com/LimeChain/matchstick)
+For more info and documentation: [subgraph](https://github.com/LimeChain/demo-subgraph)
+
+    `yarn run build` - to create subgraph.yaml
+    `yarn run test` - to run all test files
+
+TODO: Some of the tests will be completed when it's decided what we do with mocking and contract calls
+
 # Supported API's - implemented events from contracts:
 
 - ## [Auction](https://github.com/fiatdao/fiat/blob/main/src/auctions/NoLossCollateralAuction.sol):
