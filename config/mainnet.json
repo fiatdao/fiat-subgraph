@@ -36,7 +36,7 @@
     {
       "idx": 4,
       "name": "vaultEPT_ePyvUSDC_16SEP22",
-      "address": "0x4465476275E1201F2E5Ab9479E6a51c7875Ce700",
+      "address": "0x4465476275e1201f2e5ab9479e6a51c7875ce700",
       "_comment": "Vault address needs to be lower case ^",
       "ConvergentCurvePool": "0x56df5ef1A0A86c2A5Dd9cC001Aa8152545BDbdeC",
       "type": "ELEMENT"
@@ -44,7 +44,7 @@
     {
       "idx": 5,
       "name": "VaultEPT_ePyvDAI_16SEP22",
-      "address": "0xb6922A39C85a4E838e1499A8B7465BDca2E49491",
+      "address": "0xb6922a39c85a4e838e1499a8b7465bdca2e49491",
       "_comment": "Vault address needs to be lower case ^",
       "ConvergentCurvePool": "0x8fFD1dc7C3eF65f833CF84dbCd15b6Ad7f9C54EC",
       "type": "ELEMENT"
@@ -52,7 +52,7 @@
     {
       "idx": 6,
       "name": "VaultEPT_ePyvLUSD3CRV_16SEP22",
-      "address": "0xE486a875367875a7Ec1DfE40510B6Ed217849737",
+      "address": "0xe486a875367875a7ec1dfe40510b6ed217849737",
       "_comment": "Vault address needs to be lower case ^",
       "ConvergentCurvePool": "0x489eeDB33F82574AfEABb3F4e156FBf662308AdA",
       "type": "ELEMENT"

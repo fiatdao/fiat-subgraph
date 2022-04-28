@@ -104,6 +104,8 @@ dataSources:
           file: ./abis/IVault.json
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: IConvergentCurvePool
+          file: ./abis/IConvergentCurvePool.json
       eventHandlers:
         - event: SetParam(indexed address,indexed bytes32,uint256)
           handler: handleCollybusSetParam1
