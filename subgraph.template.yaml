@@ -28,12 +28,14 @@ dataSources:
           file: ./abis/Codex.json
         - name: Collybus
           file: ./abis/Collybus.json
-        - name: IVault
-          file: ./abis/IVault.json
         - name: FIAT
           file: ./abis/FIAT.json
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: IVault
+          file: ./abis/IVault.json
+        - name: VaultFC
+          file: ./abis/VaultFC.json
         - name: IConvergentCurvePool
           file: ./abis/IConvergentCurvePool.json
       eventHandlers:
@@ -100,10 +102,12 @@ dataSources:
       abis:
         - name: Collybus
           file: ./abis/Collybus.json
-        - name: IVault
-          file: ./abis/IVault.json
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: IVault
+          file: ./abis/IVault.json
+        - name: VaultFC
+          file: ./abis/VaultFC.json
         - name: IConvergentCurvePool
           file: ./abis/IConvergentCurvePool.json
       eventHandlers:
@@ -137,10 +141,12 @@ dataSources:
           file: ./abis/CollateralAuction.json
         - name: Collybus
           file: ./abis/Collybus.json
-        - name: IVault
-          file: ./abis/IVault.json
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: IVault
+          file: ./abis/IVault.json
+        - name: VaultFC
+          file: ./abis/VaultFC.json
       eventHandlers:
         - event: StartAuction(indexed uint256,uint256,uint256,uint256,address,uint256,address,indexed address,uint256)
           handler: handleStartAuction
@@ -171,10 +177,12 @@ dataSources:
       abis:
         - name: Publican
           file: ./abis/Publican.json
-        - name: IVault
-          file: ./abis/IVault.json
         - name: Collybus
           file: ./abis/Collybus.json
+        - name: IVault
+          file: ./abis/IVault.json
+        - name: VaultFC
+          file: ./abis/VaultFC.json
       eventHandlers:
         - event: SetParam(indexed address,indexed bytes32,uint256)
           handler: handlePublicanSetParam2
@@ -199,34 +207,3 @@ dataSources:
         - event: DeployProxy(indexed address,indexed address,indexed address,bytes32,bytes32,address)
           handler: handleDeployProxy
       file: ./src/mappings.ts
-  # {{#Notional}}
-  #   - kind: ethereum/contract
-  #     name: Notional
-  #     network: {{network}}
-  #     source:
-  #       address: '{{Notional}}'
-  #       abi: Notional
-  #       startBlock: {{notionalStartBlock}}
-  #     mapping:
-  #       kind: ethereum/events
-  #       apiVersion: 0.0.5
-  #       language: wasm/assemblyscript
-  #       entities:
-  #         - Vault
-  #         - CollateralType
-  #       abis:
-  #         - name: Notional
-  #           file: ./abis/Notional.json
-  #         - name: ERC20
-  #           file: ./abis/ERC20.json
-  #         - name: Collybus
-  #           file: ./abis/Collybus.json
-  #         - name: IVault
-  #           file: ./abis/IVault.json
-  #         - name: VaultFC
-  #           file: ./abis/VaultFC.json
-  #       eventHandlers:
-  #         - event: MarketsInitialized(uint16)
-  #           handler: handleMarketsInitialized
-  #       file: ./src/mappings.ts
-  #   {{/Notional}}

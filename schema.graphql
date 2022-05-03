@@ -157,6 +157,8 @@ type CollateralType @entity {
 
   # Only set for Element Finance pTokens
   eptData: EPTData
+  # Only set for Notional Finance fCash Tokens
+  fcData: FCData
 }
 
 type EPTData @entity {
@@ -165,6 +167,13 @@ type EPTData @entity {
   convergentCurvePool: Bytes
   poolId: Bytes
   vault: [CollateralType!] @derivedFrom(field: "eptData")
+}
+
+type FCData @entity {
+  id: ID!
+  notional: Bytes
+  tenor: BigInt
+  vault: [CollateralType!] @derivedFrom(field: "fcData")
 }
 
 type User @entity {

@@ -8,6 +8,7 @@
   "CollateralAuction": "0x2651d4Bf4EDe0A65d3439f10e69dCe419d9e63D9",
   "FIAT": "0x7c9571148968d05608d324463E38F04a7eAAd53e",
   "Publican": "0x9278785Fd998f527B2dBad2ed83d18a69DD50C14",
+  "Notional": "0xd937e688765a38a01D37Fae67c2e9e2C38b1beC9",
   "Vaults": [
     {
       "idx": 1,
@@ -24,9 +25,13 @@
       "_comment": "Vault address needs to be lower case ^",
       "ConvergentCurvePool": "0x4294005520c453eb8fa66f53042cfc79707855c4",
       "type": "ELEMENT"
+    },
+    {
+      "idx": 3,
+      "name": "vaultFC_fDAI_3MONTH",
+      "address": "0x0Ccb3363500e2b81339451bE1dE32ba68b21e130",
+      "_comment": "Vault address needs to be lower case ^",
+      "type": "NOTIONAL"
     }
-  ],
-  "VaultNotional": "",
-  "Notional": "",
-  "notionalStartBlock": 6362131
+  ]
 }
