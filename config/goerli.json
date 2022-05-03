@@ -8,7 +8,7 @@
   "CollateralAuction": "0x2651d4Bf4EDe0A65d3439f10e69dCe419d9e63D9",
   "FIAT": "0x7c9571148968d05608d324463E38F04a7eAAd53e",
   "Publican": "0x9278785Fd998f527B2dBad2ed83d18a69DD50C14",
-  "Notional": "0xd937e688765a38a01D37Fae67c2e9e2C38b1beC9",
+  "Notional": "0xD8229B55bD73c61D840d339491219ec6Fa667B0a",
   "Vaults": [
     {
       "idx": 1,
