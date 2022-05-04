@@ -19,9 +19,8 @@ export function handleCollybusSetParam1(event: SetParam1): void {
 
 export function handleCollybusSetParam2(event: SetParam2): void {
   if (event.params.param.toString() == "rateId") {
-    let collateralType = createCollateralTypeIfNonExistent(
-      createVaultIfNonExistent(event.params.vault), event.params.tokenId
-    );
+    let vault = createVaultIfNonExistent(event.params.vault);
+    let collateralType = createCollateralTypeIfNonExistent(vault, event.params.tokenId);
     collateralType.discountRate = createCollybusDiscountRateIfNonExistent(event.address, event.params.data).id;
     collateralType.save();
   }

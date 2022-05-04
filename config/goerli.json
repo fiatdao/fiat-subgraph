@@ -1,37 +1,44 @@
 {
   "network": "goerli",
   "description": "Subgraph for the FIAT smart contract system (goerli)",
-  "startBlock": 6651000,
-  "PRBProxyFactory": "0xf0d4B8b15bF511E7c7071a5EFEfD85a5a4B86Db5",
-  "Codex": "0x56974fC4bB4Dc18dDDa06B2056f1Bdfef0eCA0FF",
-  "Collybus": "0xB894853D5771B588530394065D44A33BcB314aC5",
-  "CollateralAuction": "0x2651d4Bf4EDe0A65d3439f10e69dCe419d9e63D9",
-  "FIAT": "0x7c9571148968d05608d324463E38F04a7eAAd53e",
-  "Publican": "0x9278785Fd998f527B2dBad2ed83d18a69DD50C14",
+  "startBlock": 6680000,
+  "PRBProxyFactory": "0xe9C818ec2a8851D9b14D9285eDB7AecF79f90692",
+  "Codex": "0xF56CCAEFfdFE6b2ED8334F58F6C25b6910F06Bd3",
+  "Collybus": "0x71716AC5ce19607F19cc924b27070103e2222827",
+  "CollateralAuction": "0xe01B18BE9084FE78cDf33f8490871D37e3aa805c",
+  "FIAT": "0x1d749E66a6B71c57bae3BC48B06636D8A82eb762",
+  "Publican": "0x9aef06168f632d8533b1E6be715b1D2919E13F88",
   "Notional": "0xD8229B55bD73c61D840d339491219ec6Fa667B0a",
   "Vaults": [
     {
       "idx": 1,
-      "name": "vaultEPT_eP:eyUSDC:10-AUG-22-GMT (deprecated)",
-      "address": "0x411c11ccc2bd375cf91bbe4bbb2cab64a2a60756",
+      "name": "vaultEPT_eP:eyUSDC:10-AUG-22-GMT",
+      "address": "0xbe2a988d69530f1483058c9d71f323d12b11b8d2",
       "_comment": "Vault address needs to be lower case ^",
       "ConvergentCurvePool": "0x4294005520c453eb8fa66f53042cfc79707855c4",
       "type": "ELEMENT"
     },
     {
       "idx": 2,
-      "name": "vaultEPT_eP:eyUSDC:10-AUG-22-GMT",
-      "address": "0xa78e2f8e1dbbf145956bb6c2aa9655218d100aa2",
+      "name": "vaultFC_fDAI_3MONTH (deprecated)",
+      "address": "0x0ccb3363500e2b81339451be1de32ba68b21e130",
       "_comment": "Vault address needs to be lower case ^",
-      "ConvergentCurvePool": "0x4294005520c453eb8fa66f53042cfc79707855c4",
-      "type": "ELEMENT"
+      "type": "NOTIONAL"
     },
     {
       "idx": 3,
-      "name": "vaultFC_fDAI_3MONTH",
-      "address": "0x0Ccb3363500e2b81339451bE1dE32ba68b21e130",
+      "name": "vaultFC_fDAI_3MONTH (deprecated)",
+      "address": "0x4035234e0a9612188e4c17414081e99216933b94",
       "_comment": "Vault address needs to be lower case ^",
       "type": "NOTIONAL"
+    },
+    {
+      "idx": 4,
+      "name": "vaultFC_fDAI_3MONTH",
+      "address": "0xfc585dc29fb6e1700a98fd6675c211161556a1f5",
+      "_comment": "Vault address needs to be lower case ^",
+      "type": "NOTIONAL",
+      "defaultTokenId": "563373963149313"
     }
   ]
 }

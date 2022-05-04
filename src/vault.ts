@@ -1,4 +1,4 @@
-import { Address } from "@graphprotocol/graph-ts";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { Vault } from "../generated/schema";
 import { Init } from "../generated/Codex/Codex";
 import { IVault as IVaultContract } from "../generated/Codex/IVault";
@@ -16,9 +16,9 @@ export function createVaultIfNonExistent(vaultAddress: Address): Vault {
     vault = new Vault(vaultAddress.toHexString());
     let config = VAULT_CONFIG.get(vaultAddress.toHexString());
     if (config) {
-      vault.name = (config.get('name')) as string;
-      vault.type = (config.get('type')) as string;
-      vault.address = Address.fromString((config.get('address')) as string)
+      vault.name = (config.get("name")) as string;
+      vault.type = (config.get("type")) as string;
+      vault.address = Address.fromString((config.get("address")) as string)
     }
     vault.vaultType = IVaultContract.bind(vaultAddress).vaultType();
 
@@ -35,7 +35,16 @@ export function createVaultIfNonExistent(vaultAddress: Address): Vault {
     vault.defaultRateId = BIGINT_ZERO;
     vault.save();
 
-    createCollateralTypeIfNonExistent(vault, BIGINT_ZERO);
+    if (vault.type == "NOTIONAL") {
+      if (config) {
+        let defaultTokenId = config.get("defaultTokenId") as string;
+        if (defaultTokenId && defaultTokenId != "") {
+          createCollateralTypeIfNonExistent(vault, BigInt.fromString(defaultTokenId));
+        }
+      }
+    } else {
+      createCollateralTypeIfNonExistent(vault, BIGINT_ZERO);
+    }
   }
 
   return vault as Vault;

@@ -1,4 +1,4 @@
-import { BigInt, Address } from "@graphprotocol/graph-ts";
+import { BigInt, Address, log } from "@graphprotocol/graph-ts";
 import { CollateralType, Vault } from "../generated/schema";
 import { ERC20 as ERC20Contract } from "../generated/Codex/ERC20";
 import { IVault as IVaultContract } from "../generated/Codex/IVault";
@@ -10,6 +10,7 @@ import { createFCDataIfNonExistent } from "./notional";
 
 export function createCollateralTypeIfNonExistent(vault: Vault, tokenId: BigInt): CollateralType {
   let id = vault.id + "-" + tokenId.toString();
+
   let collateralType = CollateralType.load(id);
   if (!collateralType) {
     collateralType = new CollateralType(id);
@@ -24,7 +25,8 @@ export function createCollateralTypeIfNonExistent(vault: Vault, tokenId: BigInt)
     let underlier = ERC20Contract.bind(iVault.underlierToken());
 
     collateralType.address = token._address;
-    collateralType.symbol = token.symbol();
+    const symbolResult = token.try_symbol();
+    if (!symbolResult.reverted) collateralType.symbol = symbolResult.value;
     collateralType.scale = iVault.tokenScale();
     collateralType.underlierAddress = underlier._address;
     collateralType.underlierSymbol = underlier.symbol();
