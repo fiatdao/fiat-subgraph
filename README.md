@@ -35,8 +35,8 @@ There are `npm scripts` for all the stages of subgraph development.
 ### Deploy the Subgraph:
 `CONFIG=<CONFIG_FILE_NAME> NETWORK=<NETWORK> TARGET=<TARGET> yarn deploy`
 
-- CONFIG: `dev.json`, `mainnet.json`, `rinkeby.json`
-- NETWORK: `local`, `mainnet`, `rinkeby`
+- CONFIG: `mainnet.json`, `goerli.json`
+- NETWORK: `local`, `mainnet`, `goerli`
 - TARGET: `local`, `remote`, `studio`, `hosted-service` (optional)
 
 In order to deploy to a remote node the `IPFS_NODE` and `GRAPH_NODE` has to be set:

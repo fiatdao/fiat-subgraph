@@ -7,6 +7,7 @@ let val{{idx}} = new TypedMap<string, string>();
 val{{idx}}.set("name", "{{name}}");
 val{{idx}}.set("address", "{{address}}");
 val{{idx}}.set("ConvergentCurvePool", "{{ConvergentCurvePool}}");
+val{{idx}}.set("YieldSpacePool", "{{YieldSpacePool}}");
 val{{idx}}.set("defaultTokenId", "{{defaultTokenId}}");
 val{{idx}}.set("type", "{{type}}");
 val{{idx}}.set("collateralTokenId", "{{collateralTokenId}}");

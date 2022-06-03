@@ -1,5 +1,6 @@
 {
   "name": "fiat-subgraph",
+  "license": "MIT",
   "version": "0.1.0",
   "scripts": {
     "build": "GRAPH=dev.json NO_DEPLOY=true ./deploy.sh",

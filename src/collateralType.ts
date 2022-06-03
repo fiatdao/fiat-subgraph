@@ -7,6 +7,7 @@ import { VAULT_CONFIG } from "./generated/config";
 import { BIGINT_ZERO, WAD } from "./utils";
 import { createEPTDataIfNonExistent } from "./element";
 import { createFCDataIfNonExistent } from "./notional";
+import { createFYDataIfNonExistent } from "./yield";
 
 export function createCollateralTypeIfNonExistent(vault: Vault, tokenId: BigInt): CollateralType {
   let id = vault.id + "-" + tokenId.toString();
@@ -42,6 +43,8 @@ export function createCollateralTypeIfNonExistent(vault: Vault, tokenId: BigInt)
       createEPTCollateralTypeIfNonExistent(collateralType);
     } else if (((config.get('type')) as string) == "NOTIONAL") {
       createFCCollateralTypeIfNonExistent(collateralType);
+    } else if (((config.get('type')) as string) == "YIELD") {
+      createFYCollateralTypeIfNonExistent(collateralType);
     }
   }
 
@@ -57,6 +60,13 @@ function createEPTCollateralTypeIfNonExistent(collateralType: CollateralType): C
 
 function createFCCollateralTypeIfNonExistent(collateralType: CollateralType): CollateralType {
   collateralType.fcData = createFCDataIfNonExistent(collateralType.vault!).id;
+  collateralType.save();
+  
+  return collateralType as CollateralType;
+}
+
+function createFYCollateralTypeIfNonExistent(collateralType: CollateralType): CollateralType {
+  collateralType.fyData = createFYDataIfNonExistent(collateralType.vault!).id;
   collateralType.save();
   
   return collateralType as CollateralType;

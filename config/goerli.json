@@ -8,7 +8,6 @@
   "CollateralAuction": "0xe01B18BE9084FE78cDf33f8490871D37e3aa805c",
   "FIAT": "0x1d749E66a6B71c57bae3BC48B06636D8A82eb762",
   "Publican": "0x9aef06168f632d8533b1E6be715b1D2919E13F88",
-  "Notional": "0xD8229B55bD73c61D840d339491219ec6Fa667B0a",
   "Vaults": [
     {
       "idx": 1,
@@ -39,6 +38,14 @@
       "_comment": "Vault address needs to be lower case ^",
       "type": "NOTIONAL",
       "defaultTokenId": "563373963149313"
+    },
+    {
+      "idx": 5,
+      "name": "vaultFY_FYUSDC2206",
+      "address": "0xa54b65ab45563e120a18b6e7cfc9920ddafa5355",
+      "_comment": "Vault address needs to be lower case ^",
+      "YieldSpacePool": "0x2fde6b589d73d81a256cd596af5bd5b35e817268",
+      "type": "YIELD"
     }
   ]
 }

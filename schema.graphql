@@ -106,8 +106,7 @@ type Delegate @entity {
 enum VaultType {
   ELEMENT,
   NOTIONAL,
-  Yield,
-  BARNBRIDGE,
+  YIELD
 }
 
 type Vault @entity {
@@ -159,6 +158,8 @@ type CollateralType @entity {
   eptData: EPTData
   # Only set for Notional Finance fCash Tokens
   fcData: FCData
+  # Only set for Yield Protocol fyTokenz
+  fyData: FYData
 }
 
 type EPTData @entity {
@@ -174,6 +175,12 @@ type FCData @entity {
   notional: Bytes
   tenor: BigInt
   vault: [CollateralType!] @derivedFrom(field: "fcData")
+}
+
+type FYData @entity {
+  id: ID!
+  yieldSpacePool: Bytes
+  vault: [CollateralType!] @derivedFrom(field: "fyData")
 }
 
 type User @entity {

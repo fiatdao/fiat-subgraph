@@ -56,6 +56,48 @@
       "_comment": "Vault address needs to be lower case ^",
       "ConvergentCurvePool": "0x489eeDB33F82574AfEABb3F4e156FBf662308AdA",
       "type": "ELEMENT"
+    },
+    {
+      "idx": 7,
+      "name": "vaultFC_fUSDC_3MONTH",
+      "address": "0x542263087f42808d8763f55d41ebb45070671c2a",
+      "_comment": "Vault address needs to be lower case ^",
+      "type": "NOTIONAL"
+    },
+    {
+      "idx": 8,
+      "name": "vaultFC_fUSDC_6MONTH",
+      "address": "0xab7b8654c68a17892f7db8b6e3e66fca86965d06",
+      "_comment": "Vault address needs to be lower case ^",
+      "type": "NOTIONAL"
+    },
+    {
+      "idx": 9,
+      "name": "vaultFC_fUSDC_12MONTH",
+      "address": "0x7e07b849217b18e77c0965944a0b816425b135fe",
+      "_comment": "Vault address needs to be lower case ^",
+      "type": "NOTIONAL"
+    },
+    {
+      "idx": 10,
+      "name": "vaultFC_fDAI_3MONTH",
+      "address": "0x61d677f13375afae237a20c3f47843ff982339fe",
+      "_comment": "Vault address needs to be lower case ^",
+      "type": "NOTIONAL"
+    },
+    {
+      "idx": 11,
+      "name": "vaultFC_fDAI_6MONTH",
+      "address": "0x27fb9c8dde4fe79b687304d9971032a181c7f3a0",
+      "_comment": "Vault address needs to be lower case ^",
+      "type": "NOTIONAL"
+    },
+    {
+      "idx": 12,
+      "name": "vaultFC_fDAI_12MONTH",
+      "address": "0x87cbb9967f4c38c2b1a7b6596e8cab26af7e8d83",
+      "_comment": "Vault address needs to be lower case ^",
+      "type": "NOTIONAL"
     }
   ]
 }

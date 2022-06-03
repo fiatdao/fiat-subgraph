@@ -1,4 +1,4 @@
-import { Address, BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigInt, log } from "@graphprotocol/graph-ts";
 import { Vault } from "../generated/schema";
 import { Init } from "../generated/Codex/Codex";
 import { IVault as IVaultContract } from "../generated/Codex/IVault";
@@ -7,6 +7,7 @@ import { BIGINT_ZERO, WAD } from "./utils";
 import { VAULT_CONFIG } from "./generated/config";
 
 export function handleVaultInit(event: Init): void {
+  log.debug("Init", [event.params.vault.toHex()]);
   createVaultIfNonExistent(event.params.vault);
 }
 
