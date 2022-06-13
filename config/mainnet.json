@@ -98,6 +98,22 @@
       "address": "0x87cbb9967f4c38c2b1a7b6596e8cab26af7e8d83",
       "_comment": "Vault address needs to be lower case ^",
       "type": "NOTIONAL"
+    },
+    {
+      "idx": 13,
+      "name": "vaultFY_FYUSDC2209",
+      "address": "0x12dddc27a8d8ce9b0c5b1f3ba3c87cf3496708bd",
+      "_comment": "Vault address needs to be lower case ^",
+      "YieldSpacePool": "0xf5fd5a9db9cccc6dc9f5ef1be3a859c39983577c",
+      "type": "YIELD"
+    },
+    {
+      "idx": 14,
+      "name": "vaultFY_FYDAI2209",
+      "address": "0x03c1aedfaa7bb81dbd83338d488a1318b64ab388",
+      "_comment": "Vault address needs to be lower case ^",
+      "YieldSpacePool": "0x6bac09a67ed1e1f42c29563847f77c28ec3a04fc",
+      "type": "YIELD"
     }
   ]
 }
