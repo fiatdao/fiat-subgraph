@@ -21,12 +21,14 @@ services:
       # Change next line if you want to connect to a different JSON-RPC endpoint
       ethereum: '${NETWORK}:https://eth-${NETWORK}.alchemyapi.io/v2/${ALCHEMY_API_KEY}'
       GRAPH_LOG: debug
+
   ipfs:
     image: ipfs/go-ipfs:v0.4.23
     ports:
       - '5001:5001'
     volumes:
       - ./data/ipfs:/data/ipfs
+
   postgres:
     image: postgres
     ports:
