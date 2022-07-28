@@ -21,8 +21,7 @@ services:
       - ./data/ganache_data:/ganache_data
     ports:
       - '8545:8545'
-    entrypoint: 'node /app/dist/node/cli.js --fork.url https://eth-mainnet.alchemyapi.io/v2/$ALCHEMY_API_KEY@14515000 --miner.defaultGasPrice 50000000000 --hostname 0.0.0.0 --unlock="0xCFFAd3200574698b78f32232aa9D63eABD290703" --unlock="0x16b34ce9a6a6f7fc2dd25ba59bf7308e7b38e186" --unlock="0x3ddfa8ec3052539b6c9549f12cea2c295cff5296" --database.dbPath="/ganache_data"' # idk why non-0 blocktime but a lot of ppl seem to have it (--blockTime 3)
-    
+    entrypoint: 'node /app/dist/node/cli.js -h="0.0.0.0" --fork.url="https://eth-mainnet.alchemyapi.io/v2/$ALCHEMY_API_KEY" --miner.defaultGasPrice 50000000000 --unlock="0xCFFAd3200574698b78f32232aa9D63eABD290703" --unlock="0x16b34ce9a6a6f7fc2dd25ba59bf7308e7b38e186" --unlock="0x3ddfa8ec3052539b6c9549f12cea2c295cff5296" --database.dbPath="/ganache_data"' # idk why non-0 blocktime but a lot of ppl seem to have it (--blockTime 3)
     # forking from the same block the graph starts indexing at
     # --fork.url https://eth-mainnet.alchemyapi.io/v2/$ALCHEMY_API_KEY@14515000 --database.dbPath /ganache_data
 
@@ -41,6 +40,8 @@ services:
       - ipfs
       - postgres
       - chain-1337
+    # extra_hosts:
+    #   - host.docker.internal:host-gateway
     environment:
       postgres_host: postgres
       postgres_user: graph-node
@@ -48,6 +49,8 @@ services:
       postgres_db: graph-node
       ipfs: 'ipfs:5001'
       ethereum: 'mainnet:http://chain-1337:8545'
+      # ethereum: 'mainnet:http://host.docker.internal:8545'
+
       GRAPH_LOG: info
 
   ipfs:
