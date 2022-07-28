@@ -46,9 +46,11 @@ then
   graph deploy $SUBGRAPH_NAME --ipfs $IPFS_NODE --node $GRAPH_NODE
 
   # Deploy subgraph, forking the fiatdao/fiat-subgraph subgraph on mainnet
-  # NOTE: You must run the subgraph with --fork-base flag (not in docker), e.g.
-  # cargo run -p graph-node --release -- --postgres-url postgresql://graph-node:let-me-in@localhost:5432/graph-node --ethereum-rpc mainnet:http://localhost:8545 --ipfs 127.0.0.1:5001 --fork-base https://api.thegraph.com/subgraphs/id/
-  # instructions on running graph-node locally here: https://github.com/graphprotocol/graph-node/#running-a-local-graph-node
+  # NOTE: You must
+  # 1. Update the startBlock in config/mainnet.json to the latest block (see here: https://thegraph.com/hosted-service/subgraph/fiatdao/fiat-subgraph)
+  # 2. Run the subgraph with --fork-base flag (not in docker), e.g.
+  #      cargo run -p graph-node --release -- --postgres-url postgresql://graph-node:let-me-in@localhost:5432/graph-node --ethereum-rpc mainnet:http://localhost:8545 --ipfs 127.0.0.1:5001 --fork-base https://api.thegraph.com/subgraphs/id/
+  # Instructions to run graph-node locally here: https://github.com/graphprotocol/graph-node/#running-a-local-graph-node
   # graph deploy $SUBGRAPH_NAME --ipfs $IPFS_NODE --node $GRAPH_NODE --debug-fork Qma9ky6wWr9o9ufhmLsYRrqERGVkBKEMtsTQcjNvfB5NZq
 elif [ "$TARGET" = "studio" ]
 then

@@ -7,7 +7,8 @@ services:
   #     - ALCHEMY_API_KEY=$ALCHEMY_API_KEY
   #   container_name: chain-1337-test
   #   image: ghcr.io/foundry-rs/foundry:nightly
-  #   entrypoint: 'anvil --chain-id 1337 --host 0.0.0.0 --block-time 3 --gas-limit 50000000 --fork-url https://eth-mainnet.alchemyapi.io/v2/$ALCHEMY_API_KEY --fork-block-number 14515000'
+  #   entrypoint: 'anvil --chain-id 1337 --host 0.0.0.0 --gas-limit 50000000 --fork-url https://eth-mainnet.alchemyapi.io/v2/$ALCHEMY_API_KEY'
+  #   # --block-time 3 
   #   ports:
   #     - '8545:8545'
 
